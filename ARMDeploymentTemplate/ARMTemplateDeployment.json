@@ -24,24 +24,17 @@
           }
       },
       "adxDbName": {
-          "defaultValue": "kustodb",
+          "defaultValue": "5gcorediagdb",
           "type": "String",
           "metadata": {
               "description": "Name of the database to create"
           }
       },
       "adxTableName": {
-          "defaultValue": "kustotable",
+          "defaultValue": "5GDebugLogs",
           "type": "String",
           "metadata": {
               "description": "Name of the table to create"
-          }
-      },
-      "adfIdentity": {
-          "defaultValue": "adfIdentity1",
-          "type": "String",
-          "metadata": {
-              "description": "Name of the database to create"
           }
       },
       "dataFactoryName": {
@@ -174,7 +167,7 @@
           "azPowerShellVersion": "5.0",
           "timeout": "PT30M",
           "arguments": "[format(' -clusterUrl {0} -dbName {1} -tableName {2} -adfIdentity {3}', reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri, parameters('adxDbName'), parameters('adxTableName'), reference(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '2018-06-01', 'Full').identity.principalId)]", 
-          "primaryScriptUri": "https://stmobilenetworkutils.blob.core.windows.net/resources/deploymentscript.ps1",
+          "primaryScriptUri": "https://raw.githubusercontent.com/vineetgarhewal/UnityCloudDiagnosticsSetup/main/ARMDeploymentTemplate/deploymentscript.ps1",
           "cleanupPreference": "OnSuccess",
           "retentionInterval": "P1D"
         }
