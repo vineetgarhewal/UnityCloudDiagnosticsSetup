@@ -24,24 +24,17 @@
           }
       },
       "adxDbName": {
-          "defaultValue": "kustodb",
+          "defaultValue": "5gcorediagdb",
           "type": "String",
           "metadata": {
               "description": "Name of the database to create"
           }
       },
       "adxTableName": {
-          "defaultValue": "kustotable",
+          "defaultValue": "5GDebugLogs",
           "type": "String",
           "metadata": {
               "description": "Name of the table to create"
-          }
-      },
-      "adfIdentity": {
-          "defaultValue": "adfIdentity1",
-          "type": "String",
-          "metadata": {
-              "description": "Name of the database to create"
           }
       },
       "dataFactoryName": {
