@@ -88,9 +88,17 @@
       "name": "[parameters('adxClusterName')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "Standard_D13_v2",
+        "name": "Standard_D14_v2",
         "tier": "Standard",
-        "capacity": 2
+        "capacity": 3
+      },
+      "properties": {	
+          "optimizedAutoscale": {	
+              "version": 1,	
+              "isEnabled": true,	
+              "minimum": 2,	
+              "maximum": 10	
+          }
       }
     },
     {
