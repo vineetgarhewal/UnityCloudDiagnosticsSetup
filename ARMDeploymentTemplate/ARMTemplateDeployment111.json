@@ -1,0 +1,951 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Specifies the Azure location where the key vault should be created."
+      }
+    },
+    "identityName": {
+      "defaultValue": "deploymentScriptIdentity",
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the user-assigned managed identity."
+      }
+    },
+    "adxClusterName": {
+      "defaultValue": "[concat('kusto', uniqueString(resourceGroup().id))]",
+      "type": "String",
+      "metadata": {
+        "description": "Name of the cluster to create"
+      }
+    },
+    "adxDbName": {
+      "defaultValue": "5gcorediagdb",
+      "type": "String",
+      "metadata": {
+        "description": "Name of the database to create"
+      }
+    },
+    "adxLogsTableName": {
+      "defaultValue": "5GDebugLogs",
+      "type": "String",
+      "metadata": {
+        "description": "Name of the table to create"
+      }
+    },
+    "adxMetricsTableName": {
+      "defaultValue": "5GDebugMetrics",
+      "type": "String",
+      "metadata": {
+        "description": "Name of the table to create"
+      }
+    },
+    "dataFactoryName": {
+      "type": "string",
+      "defaultValue": "[format('datafactory{0}', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Data Factory Name"
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "[format('storage{0}', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Name of the Azure storage account that contains the input/output data."
+      }
+    },
+    "logsBlobContainerName": {
+      "type": "string",
+      "defaultValue": "[format('logsblob{0}', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Name of the blob container in the Azure Storage account."
+      }
+    },
+    "metricsBlobContainerName": {
+      "type": "string",
+      "defaultValue": "[format('metricsblob{0}', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Name of the blob container in the Azure Storage account."
+      }
+    }
+  },
+  "variables": {
+    "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
+    "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "dataFactoryStorageLinkedService": "ArmtemplateStorageLinkedService",
+    "dataFactoryADXLinkedService": "ArmtemplateADXLinkedService",
+    "dataFactoryLogsDataSetInName": "ArmtemplateLogsDatasetIn",
+    "dataFactoryLogsDataSetOutName": "ArmtemplateLogsDatasetOut",
+    "dataFactoryMetricsDataSetInName": "ArmtemplateMetricsDatasetIn",
+    "dataFactoryMetricsDataSetOutName": "ArmtemplateMetricsDatasetOut",
+    "logsPipelineName": "ArmtemplateLogsCopyPipeline",
+    "metricsPipelineName": "ArmtemplateMetricsCopyPipeline"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Kusto/clusters/databases",
+      "apiVersion": "2020-06-14",
+      "name": "[concat(parameters('adxClusterName'), '/', parameters('adxDbName'))]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName'))]"
+      ],
+      "properties": {
+        "softDeletePeriodInDays": 365,
+        "hotCachePeriodInDays": 31
+      }
+    },
+    {
+      "type": "Microsoft.Kusto/clusters",
+      "apiVersion": "2020-06-14",
+      "name": "[parameters('adxClusterName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard_D13_v2",
+        "tier": "Standard",
+        "capacity": 2
+      }
+    },
+    {
+      "type": "Microsoft.Kusto/Clusters/Databases/PrincipalAssignments",
+      "apiVersion": "2020-09-18",
+      "name": "[concat(parameters('adxClusterName'), '/', parameters('adxDbName'), '/MSIidentity')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Kusto/Clusters/Databases', parameters('adxClusterName'), parameters('adxDbName'))]",
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]"
+      ],
+      "properties": {
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').clientId]",
+        "principalType": "App",
+        "tenantId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').tenantId]",
+        "role": "Admin"
+      }
+    },
+    {
+      "type": "Microsoft.Kusto/Clusters/Databases/PrincipalAssignments",
+      "apiVersion": "2020-09-18",
+      "name": "[concat(parameters('adxClusterName'), '/', parameters('adxDbName'), '/AFDidentity')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Kusto/Clusters/Databases', parameters('adxClusterName'), parameters('adxDbName'))]",
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]"
+      ],
+      "properties": {
+        "principalId": "[reference(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '2018-06-01', 'Full').identity.principalId]",
+        "principalType": "App",
+        "tenantId": "[reference(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '2018-06-01', 'Full').identity.tenantId]",
+        "role": "Admin"
+      }
+    },
+    {
+      "type": "Microsoft.Kusto/Clusters/PrincipalAssignments",
+      "apiVersion": "2020-09-18",
+      "name": "[concat(parameters('adxClusterName'), '/MSIidentity')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Kusto/Clusters', parameters('adxClusterName'))]",
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]"
+      ],
+      "properties": {
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').clientId]",
+        "principalType": "App",
+        "tenantId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').tenantId]",
+        "role": "AllDatabasesAdmin"
+      }
+    },
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2018-11-30",
+      "name": "[parameters('identityName')]",
+      "location": "[resourceGroup().location]"
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[variables('bootstrapRoleAssignmentId')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('contributorRoleDefinitionId')]",
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
+        "scope": "[resourceGroup().id]",
+        "principalType": "ServicePrincipal"
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "AddTableAndPermissions",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Authorization/roleAssignments', variables('bootstrapRoleAssignmentId'))]",
+        "[resourceId('Microsoft.Kusto/clusters/databases', parameters('adxClusterName'), parameters('adxDbName'))]",
+        "[resourceId('Microsoft.Kusto/Clusters/Databases/PrincipalAssignments', parameters('adxClusterName'), parameters('adxDbName'), 'MSIidentity')]",
+        "[resourceId('Microsoft.Kusto/Clusters/PrincipalAssignments', parameters('adxClusterName'), 'MSIidentity')]"
+      ],
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]": {}
+        }
+      },
+      "kind": "AzurePowerShell",
+      "properties": {
+        "azPowerShellVersion": "5.0",
+        "timeout": "PT30M",
+        "arguments": "[format(' -clusterUrl {0} -dbName {1} -logsTableName {2} -metricsTableName {3}', reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri, parameters('adxDbName'), parameters('adxLogsTableName'), parameters('adxMetricsTableName'))]",
+        "primaryScriptUri": "https://stmobilenetworkutils.blob.core.windows.net/resources/deploymentscript1.ps1",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-04-01",
+      "name": "[parameters('storageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2"
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-04-01",
+      "name": "[format('{0}/default/{1}', parameters('storageAccountName'), parameters('logsBlobContainerName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-04-01",
+      "name": "[format('{0}/default/{1}', parameters('storageAccountName'), parameters('metricsBlobContainerName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DataFactory/factories",
+      "apiVersion": "2018-06-01",
+      "name": "[parameters('dataFactoryName')]",
+      "location": "[parameters('location')]",
+      "identity": {
+        "type": "SystemAssigned"
+      }
+    },
+    {
+      "type": "Microsoft.DataFactory/factories/linkedservices",
+      "apiVersion": "2018-06-01",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('dataFactoryStorageLinkedService'))]",
+      "properties": {
+        "type": "AzureBlobStorage",
+        "typeProperties": {
+          "connectionString": "[format('DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}', parameters('storageAccountName'), listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-04-01').keys[0].value)]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DataFactory/factories/linkedservices",
+      "apiVersion": "2018-06-01",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('dataFactoryADXLinkedService'))]",
+      "properties": {
+        "type": "AzureDataExplorer",
+        "typeProperties": {
+          "endpoint": "[reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri]",
+          "database": "[parameters('adxDbName')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'AddTableAndPermissions')]"
+      ]
+    },
+    {
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('dataFactoryLogsDataSetInName'))]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "[variables('dataFactoryStorageLinkedService')]",
+          "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "container": "[parameters('logsBlobContainerName')]"
+          },
+          "compression": {
+            "type": "TarGZip"
+          }
+        },
+        "schema": {}
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', split(format('{0}/default/{1}', parameters('storageAccountName'), parameters('logsBlobContainerName')), '/')[0], split(format('{0}/default/{1}', parameters('storageAccountName'), parameters('logsBlobContainerName')), '/')[1], split(format('{0}/default/{1}', parameters('storageAccountName'), parameters('logsBlobContainerName')), '/')[2])]",
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
+        "[resourceId('Microsoft.DataFactory/factories/linkedservices', parameters('dataFactoryName'), variables('dataFactoryStorageLinkedService'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('dataFactoryMetricsDataSetInName'))]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "[variables('dataFactoryStorageLinkedService')]",
+          "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+          "location": {
+            "type": "AzureBlobStorageLocation",
+            "container": "[parameters('metricsBlobContainerName')]"
+          },
+          "compression": {
+            "type": "TarGZip"
+          }
+        },
+        "schema": {}
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', split(format('{0}/default/{1}', parameters('storageAccountName'), parameters('metricsBlobContainerName')), '/')[0], split(format('{0}/default/{1}', parameters('storageAccountName'), parameters('metricsBlobContainerName')), '/')[1], split(format('{0}/default/{1}', parameters('storageAccountName'), parameters('metricsBlobContainerName')), '/')[2])]",
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
+        "[resourceId('Microsoft.DataFactory/factories/linkedservices', parameters('dataFactoryName'), variables('dataFactoryStorageLinkedService'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('dataFactoryLogsDataSetOutName'))]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "[variables('dataFactoryADXLinkedService')]",
+          "type": "LinkedServiceReference"
+        },
+        "type": "AzureDataExplorerTable",
+        "schema": [],
+        "typeProperties": {
+          "table": "[parameters('adxLogsTableName')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
+        "[resourceId('Microsoft.DataFactory/factories/linkedservices', parameters('dataFactoryName'), variables('dataFactoryADXLinkedService'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DataFactory/factories/datasets",
+      "apiVersion": "2018-06-01",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('dataFactoryMetricsDataSetOutName'))]",
+      "properties": {
+        "linkedServiceName": {
+          "referenceName": "[variables('dataFactoryADXLinkedService')]",
+          "type": "LinkedServiceReference"
+        },
+        "type": "AzureDataExplorerTable",
+        "schema": [],
+        "typeProperties": {
+          "table": "[parameters('adxMetricsTableName')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
+        "[resourceId('Microsoft.DataFactory/factories/linkedservices', parameters('dataFactoryName'), variables('dataFactoryADXLinkedService'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DataFactory/factories/pipelines",
+      "apiVersion": "2018-06-01",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('logsPipelineName'))]",
+      "properties": {
+        "activities": [
+          {
+            "name": "Ingest from logs blob to Kusto",
+            "type": "Copy",
+            "dependsOn": [],
+            "policy": {
+              "timeout": "7.00:00:00",
+              "retry": 0,
+              "retryIntervalInSeconds": 30,
+              "secureOutput": false,
+              "secureInput": false
+            },
+            "userProperties": [],
+            "typeProperties": {
+              "source": {
+                "type": "JsonSource",
+                "additionalColumns": [
+                  {
+                    "name": "filepath",
+                    "value": "$$FILEPATH"
+                  },
+                  {
+                    "name": "defectid",
+                    "value": "ICM-01234, ICM-56789"
+                  }
+                ],
+                "storeSettings": {
+                  "type": "AzureBlobStorageReadSettings",
+                  "maxConcurrentConnections": 10,
+                  "recursive": true,
+                  "wildcardFileName": {
+                    "value": "@pipeline().parameters.sourceTarFile",
+                    "type": "Expression"
+                  },
+                  "enablePartitionDiscovery": false
+                },
+                "formatSettings": {
+                  "type": "JsonReadSettings",
+                  "compressionProperties": {
+                    "type": "TarGZipReadSettings"
+                  }
+                }
+              },
+              "sink": {
+                "type": "AzureDataExplorerSink"
+              },
+              "enableStaging": false,
+              "parallelCopies": 6,
+              "enableSkipIncompatibleRow": true,
+              "translator": {
+                "type": "TabularTranslator",
+                "mappings": [
+                  {
+                    "source": {
+                      "path": "$['defectid']"
+                    },
+                    "sink": {
+                      "name": "defectid",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['filepath']"
+                    },
+                    "sink": {
+                      "name": "filepath",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_index']"
+                    },
+                    "sink": {
+                      "name": "_index",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_type']"
+                    },
+                    "sink": {
+                      "name": "_type",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_id']"
+                    },
+                    "sink": {
+                      "name": "_id",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']"
+                    },
+                    "sink": {
+                      "name": "_source"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['stream']"
+                    },
+                    "sink": {
+                      "name": "_source_stream",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['@timestamp']"
+                    },
+                    "sink": {
+                      "name": "_source_time",
+                      "type": "DateTime"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['docker']['container_id']"
+                    },
+                    "sink": {
+                      "name": "_source_docker_container_id",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['kubernetes']['container_name']"
+                    },
+                    "sink": {
+                      "name": "_source_kubernetes_container_name",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['kubernetes']['namespace_name']"
+                    },
+                    "sink": {
+                      "name": "_source_kubernetes_namespace_name",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['kubernetes']['pod_name']"
+                    },
+                    "sink": {
+                      "name": "_source_kubernetes_pod_name",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['kubernetes']['container_image']"
+                    },
+                    "sink": {
+                      "name": "_source_kubernetes_container_image",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['kubernetes']['host']"
+                    },
+                    "sink": {
+                      "name": "_source_kubernetes_host",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['severity']"
+                    },
+                    "sink": {
+                      "name": "_source_severity",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['debug-string']"
+                    },
+                    "sink": {
+                      "name": "_source_debug_string",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['pei']"
+                    },
+                    "sink": {
+                      "name": "_source_pei",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['supi']"
+                    },
+                    "sink": {
+                      "name": "_source_supi",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['tid']"
+                    },
+                    "sink": {
+                      "name": "_source_tid",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['pdu-sessionid']"
+                    },
+                    "sink": {
+                      "name": "_source_pduSessionid",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['pcfid']"
+                    },
+                    "sink": {
+                      "name": "_source_pcfid",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['method']"
+                    },
+                    "sink": {
+                      "name": "_source_method",
+                      "type": "String"
+                    }
+                  },
+                  {
+                    "source": {
+                      "path": "$['_source']['_source_eventLogger']"
+                    },
+                    "sink": {
+                      "name": "_source_eventLogger",
+                      "type": "String"
+                    }
+                  }
+                ],
+                "mapComplexValuesToString": true
+              }
+            },
+            "inputs": [
+              {
+                "referenceName": "[variables('dataFactoryLogsDataSetInName')]",
+                "type": "DatasetReference",
+                "parameters": {}
+              }
+            ],
+            "outputs": [
+              {
+                "referenceName": "[variables('dataFactoryLogsDataSetOutName')]",
+                "type": "DatasetReference",
+                "parameters": {}
+              }
+            ]
+          }
+        ],
+        "parameters": {
+          "sourceTarFile": {
+            "type": "string",
+            "defaultValue": "@triggerBody().fileName"
+          }
+        },
+        "annotations": []
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
+        "[resourceId('Microsoft.DataFactory/factories/datasets', parameters('dataFactoryName'), variables('dataFactoryLogsDataSetInName'))]",
+        "[resourceId('Microsoft.DataFactory/factories/datasets', parameters('dataFactoryName'), variables('dataFactoryLogsDataSetOutName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DataFactory/factories/pipelines",
+      "apiVersion": "2018-06-01",
+      "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('metricsPipelineName'))]",
+      "properties": {
+        "activities": [
+          {
+            "name": "Ingest from metrics blob to Kusto",
+            "type": "Copy",
+            "dependsOn": [],
+            "policy": {
+              "timeout": "7.00:00:00",
+              "retry": 0,
+              "retryIntervalInSeconds": 30,
+              "secureOutput": false,
+              "secureInput": false
+            },
+            "userProperties": [],
+            "typeProperties": {
+              "source": {
+                "type": "JsonSource",
+                "additionalColumns": [
+                  {
+                    "name": "filepath",
+                    "value": "$$FILEPATH"
+                  },
+                  {
+                    "name": "defectid",
+                    "value": "ICM-01234, ICM56789"
+                  }
+                ],
+                "storeSettings": {
+                  "type": "AzureBlobStorageReadSettings",
+                  "maxConcurrentConnections": 10,
+                  "recursive": true,
+                  "wildcardFileName": {
+                    "value": "@pipeline().parameters.sourceTarFile",
+                    "type": "Expression"
+                  },
+                  "enablePartitionDiscovery": false
+                },
+                "formatSettings": {
+                  "type": "JsonReadSettings",
+                  "compressionProperties": {
+                    "type": "TarGZipReadSettings"
+                  }
+                }
+              },
+              "sink": {
+                "type": "AzureDataExplorerSink"
+              },
+              "enableStaging": false,
+              "parallelCopies": 6,
+              "enableSkipIncompatibleRow": true,
+              "translator": {
+                "type": "TabularTranslator",
+                "mappings": [
+                      {
+                          "source": {
+                              "path": "['metric']['__name__']"
+                          },
+                          "sink": {
+                              "name": "metricname",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['job']"
+                          },
+                          "sink": {
+                              "name": "job",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['namespace']"
+                          },
+                          "sink": {
+                              "name": "namespace",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['pod']"
+                          },
+                          "sink": {
+                              "name": "pod",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['quantile']"
+                          },
+                          "sink": {
+                              "name": "quantile",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['state']"
+                          },
+                          "sink": {
+                              "name": "state",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['type']"
+                          },
+                          "sink": {
+                              "name": "type",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['event']"
+                          },
+                          "sink": {
+                              "name": "event",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['values']"
+                          },
+                          "sink": {
+                              "name": "values",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "$['filepath']"
+                          },
+                          "sink": {
+                              "name": "filepath",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "$['defectid']"
+                          },
+                          "sink": {
+                              "name": "defectid",
+                              "type": "String"
+                          }
+                      }
+                  ],
+              "collectionReference": "$['data']['result']",
+              "mapComplexValuesToString": true
+              }
+            },
+            "inputs": [
+              {
+                "referenceName": "[variables('dataFactoryMetricsDataSetInName')]",
+                "type": "DatasetReference",
+                "parameters": {}
+              }
+            ],
+            "outputs": [
+              {
+                "referenceName": "[variables('dataFactoryMetricsDataSetOutName')]",
+                "type": "DatasetReference",
+                "parameters": {}
+              }
+            ]
+          }
+        ],
+        "parameters": {
+          "sourceTarFile": {
+            "type": "string",
+            "defaultValue": "@triggerBody().fileName"
+          }
+        },
+        "annotations": []
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
+        "[resourceId('Microsoft.DataFactory/factories/datasets', parameters('dataFactoryName'), variables('dataFactoryMetricsDataSetInName'))]",
+        "[resourceId('Microsoft.DataFactory/factories/datasets', parameters('dataFactoryName'), variables('dataFactoryMetricsDataSetOutName'))]"
+      ]
+    },
+    {
+      "name": "[concat(parameters('dataFactoryName'), '/AzureLogsBlobCreateTrigger')]",
+      "type": "Microsoft.DataFactory/factories/triggers",
+      "apiVersion": "2018-06-01",
+      "properties": {
+        "annotations": [],
+        "runtimeState": "Started",
+        "pipelines": [
+          {
+            "pipelineReference": {
+              "referenceName": "[variables('logsPipelineName')]",
+              "type": "PipelineReference"
+            },
+            "parameters": {
+              "sourceTarFile": "@triggerBody().fileName"
+            }
+          }
+        ],
+        "type": "BlobEventsTrigger",
+        "typeProperties": {
+          "blobPathBeginsWith": "[concat('/', parameters('logsBlobContainerName'),'/blobs/')]",
+          "ignoreEmptyBlobs": true,
+          "scope": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+          "events": [
+            "Microsoft.Storage.BlobCreated"
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories/pipelines', parameters('dataFactoryName'), variables('logsPipelineName'))]"
+      ]
+    },
+    {
+      "name": "[concat(parameters('dataFactoryName'), '/AzureMetricsBlobCreateTrigger')]",
+      "type": "Microsoft.DataFactory/factories/triggers",
+      "apiVersion": "2018-06-01",
+      "properties": {
+        "annotations": [],
+        "runtimeState": "Started",
+        "pipelines": [
+          {
+            "pipelineReference": {
+              "referenceName": "[variables('metricsPipelineName')]",
+              "type": "PipelineReference"
+            },
+            "parameters": {
+              "sourceTarFile": "@triggerBody().fileName"
+            }
+          }
+        ],
+        "type": "BlobEventsTrigger",
+        "typeProperties": {
+          "blobPathBeginsWith": "[concat('/', parameters('metricsBlobContainerName'),'/blobs/')]",
+          "ignoreEmptyBlobs": true,
+          "scope": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+          "events": [
+            "Microsoft.Storage.BlobCreated"
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories/pipelines', parameters('dataFactoryName'), variables('metricsPipelineName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "EnablePipelineTrigger",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DataFactory/factories/triggers', parameters('dataFactoryName'), 'AzureLogsBlobCreateTrigger')]",
+        "[resourceId('Microsoft.DataFactory/factories/triggers', parameters('dataFactoryName'), 'AzureMetricsBlobCreateTrigger')]"
+      ],
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]": {}
+        }
+      },
+      "kind": "AzurePowerShell",
+      "properties": {
+        "azPowerShellVersion": "5.0",
+        "timeout": "PT30M",
+        "arguments": "[format(' -subscriptionId {0} -resourceGroup {1} -dataFactoryName {2} -logsTriggerName {3} -metricsTriggerName {4}', subscription().subscriptionid, resourceGroup().name, parameters('dataFactoryName'), 'AzureLogsBlobCreateTrigger', 'AzureMetricsBlobCreateTrigger')]",
+        "primaryScriptUri": "https://stmobilenetworkutils.blob.core.windows.net/resources/starttrigger.ps1",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ],
+  "outputs": {
+    "kustoUrl": {
+        "type": "String",
+        "value": "[reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri]"
+    }
+}
+}
