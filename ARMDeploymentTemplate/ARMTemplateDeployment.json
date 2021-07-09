@@ -1049,7 +1049,7 @@
     }
   ],
   "outputs": {
-    "actionGroupId": {
+    "kustoUrl": {
         "type": "String",
         "value": "[reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri]"
     }
