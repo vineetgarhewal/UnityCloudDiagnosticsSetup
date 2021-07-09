@@ -4,10 +4,12 @@ Please click on the link below to setup unity cloud diganostics pipeline
 
 [![Deploy Azure Resources using ARM template](https://docs.microsoft.com/en-us/azure/media/template-deployments/deploy-to-azure.svg "Deploy Azure Resources using ARM template")](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2FARMTemplateDeployment.json)
 
-Download <Insert script name>
+# Kargo periodic collector tool
 
-<Insert script name> <Placeholder - Kargo periodic collector tool and ingestion pipeline instructions>
+Download 'Insert script name'
+
 Overview
+
 The Kargo periodic collector tool and ingestion pipeline enables:
 •	To periodically collects the kargo logs based on the configurable parameters.
 •	To automatically uploads to the Azure blob or SFTP for ingestion to the Azure kusto on the Windows environment.
