@@ -18,7 +18,7 @@ Please click on the link below to setup Diagnostics pipeline for Logs and Metric
 
 [![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2Fazuredeploy.json)
 
-#### Insructions
+#### Instructions
 Please follow the steps to setup and verify the pipeline deployment
 <details>
   <summary>Deploy Azure resource using custom arm template deployment</summary>
@@ -137,3 +137,29 @@ Example : /etc/kubernetes/ group-maint.conf
      collector> python KargoCollector.py -k group-maint.conf -c prometheus -m 2 -i connectionstring
 
  Note: by default, the tar.gz file is in the “data\logging” directory for logs collection and “data\prometheus” for prometheus metrics collection.
+
+
+
+## Query the Logs and Metrics
+
+#### Verify the pipeline is running and ingesting the data
+<details>
+  <summary>View the files in blob containers</summary>
+  <img src="/images/FilesInLogsBlob.JPG" />
+</details>
+	
+<details>
+  <summary>Verify the pipeline runs</summary>
+  <img src="/images/DataPipelineRuns.JPG" />
+</details>
+	
+#### Query the logs
+<details>
+  <summary>Get the Azure Data Explorer link from deployment</summary>
+  <img src="/images/DeploymentOutput.JPG" />
+</details>
+	
+<details>
+  <summary>Query the logs</summary>
+  <img src="/images/Logs.JPG" />
+</details>
