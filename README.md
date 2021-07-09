@@ -88,7 +88,7 @@ Please follow the steps mentioned below to run the script:
 2. Kubeconfig file needs to be fetched from K8 master (/etc/kubernetes/<kubeconfig>)) and copy it to jump server. This file path needs to be set as argument while running the script. 
 Example : /etc/kubernetes/ group-maint.conf
 3. Set elastic search endpoint details under kargo-log-endpoint-config.json
-```	
+```json	
  {
         "loggingConfig": {
                 "elasticPassword": "<your-password>",
@@ -98,7 +98,7 @@ Example : /etc/kubernetes/ group-maint.conf
 }
 ```
 4. Set prometheus endpoint under kargo-prometheus-endpoint-config.json
-```	
+```json	
  {
     "prometheusConfig": {
         "URL" : "http://<Valid-PrometheusIP>:<Valid-PrometheusPort>"
@@ -106,12 +106,12 @@ Example : /etc/kubernetes/ group-maint.conf
 }
 ```
 5. Set storage account name , logsBlobContainerName , metricsBlobContainerName and ConnectionString ( as per requirement ) under storage-account-info.json
- ```
+ ```json
 {
     "Storage": {
                 "AccountName": "<Place-Your-storageAccountName-Here>",
                 "logsBlobContainerName": "<Place-Your-logsBlobContainerName-Here>",
-	        "metricsBlobContainerName": "<Place-Your-metricsBlobContainerName-Here>",
+                "metricsBlobContainerName": "<Place-Your-metricsBlobContainerName-Here>",
                 "ConnectionString": "<Place-Your-StorageAccount-ConnectionString-Here>"
         }
 }
