@@ -1,0 +1,965 @@
+#!/usr/bin/env python3
+
+import os,sys,glob,re,getopt,requests,time,datetime,traceback,json,socket,subprocess,pprint,urllib3,pip
+from multiprocessing import Pool
+
+def install(package):
+    if hasattr(pip, 'main'):
+        pip.main(['install','--user', package])
+    else:
+        pip._internal.main(['install', '--user', package])
+print("config-path",os.environ["KUBECONFIG"])
+
+config_schema = {
+  "type": "object",
+  "properties": {
+    "tracingConfig": {
+      "type": "object",
+      "properties": {
+        "elasticPassword": { "type": "string" },
+        "elasticURL": { "type": "string" },
+        "elasticUserName": { "type": "string" }
+      },
+      "additionalProperties": False
+    },
+    "loggingConfig": {
+      "type": "object",
+      "properties": {
+        "elasticPassword": { "type": "string" },
+        "kibanaURL": { "type": "string" },
+        "elasticURL": { "type": "string" },
+        "elasticUserName": { "type": "string" }
+      },
+      "additionalProperties": False
+    },
+    "grafanaConfig": {
+      "type": "object",
+      "properties": {
+        "URL": { "type": "string" },
+        "APIKey": { "type": "string" }
+      },
+      "additionalProperties": False
+    },
+    "prometheusConfig": {
+      "type": "object",
+      "properties": {
+        "URL": { "type": "string" }  
+      },
+      "additionalProperties": False  
+    }
+  },
+  "additionalProperties": False
+}
+
+collect_schema = {
+  "type": "object",
+  "properties": {
+    "profile": {
+      "type": "object",
+      "properties": {
+        "namespace": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "additionalProperties": False
+    },
+    "kubectl": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "namespace": { "type": "string" },
+          "pods": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "addlCommands": {
+            "type": "array", 
+            "items": { "type": "string" } 
+          }
+        },
+        "additionalProperties": False
+      }
+    },
+    "logging": {
+      "type": "object",
+      "properties": {
+        "elastic": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "indexTokens": {
+                "type": "array", 
+                "items": { "type": "string" }
+              },
+              "filters": {
+                "type": "array", 
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": { "type": "string" },
+                    "value": { "type": "string" }
+                  }
+                }
+              }
+            },
+            "additionalProperties": False
+          }
+        },
+        "kibana": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dashboardTokens": {
+			    "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": False,
+          }
+        }
+      },
+      "additionalProperties": False
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [ "all", "metrics", "logging", "tracing", "kubectl", "debugAPI", "prometheus" ]
+      }
+    },
+    "tracing": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "service": { "type": "string" },
+          "tags": {
+            "type": "array", 
+            "items": {
+              "type": "object", 
+              "properties": {
+                "key": { "type": "string" }, 
+                "value": { "type": "string" }
+              },
+              "additionalProperties": False
+            }
+          }
+        },
+        "additionalProperties": False
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "replaceVars": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": { "type": "string" },
+                "value": { "type": "string" }
+              }
+            }
+          }, 
+          "dashboardTokens": {
+            "type": "array", 
+            "items": { "type": "string" } 
+          }
+        },
+        "additionalProperties": False
+      }
+    },
+    "prometheus": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "namespace": {
+             "type": "array",
+             "items": { "type": "string"}    
+          }  
+        },
+        "additionalProperties": False    
+      } 
+    },
+    "startTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "debugAPI": {
+      "type": "array",
+      "items": {
+        "type": "object", 
+        "properties": {
+          "dashboardTokens": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": False
+      }
+    },
+    "duration": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "infoOnly": {
+      "type": "boolean"
+    }
+  }
+}
+
+def dprint(debug=False, text=None, obj=None):
+    if debug:
+        if text is not None:
+            print(text)
+        if obj is not None:
+            pprint.pprint(obj)
+
+def validate_url(url=None, auth=None):
+    if url and len(url) > 0:
+        try:
+            if auth and len(auth) > 0:
+                resp = requests.get(url, auth=auth, verify=False)
+            else:
+                resp = requests.get(url, verify=False)
+        except Exception as e:
+            return False
+        if resp.status_code == requests.codes.ok:
+            return True
+    return False
+
+def validateGrafanaAPIKey(url, key):
+    if len(url) > 0 and len(key) > 0:
+        try:
+            grafanaAuthAPI = '%s/api/auth/keys'%(url)
+            bearerToken = "Bearer {}".format(key)
+            headers = {'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': bearerToken}
+            resp = requests.get(grafanaAuthAPI, headers=headers, verify=False)
+        except Exception as e:
+            return False
+        if resp.status_code == requests.codes.ok:
+            return True
+    return False
+
+def runcmd(cmd, env=None, cvjson=False, expecterr=False):
+    try:
+        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, universal_newlines=True, env=env)
+        if cvjson:
+            # convert output to a dict representation of the json
+            try:
+                joutput = json.loads(output)
+            except json.JSONDecodeError as e:
+                print("Error: Command %s output is not in json format. %s"%(cmd, e.msg))
+                return -1, e.msg
+            return 0, joutput
+        return 0, output
+    except subprocess.CalledProcessError as e:
+        if expecterr:
+            # command is expected to fail so info log only
+            return 0, e.output
+        else:
+            print("Error: Command %s failed to execute. %s"%(cmd, e.output))
+            return -1, e.output
+
+def get_lb_service_ip(namespace='',servicename=''):
+    extip = ''
+    extport = ''
+    found = False
+    if namespace == '':
+        return -1
+
+    rc,svcs = runcmd('kubectl -n %s get svc -o json'%(namespace), cvjson=True)
+    if rc != 0:
+        print('Error: No service found in namespace: %s'%(namespace))
+        return -1
+    svcname = ''
+    if 'items' in svcs:
+        itemlst = svcs['items']
+        for item in itemlst:
+            if 'metadata' in item:
+                metalist = item['metadata']
+                if 'name' in metalist:
+                    svcname = metalist['name'] 
+            if ('spec' in item) and ((svcname == servicename) or (servicename == '')):
+                spec = item['spec']
+                if (('type' in spec) and (spec['type'] == 'LoadBalancer')):
+                    if 'status' in item:
+                        status = item['status']
+                        if 'loadBalancer' in status:
+                            lb = status['loadBalancer']
+                            if 'ingress' in lb:
+                                ig = lb['ingress']
+                                for ip in ig:
+                                    if 'ip' in ip:
+                                        extip = ip['ip']
+                                        found = True
+                                        break
+                    if 'ports' in spec:
+                        ports = spec['ports']
+                        for port in ports:
+                            if 'port' in port:
+                                extport = port['port']
+                                break
+            if found == True:
+                break
+    return 0,extip,extport
+
+def get_pod_name(namespace='', podmatch=''):
+    podname = ''
+    if namespace == '':
+        return -1
+
+    rc,pods = runcmd('kubectl -n %s get pods -o json'%(namespace), cvjson=True)
+    if rc != 0:
+        print('Error: No pods found in namespace: %s'%(namespace))
+        return -1
+
+    if 'items' in pods:
+        podlst = pods['items']
+        for pod in podlst:
+            if 'metadata' in pod:
+                meta = pod['metadata']
+                if podmatch in meta['name']:
+                    podname = meta['name']
+                    break
+    return 0,podname
+
+
+def calculate_size(kargourl, collect_json, default_rate=850, debug=False):
+    kargocollect = '%s/kargo/api/v1/collect'%(kargourl)
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    resp = requests.post(kargocollect, headers=headers, json=collect_json, verify=False)
+    if resp.status_code != requests.codes.ok:
+        if resp.status_code == 400:
+            return printJobLimitResponse(resp, debug)
+        else:
+            print('Error: Unable to reach Kargo server. Exiting...')
+            return -1
+    else:
+        try:
+            obj = resp.json()
+        except ValueError:
+            print('Error: Unable to reach Kargo server. Exiting...')
+            return -1
+    dprint(debug, "Info Only Collect Response JSON:", obj)
+    total_logs = 0
+    total_traces = 0
+    total_dashboards = 0
+    duration = 0
+    if 'artifacts' in obj:
+        artifact = obj['artifacts']
+        if 'metrics' in artifact:
+            metrics = artifact['metrics']
+            if 'snapshotCount' in metrics:
+                total_dashboards += int(metrics['snapshotCount'])
+        if 'logging' in artifact:
+            logging = artifact['logging']
+            if 'elastic' in logging:
+                elastic = logging['elastic']
+                if 'indices' in elastic:
+                    indices = elastic['indices']
+                    for index in indices:
+                        if 'logCount' in index:
+                            total_logs += int(index['logCount'])
+        if 'tracing' in artifact:
+            tracing = artifact['tracing']
+            if 'spans' in tracing:
+                spans = tracing['spans']
+                for span in spans:
+                    if 'traceCount' in span:
+                        total_traces += int(span['traceCount'])
+        if total_logs > 0 and total_logs > total_traces:
+            duration = int(total_logs / default_rate)
+        elif total_traces > 0 and total_traces > total_logs:
+            duration = int(total_traces / default_rate)
+    
+    print("As per the provided filters following artifacts are going to be collected...")
+    if total_dashboards > 0:
+        print("Total dashboards: %d"%(total_dashboards))
+    if total_logs > 0:
+        print("Total logs:       %d"%(total_logs))
+    if total_traces > 0:
+        print("Total traces:     %d"%(total_traces))
+    if duration < 60:
+        duration = 60
+    print("Kargo would take approximately %s"%(sec_to_hours(duration)))
+    return duration
+
+def sec_to_hours(seconds):
+    h=(seconds//3600)
+    m=((seconds%3600)//60)
+    s=((seconds%3600)%60)
+    return "{:02d}H:{:02d}M:{:02d}S".format(h, m, s)
+
+def kargo_collect(kargourl, body):
+    kargocollect = '%s/kargo/api/v1/collect'%(kargourl)
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    return requests.post(kargocollect, headers=headers, json=body, verify=False)
+
+def getConfigFromServer(kargourl):
+    print("Getting Kargo Config from Server!")
+    kargoconfig = '%s/kargo/api/v1/config'%(kargourl)
+    headers = {'Accept': 'application/json'}
+    return requests.get(kargoconfig, headers=headers)
+
+def progress_bar(iterable, prefix = '', suffix = '', decimals = 0, length = 100, fill = '█', printEnd = "\r"):
+    total = len(iterable)
+    # Progress Bar Printing Function
+    def print_progress_bar (iteration):
+        percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+        filledLength = int(length * iteration // total)
+        bar = fill * filledLength + '-' * (length - filledLength)
+        #print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+    # Initial Call
+    print_progress_bar(0)
+    # Update Progress Bar
+    for i, item in enumerate(iterable):
+        yield item
+        print_progress_bar(i + 1)
+    # Print New Line on Complete
+    print()
+
+def print_collect_response(obj):
+    print('Collection Status: %s'%(obj['status']))
+    if 'fileName' in obj and len(obj['fileName']) > 0:
+        print('Collection Tarfile: %s'%(obj['fileName']))
+    if 'jobID' in obj and len(obj['jobID']) > 0:
+        print('Collection Job ID: %s'%(obj['jobID']))
+    if 'artifacts' in obj and len(obj['artifacts']) > 0:
+        artifacts = obj['artifacts']
+        if 'kubectl' in artifacts:
+            kubectl = artifacts['kubectl']
+            if 'status' in kubectl:
+                print("kubectl collection status: %s"%(kubectl['status']))
+        if 'metrics' in artifacts:
+            metrics = artifacts['metrics']
+            if 'status' in metrics:
+                print("metrics collection status: %s"%(metrics['status']))
+        if 'logging' in artifacts:
+            logging = artifacts['logging']
+            if 'elastic' in logging:
+                elastic = logging['elastic']
+                if 'status' in elastic:
+                    print("logging collection status: %s"%(elastic['status']))
+            if 'kibana' in logging:
+                kibana = logging['kibana']
+                if 'status' in kibana:
+                    print("kibana collection status: %s"%(kibana['status']))
+        if 'tracing' in artifacts:
+            tracing = artifacts['tracing']
+            if 'status' in tracing:
+                print("tracing collection status: %s"%(tracing['status']))
+        if 'prometheus' in artifacts:
+            prometheus = artifacts['prometheus']
+            if 'status' in prometheus:
+                print("prometheus collection status: %s"%(prometheus['status']))
+    else:
+        print("Warning: No artifatcs were collected, please check collect filters.")
+
+def printJobLimitResponse(resp, debug):
+    try:
+        obj = resp.json()
+    except ValueError:
+        print('Error: Unable to reach Kargo server. Exiting...')
+        return -1
+    if 'error' in obj and obj['error'] == "Job Limit Reached":     
+        if debug:
+            dprint(debug, "Job Limit Reached!", obj)
+        else:
+            print('Status: {}\nError: {}'.format(obj['status'], obj['error']))
+    else:
+        print('Error: Unable to reach Kargo server. Exiting...')
+    return -1
+
+def usage():
+    print('')
+    print(' This tool first configures kargo, and then collects artifacts based on the filters provided.')
+    print('')
+    print('USAGE: kubectl afn kargo collect')
+    print('     -d | --duration <minutes>               = data collection duration in minutes')
+    print('     -s | --starttime <ISO-8601 time>        = start time in ISO-8601, e.g: 2020-07-07T20:00:00.00Z')
+    print('     -p | --profile <namespace:profile-name> = specify the profile to be used for collection')
+    print('     -n | --config-override <json-file>      = json file containing configuration override')
+    print('     -c | --collect-override <json-file>     = json file containing override filters for collection')
+    print('     -i | --info-only                        = display only information, do not start the actual collection')
+    print('     -v | --verbose                          = print verbose debug logs')
+    print('     -h | --help                             = print this help')
+    print('     -l | --outputfolder                     = location for the output folder where the output will be persisted.')
+    print('')
+
+    detailed_debug = """
+    Detailed option descriptions:
+    -----------------------------
+     -d | --duration <minutes>: The time duration in minutes, for which Kargo would collect the metrics, logs, traces etc. By default, it is 30 minutes.
+     -s | --starttime:          This is historical time in ISO-8601 format, If set, kargo would calculate the duration starting from this time. For example, if this is set to "2020-07-07T20:00:00.00Z" and duration is 60, the data between "2020-07-07T20:00:00.00Z" and "2020-07-07T21:00:00.00Z" would get collected.
+     -p | --profile:            Application level profile name, configured as <namespace:profile-name>. If set, kargo would read the configmap and collect all the debug information based on the filters set in it. A default kargo profile configmap by the name "kargo-default-<application>-profile" is deployed along with each NF with specific set of filters applicable to that NF.
+     -n | --config-override:    This could be used in case all the observability components like Elasticsearch or Grafana is not running in the same cluster and to let kargo know about the ip:port information. This must be a valid json file in the kargo config API request schema format.
+     -c | --collect-override:   This could be used if user wants to collect specific components or provide specific customized filters to Kargo for the collection. This must be a valid json file in the kargo collect API request schema format.
+     -l | --outputfolder:       Location for the output folder where the output will be persisted.
+     -i | --info-only:          If this flag is set, kargo would fetch all the debug information it is going to collect and how much time it would take and display it on screen, without actually collecting the artefacts. This is useful to know the artifact counts and time before starting the lengthy collection process.
+    """
+    
+    print(detailed_debug)
+    return
+
+def main():
+    #install('jsonschema')
+    #import jsonschema
+
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    prf_in = ''
+    config_in = ''
+    collect_in = ''
+    config_json = {}
+    collect_json = {}
+    duration = ''
+    starttime = ''
+    namespace = ''
+    profile_name = ''
+    grafanaurl = ''
+    grafanaapikey = ''
+    elasticurl = ''
+    kibanaurl = ''
+    elasticuser = ''
+    elasticpasswd = ''
+    prometheusurl = ''
+    tarfile = ''
+    thisdir = os.getcwd()
+    debug = False
+    info_only = False
+
+    try:
+        opts, args = getopt.gnu_getopt(sys.argv[1:],'d:s:p:n:c:l:ivh',['duration=', 'starttime=', 'profile=', 'config-override=', 'collect-override=','outputfolder=','info-only', 'verbose', 'help'])
+    except:
+        print('Error: Unhandled exception: %s. Exiting...'%(sys.exc_info()[1]))
+        usage()
+        return -1
+    for o, a in opts:
+        if o in ("-d", "--duration"):
+            duration = a
+        elif o in ("-s", "--starttime"):
+            starttime = a
+        elif o in ("-p", "--profile"):
+            prf_in = a
+        elif o in ("-n", "--config-override"):
+            config_in = a
+        elif o in ("-c", "--collect-override"):
+            collect_in = a
+        elif o in ("-i", "--info-only"):
+            info_only = True
+        elif o in ("-l", "--outputfolder"):
+            thisdir = a
+        elif o in ("-v", "--verbose"):
+            debug = True
+        elif o in ("-h", "--help"):
+            usage()
+            return 0
+        else:
+            print("Error: Unhandled option. Exiting...")
+            usage()
+            return -1
+
+    # Get Kargo service IP:Port
+    print("Getting Kargo details...")
+    valid_url = False
+    code,kargoip,kargoport = get_lb_service_ip(namespace='fed-paas-helpers')
+    if code == 0 and len(kargoip) > 0:
+        kargourl = 'http://%s:%s'%(kargoip,kargoport)
+        if validate_url('%s/kargo/api/v1/config'%(kargourl)) == True:
+            valid_url = True
+        else:
+           kargourl = 'https://%s:%s'%(kargoip,kargoport)
+           if validate_url('%s/kargo/api/v1/config'%(kargourl)) == True:
+               valid_url = True
+    if valid_url == False:
+        print('Error: Unable to get Kargo service IP and Port. Exiting...')
+        return -1
+    print('Kargo URL: %s'%(kargourl))
+
+    # Validate duration and starttime
+    if len(starttime) > 0:
+        regex = r'^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$'
+        match_iso8601 = re.compile(regex).match
+        if match_iso8601(starttime) is None:
+            print("Error: Start time must be in ISO8601 format. e.g: 2020-07-07T20:00:00.00Z. Exiting...")
+            return -1
+    if len(duration) > 0:
+        try:
+            temp = int(duration)
+        except ValueError:
+            print("Error: Duration must be an integer. Provided: %s. Exiting..."%(duration))
+            return -1
+    # Validate profile
+    if len(prf_in) > 0:
+        if (prf_in.find(':') == -1):
+            print("Error: Profile must be in namespace:profile-name format. Exiting...")
+            usage()
+            return -1
+        else:
+            prf = prf_in.split(':')
+            namespace = prf[0]
+            profile_name = prf[1]
+    # Validate config file
+    if len(config_in) > 0:
+        try:
+            fd = open(config_in, "r+")
+        except IOError:
+            print("Error: Can't open file %s. Exiting..."%(config_in))
+            return -1
+        try:
+            config_json = json.load(fd)
+        except json.decoder.JSONDecodeError:
+            print("Error: Invalid json format detected in file %s. Exiting..."%(config_in))
+            return -1
+        #try:
+        #    jsonschema.validate(instance=config_json, schema=config_schema)
+        #except jsonschema.exceptions.ValidationError:
+        #    print("Error: Invalid json fields detected in file %s. Exiting..."%(config_in))
+        #    return -1
+    else:
+        try:
+            resp = getConfigFromServer(kargourl)
+            obj = resp.json()
+            if len(obj) > 0:
+                config_json = obj
+            # get grafana url and apikey from server config if they exist
+            if ((len(config_json) > 0) and ('grafanaConfig' in config_json)):
+                grafanaconfig = config_json['grafanaConfig']
+            if 'URL' in grafanaconfig:
+                grafanaurl = grafanaconfig['URL']
+            if validate_url(grafanaurl) == True:
+                valid_url = True
+            if 'APIKey' in grafanaconfig:
+                grafanaapikey = grafanaconfig['APIKey']
+            
+            # probe Grafana for the API Key received from server
+            validAPIKey = False
+            if valid_url and len(grafanaurl) > 0 and len(grafanaapikey) > 0:
+                validAPIKey = validateGrafanaAPIKey(grafanaurl, grafanaapikey)
+                if not validAPIKey:
+                    dprint(debug, "Invalid Grafana API Key on Kargo server, creating new.")
+                    config_json['grafanaConfig']['APIKey'] = ''
+                else:
+                    dprint(debug, "Using the Grafana API Key from Kargo server config")
+            else:
+                dprint(debug, "Invalid Grafana config on Kargo server, Fetching config from lb")
+        except Exception as e:
+            dprint(debug, "Warning: Invalid json format of existing config on Kargo. Fetching config from lb.")
+
+    # Validate collect file
+    if len(collect_in) > 0:
+        try:
+            fd = open(collect_in, "r+")
+        except IOError:
+            print("Error: Can't open file %s. Exiting..."%(collect_in))
+            return -1
+        try:
+            collect_json = json.load(fd)
+        except json.decoder.JSONDecodeError:
+            print("Error: Invalid json format detected in file %s. Exiting..."%(collect_in))
+            return -1
+        #try:
+        #    jsonschema.validate(instance=collect_json, schema=collect_schema)
+        #except jsonschema.exceptions.ValidationError:
+        #    print("Error: Invalid json fields detected in file %s. Exiting..."%(collect_in))
+        #    return -1
+    dprint(debug, "Provided Config JSON:", config_json)
+    dprint(debug, "Provided Collect JSON:", collect_json)
+
+    # Get metrics config
+    print("Getting Grafana config details...")
+    grafanaconfig = {}
+    valid_url = False
+    if ((len(config_json) > 0) and ('grafanaConfig' in config_json)):
+        grafanaconfig = config_json['grafanaConfig']
+        if 'URL' in grafanaconfig:
+            grafanaurl = grafanaconfig['URL']
+            if validate_url(grafanaurl) == True:
+                valid_url = True
+        if 'APIKey' in grafanaconfig:
+            grafanaapikey = grafanaconfig['APIKey']
+    if grafanaurl == '':
+        code,grafanaip,grafanaport = get_lb_service_ip(namespace='fed-grafana')
+        if code == 0 and len(grafanaip) > 0: 
+            grafanaurl = 'http://%s:%s'%(grafanaip,grafanaport)
+            if validate_url(grafanaurl) == True:
+                valid_url = True
+            else:
+               grafanaurl = 'https://%s:%s'%(grafanaip,grafanaport)
+               if validate_url(grafanaurl) == True:
+                   valid_url = True
+    if valid_url == False:
+        print("Warning: Unable to fetch Grafana IP:Port from cluster")
+        grafanaurl = ''
+        
+    # Create Grafana APIKey if not provided
+    if len(grafanaurl) > 0 and grafanaapikey == '':
+        creatapikey = '%s/api/auth/keys'%(grafanaurl)
+        headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+        name = "kargo-collect-" + str(time.time())
+        body = {'name': name, 'role': 'Admin'}
+        dprint(debug, "Creating new Grafana API cnaKey...")
+        resp = requests.post(creatapikey, headers=headers, auth=('admin','admin'), json=body, verify=False)
+        if resp.status_code == requests.codes.ok:
+            obj = resp.json()
+            if 'key' in obj:
+                grafanaapikey = obj['key']
+    if grafanaurl == '' or grafanaapikey == '':
+        print("Warning: Grafana config is not applied, dashboard snapshots won't be collected")
+    else:
+        print("Grafana URL: %s"%(grafanaurl))
+
+    # Update config_json with Grafana details
+    if len(grafanaurl) > 0:
+        grafanaconfig['URL'] = grafanaurl
+    if len(grafanaapikey) > 0:
+        grafanaconfig['APIKey'] = grafanaapikey
+    if len(grafanaconfig) > 0:
+        config_json['grafanaConfig'] = grafanaconfig
+    dprint(debug, "Config JSON after Grafana config: ", config_json)
+
+    # Get logging config
+    print("Getting Logging config details...")
+    loggingConfig = {}
+    valid_url_es = False
+    valid_url_kb = False
+    if ((len(config_json) > 0) and ('loggingConfig' in config_json)):
+        loggingConfig = config_json['loggingConfig']
+        if 'elasticURL' in loggingConfig:
+            elasticurl = loggingConfig['elasticURL']
+            if validate_url(elasticurl, auth=('admin','admin@secret')) == True:
+                valid_url_es = True
+        if 'kibanaURL' in loggingConfig:
+            kibanaurl = loggingConfig['kibanaURL']
+            if validate_url(kibanaurl) == True:
+                valid_url_kb = True
+        if 'elasticUserName' in loggingConfig:
+            elasticuser = loggingConfig['elasticUserName']
+        if 'elasticPassword' in loggingConfig:
+            elasticpasswd = loggingConfig['elasticPassword']
+    if elasticurl == '':
+        code,elasticip,elasticport = get_lb_service_ip(namespace='fed-elastic')
+        if code == 0 and len(elasticip) > 0:
+            elasticurl = 'http://%s:%s'%(elasticip,elasticport)
+            if validate_url(elasticurl, auth=('admin','admin@secret')) == True:
+                valid_url_es = True
+            else:
+               elasticurl = 'https://%s:%s'%(elasticip,elasticport)
+               if validate_url(elasticurl, auth=('admin','admin@secret')) == True:
+                   valid_url_es = True
+    if valid_url_es == False:
+        print("Warning: Unable to fetch Elastic IP:Port from cluster")
+        elasticurl = ''
+    if elasticuser == '':
+        elasticuser = 'admin'
+    if elasticpasswd == '':
+        elasticpasswd = 'admin@secret'
+    if kibanaurl == '':
+        code,kibanaip,kibanaport = get_lb_service_ip(namespace='fed-kibana')
+        if code == 0 and len(kibanaip) > 0:
+            kibanaurl = 'http://%s:%s'%(kibanaip,kibanaport)
+            if validate_url(kibanaurl) == True:
+                valid_url_kb = True
+            else:
+               kibanaurl = 'https://%s:%s'%(kibanaip,kibanaport)
+               if validate_url(kibanaurl) == True:
+                   valid_url_kb = True
+    if valid_url_kb == False:
+        print("Warning: Unable to fetch Kibana IP:Port from cluster")
+        kibanaurl = ''
+    if elasticurl == '' or kibanaurl == '':
+        print("Warning: Logging config is not applied, logs won't be collected")
+    else:
+        print("Elastic URL: %s"%(elasticurl))
+        print("Kibana URL: %s"%(kibanaurl))
+
+    # Update config_json with Elastic/Kibana details
+    if len(elasticurl) > 0:
+        loggingConfig['elasticURL'] = elasticurl
+        loggingConfig['elasticUserName'] = elasticuser
+        loggingConfig['elasticPassword'] = elasticpasswd
+    if len(kibanaurl) > 0:
+        loggingConfig['kibanaURL'] = kibanaurl
+    if len(loggingConfig) > 0:
+        config_json['loggingConfig'] = loggingConfig
+    dprint(debug, "Config JSON after Logging config: ", config_json)
+
+    # Get tracing config
+    print("Getting Tracing config details...")
+    elasticurl = ''
+    tracingConfig = {}
+    valid_url = False
+    if ((len(config_json) > 0) and ('tracingConfig' in config_json)):
+        tracingConfig = config_json['tracingConfig']
+        if 'elasticURL' in tracingConfig:
+            elasticurl = tracingConfig['elasticURL']
+            if validate_url(elasticurl, auth=('admin','admin@secret')) == True:
+                valid_url = True
+        if 'elasticUserName' in tracingConfig:
+            elasticuser = tracingConfig['elasticUserName']
+        if 'elasticPassword' in tracingConfig:
+            elasticpasswd = tracingConfig['elasticPassword']
+    if elasticurl == '':
+        code,elasticip,elasticport = get_lb_service_ip(namespace='fed-elastic')
+        if code == 0 and len(elasticip) > 0:
+            elasticurl = 'http://%s:%s'%(elasticip,elasticport)
+            if validate_url(elasticurl, auth=('admin','admin@secret')) == True:
+                valid_url = True
+            else:
+                elasticurl = 'https://%s:%s'%(elasticip,elasticport)
+                if validate_url(elasticurl, auth=('admin','admin@secret')) == True:
+                    valid_url = True
+    if valid_url == False:
+        print("Warning: Unable to fetch Elastic IP:Port from cluster")
+        elasticurl = ''
+    if elasticuser == '':
+        elasticuser = 'admin'
+    if elasticpasswd == '':
+        elasticpasswd = 'admin@secret'
+    if elasticurl == '':
+        print("Warning: Tracing config is not applied, traces won't be collected")
+    else:
+        print("Elastic URL: %s"%(elasticurl))
+
+    # Update config_json with Tracing details
+    if len(elasticurl) > 0:
+        tracingConfig['elasticURL'] = elasticurl
+        tracingConfig['elasticUserName'] = elasticuser
+        tracingConfig['elasticPassword'] = elasticpasswd
+    if len(tracingConfig) > 0:
+        config_json['tracingConfig'] = tracingConfig
+    dprint(debug, "Config JSON after Tracing config: ", config_json)
+    
+    # Get Prometheus Config
+    print("Getting Prometheus config details...")
+    prometheusconfig = {}
+    valid_url = False
+    if ((len(config_json) > 0) and ('prometheusConfig' in config_json)):
+        prometheusconfig = config_json['prometheusConfig']
+        if 'URL' in prometheusconfig:
+            prometheusurl = prometheusconfig['URL']
+            if validate_url(prometheusurl) == True:
+                valid_url = True
+    if prometheusurl == '':
+        code,prometheusip,prometheusport = get_lb_service_ip(namespace='fed-prometheus',servicename='thanos-ingress')
+        if len(prometheusip) == 0:
+            code,prometheusip,prometheusport = get_lb_service_ip(namespace='fed-prometheus',servicename='prometheus')
+        if code == 0 and len(prometheusip) > 0: 
+            prometheusurl = 'http://%s:%s'%(prometheusip,prometheusport)
+            if validate_url(prometheusurl) == True:
+                valid_url = True
+            else:
+               prometheusurl = 'https://%s:%s'%(prometheusip,prometheusport)
+               if validate_url(prometheusurl) == True:
+                   valid_url = True
+    if valid_url == False:
+        print("Warning: Unable to fetch prometheus IP:Port from cluster")
+        prometheusurl = ''
+
+    if prometheusurl == '':
+        print("Warning: Prometheus config is not applied, Prometheus data won't be collected")
+    else:
+        print("Prometheus URL: %s"%(prometheusurl))
+
+    # Update config_json with Prometheus details 
+    if len(prometheusurl) > 0:
+        prometheusconfig['URL'] = prometheusurl
+    if len(prometheusconfig) > 0:
+        config_json['prometheusConfig'] = prometheusconfig
+    dprint(debug, "Config JSON after Prometheus config: ", config_json)
+      
+    # Configure Kargo by calling the /config API
+    print('Configuring Kargo with URL details...')
+    kargoconfig = '%s/kargo/api/v1/config'%(kargourl)
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    resp = requests.post(kargoconfig, headers=headers, json=config_json, verify=False)
+    if resp.status_code != requests.codes.ok:
+        if resp.status_code == 400:
+            return printJobLimitResponse(resp, debug)    
+        else:
+            print('Error: Unable to reach Kargo server. Exiting...')
+            return -1
+    else:
+        try:
+            obj = resp.json()
+        except ValueError:
+            print('Error: Unable to reach Kargo server. Exiting...')
+            return -1
+        print('Config Status: %s'%(obj['status']))
+        dprint(debug, "Full Config Response:", obj)
+
+    # Prepare collect request
+    if namespace != '' and profile_name != '':
+        profile = {}
+        profile['namespace'] = namespace
+        profile['name'] = profile_name
+        collect_json['profile'] = profile
+    if len(duration) > 0:
+        collect_json['duration'] = int(duration)
+    if len(starttime) > 0:
+        collect_json['startTime'] = starttime
+
+    # Get Info by calling the /collect API with infoOnly=true
+    print("Getting info from Kargo...")
+    # Calculate collection time
+    collect_json['infoOnly'] = True
+    dprint(debug, "Info Only Collect JSON:", collect_json)
+    size = calculate_size(kargourl, collect_json, debug=debug)
+    if size == -1:
+        return size
+    # Return if info_only is set to true
+    if info_only == True:
+        return 0
+
+    # Start Kargo Collection
+    print("Starting Kargo collection...")
+    collect_json['infoOnly'] = False
+    dprint(debug, "Final Collect JSON:", collect_json)
+    start = datetime.datetime.now().replace(microsecond=0)
+    with Pool(processes=1) as pool:
+        res = pool.apply_async(kargo_collect, (kargourl, collect_json))
+        prlist = list(range(0, size))
+        for item in progress_bar(prlist, prefix = 'Progress:', suffix = 'Complete', length = 50):
+            if not res.ready():
+                time.sleep(1)
+        resp = res.get()
+        if resp.status_code != requests.codes.ok:
+            if resp.status_code == 400:
+                return printJobLimitResponse(resp, debug)    
+            else:
+                print('Error: Unable to reach Kargo server. Exiting...')
+                return -1
+        else:
+            try:
+                obj = resp.json()
+            except ValueError:
+                print('Error: Unable to reach Kargo server. Exiting...')
+                return -1
+            print_collect_response(obj)
+            dprint(debug, "Full Collection Respose:", obj)
+            if 'fileName' in obj and len(obj['fileName']) > 0:
+                tarfile = obj['fileName']
+    end = datetime.datetime.now().replace(microsecond=0)
+    print('Time taken to collect: %s'%(end-start))
+
+    # Get Kargo pod name and copy the tarfile out of /data/kargo
+    code,kargopodname = get_pod_name(namespace='fed-paas-helpers', podmatch='kargo')
+    if code == 0 and len(kargopodname) > 0 and len(tarfile) > 0:
+        filename = os.path.basename(tarfile)
+        print('Copying tarfile %s from Kargo Pod...to %s%s%s'%(filename,thisdir,os.path.sep,filename))
+        cpcmd = 'kubectl -n fed-paas-helpers cp %s:/data/kargo/%s %s%s%s'%(kargopodname,filename,thisdir,os.path.sep,filename)
+        dprint(debug, "Copy Command: %s"%(cpcmd))
+        code, out = runcmd(cpcmd)
+    if code != 0 or kargopodname == '' or tarfile == '':
+        print('Warning: Unable to copy tarfile from kargo pod')
+
+
+if __name__ == "__main__":
+    code = main()
+    sys.exit(code)
