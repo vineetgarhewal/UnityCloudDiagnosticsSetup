@@ -72,7 +72,7 @@ The tool currently supports Windows and Linux environments.
 4. pip install requests
 5. az cli
 6. kubectl 1.18+
-7. MSI credentials to access storage
+7. MSI credentials to access storage (optional is not using Azure VM)
 8. StorageAccount connection-string for VM deployed in private network.
 
 #### Instructions
@@ -81,6 +81,7 @@ Please follow the steps mentioned below to run the script:
 2. Kubeconfig file needs to be fetched from K8 master (/etc/kubernetes/<kubeconfig>)) and copy it to jump server. This file path needs to be set as argument while running the script. 
 Example : /etc/kubernetes/ group-maint.conf
 3. Set elastic search endpoint details under kargo-log-endpoint-config.json
+```	
  {
         "loggingConfig": {
                 "elasticPassword": "<your-password>",
@@ -88,14 +89,18 @@ Example : /etc/kubernetes/ group-maint.conf
                 "elasticUserName": "<your-username>"
         }
 }
+```
 4. Set prometheus endpoint under kargo-prometheus-endpoint-config.json
+```	
  {
     "prometheusConfig": {
         "URL" : "http://<Valid-PrometheusIP>:<Valid-PrometheusPort>"
     }
 }
+```
 5. Set storage account name , logsBlobContainerName , metricsBlobContainerName and ConnectionString ( as per requirement ) under storage-account-info.json
- {
+ ```
+{
     "Storage": {
                 "AccountName": "<Place-Your-storageAccountName-Here>",
                 "logsBlobContainerName": "<Place-Your-logsBlobContainerName-Here>",
@@ -103,6 +108,7 @@ Example : /etc/kubernetes/ group-maint.conf
                 "ConnectionString": "<Place-Your-StorageAccount-ConnectionString-Here>"
         }
 }
+```
 6. Execution command: python KargoCollector.py -k <kubeConfigFile> -c <collectionTye> [-m <durationInMinutes>] [-o <outputfolder>] [-s <storageType>] [-i <identityType>]
 
 #### Note: 
@@ -115,9 +121,9 @@ Example : /etc/kubernetes/ group-maint.conf
  
 #### Examples: 
  A.  To execute script to fetch logs for every 2 minutes from a system having managed identity
- ```
+	
      collector> python KargoCollector.py -k group-maint.conf -c logging -m 2 
- ```
+	
  B.  To execute script to fetch logs for every 2 minutes from a system having connection string to storage blob
  
      collector> python KargoCollector.py -k group-maint.conf -c logging -m 2 -i connectionstring
