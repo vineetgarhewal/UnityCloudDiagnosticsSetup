@@ -148,7 +148,8 @@ Example : /etc/kubernetes/ group-maint.conf
 
 
 ## Query the Logs and Metrics
-
+This seconds describes few sample queries. You can construct your own queries based on your necessity. Please refer [KQL quick reference](https://docs.microsoft.com/en-us/azure/data-explorer/kql-quick-reference) for syntax.
+	
 #### Verify the pipeline is running and ingesting the data
 <details>
   <summary>View the files in blob containers</summary>
@@ -201,3 +202,12 @@ Example : /etc/kubernetes/ group-maint.conf
 5GDebugLogs
 | where  _source_kubernetes_namespace_name == 'fed-smf'
 ```
+* Find the event time an query the logs upto next 20 seconds
+```
+let ErrorTime = toscalar(5GDebugLogs
+| where _source.log contains 'watchFileEvents'
+| summarize min(_source_time));
+5GDebugLogs
+| where _source_time >= ErrorTime and _source_time < (ErrorTime + 20s)
+```							  
+							  
