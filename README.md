@@ -6,8 +6,41 @@ Please click on the link below to setup unity cloud diganostics pipeline
 
 [![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2Fazuredeploy.json)
 
+### Deploying Azure Services for Diagnostics Pipeline
+<details>
+  <summary>Deploy Azure resource using custom arm template deployment.</summary>
+  <img src="/images/CreateDeployment.JPG" />
+</details>
 
-# Kargo periodic collector tool
+<details>
+  <summary>Verify the deployment status</summary>
+  <img src="/images/DeploymentComplete.JPG" />
+</details>
+
+<details>
+  <summary>Verify the deployed resources in resource group</summary>
+  <img src="/images/ResourceGroup.JPG" />
+</details>
+
+
+<details>
+  <summary>Create a custom deployment</summary>
+  <img src="/images/CreateDeployment.JPG" />
+</details>
+
+
+<details>
+  <summary>Get the Azure Data Explorer Url</summary>
+  <img src="/images/DeploymentOutput.JPG" />
+</details>
+
+
+<details>
+  <summary>Verify the Azure Blob Storage containers for the Logs and Metrics</summary>
+  <img src="/images/Storage.JPG" />
+</details>
+
+### Kargo periodic collector tool
 
 Overview
 
