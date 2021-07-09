@@ -2,10 +2,10 @@
 
 ## Introduction
 This page describes the usage of Cloud Exposure Tool for Unity Cloud logs and metrics. It covers the following topis in details below -
-* Setting up Azure resources for ingesting the logs and metrics
+* Setting up the Azure resources for ingesting the logs and metrics
 * Setting up the KargoToolCollector to fetch the logs and metrics and upload to the blob storage
 * Query the logs and metrics from Azure Data Explorer 
-* Sample Query
+* Sample Queries
 
 ## Provision Azure Services for diagnostics pipeline
 
@@ -170,3 +170,34 @@ Example : /etc/kubernetes/ group-maint.conf
   <summary>Query the logs</summary>
   <img src="/images/Logs.JPG" />
 </details>
+	
+## Sample KQL Queries
+* Query the logs by SUPI id
+```
+5GDebugLogs
+| where _source_supi == 'imsi-3104102570xyz'
+```
+	
+* Query the logs by time 
+```
+5GDebugLogs
+| where _source_time < datetime('2021-07-05T16:16:26.9529494Z')
+```
+
+* Query the logs by time range
+```
+5GDebugLogs
+| where _source_time > ago(5h) and _source_time  < ago(2h)
+```
+	
+* Query the logs by pattern match in log
+```
+5GDebugLogs
+| where _source.log contains 'WARNING  Duplicate session exists for new create'
+```
+	
+* Query the logs by k8s namespace
+```
+5GDebugLogs
+| where  _source_kubernetes_namespace_name == 'fed-smf'
+```
