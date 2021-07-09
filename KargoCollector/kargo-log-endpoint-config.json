@@ -1,0 +1,7 @@
+{
+        "loggingConfig": {
+                "elasticPassword": "<your-password>",
+                "elasticURL": "<your-elastic-url>",
+                "elasticUserName": "<your-username>"
+        }
+}

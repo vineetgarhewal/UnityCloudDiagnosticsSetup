@@ -1,0 +1,10 @@
+{
+    "components": ["logging"],
+    "logging": {
+        "kibana": [
+            {
+                "dashboardTokens": ["InValidDashboardToAvoidKibanaDumpFolder"]
+            }
+        ]
+    }
+}
