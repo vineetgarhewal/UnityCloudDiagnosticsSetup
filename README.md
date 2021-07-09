@@ -111,7 +111,7 @@ Example : /etc/kubernetes/ group-maint.conf
     "Storage": {
                 "AccountName": "<Place-Your-storageAccountName-Here>",
                 "logsBlobContainerName": "<Place-Your-logsBlobContainerName-Here>",
-	            			"metricsBlobContainerName": "<Place-Your-metricsBlobContainerName-Here>",
+	        "metricsBlobContainerName": "<Place-Your-metricsBlobContainerName-Here>",
                 "ConnectionString": "<Place-Your-StorageAccount-ConnectionString-Here>"
         }
 }
