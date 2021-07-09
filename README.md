@@ -18,7 +18,7 @@ Diagnostics Pipeline depends on the Azure Data Factory to read the logs from Azu
 </details>
 
 #### Azure Resouce Deployment 
-Please click on the link below to setup Diagnostics pipeline for Logs and Metrics for Unity Cloud components. This may take upto 25-30 minutes. 
+Please click on the link below to setup Diagnostics pipeline for Logs and Metrics for Unity Cloud components. This may take upto 25-30 minutes. You need to be Owner of the Azure subscription where these resources are being created.
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2Fazuredeploy.json)
 
