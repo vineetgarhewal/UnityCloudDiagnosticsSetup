@@ -1,4 +1,4 @@
-# CLX Tool Setup
+# Cloud Logs Exposure (CLX) Tool Setup
 
 ## Introduction
 This page describes the usage of Cloud Exposure Tool for Unity Cloud logs and metrics. It covers the following topis in details below -
