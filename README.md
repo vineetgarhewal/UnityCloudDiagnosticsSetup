@@ -25,9 +25,9 @@ Please click on the link below to setup Diagnostics pipeline for Logs and Metric
 [![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2Fazuredeploy.json)
 
 #### Instructions
-Please follow the steps to setup and verify the pipeline deployment
+Please follow the steps to setup and verify the pipeline deployment (click to expand)
 <details>
-  <summary>Deploy Azure resource using custom arm template deployment</summary>
+  <summary>Deploy Azure resource using custom arm template deployment </summary>
   <img src="/images/CreateDeployment.JPG" />
 </details>
 
