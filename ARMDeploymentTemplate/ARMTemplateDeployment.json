@@ -726,213 +726,107 @@
               "translator": {
                 "type": "TabularTranslator",
                 "mappings": [
-                  {
-                    "source": {
-                      "path": "$['defectid']"
+                    {
+                        "source": {
+                            "path": "metric.__name__"
+                        },
+                        "sink": {
+                            "name": "metricname",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "defectid",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['filepath']"
+                    {
+                        "source": {
+                            "path": "metric.job"
+                        },
+                        "sink": {
+                            "name": "job",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "filepath",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_index']"
+                    {
+                        "source": {
+                            "path": "metric.namespace"
+                        },
+                        "sink": {
+                            "name": "namespace",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "_index",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_type']"
+                    {
+                        "source": {
+                            "path": "metric.pod"
+                        },
+                        "sink": {
+                            "name": "pod",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "_type",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_id']"
+                    {
+                        "source": {
+                            "path": "metric.quantile"
+                        },
+                        "sink": {
+                            "name": "quantile",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "_id",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']"
+                    {
+                        "source": {
+                            "path": "metric.state"
+                        },
+                        "sink": {
+                            "name": "state",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "_source"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['stream']"
+                    {
+                        "source": {
+                            "path": "metric.type"
+                        },
+                        "sink": {
+                            "name": "type",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "_source_stream",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['@timestamp']"
+                    {
+                        "source": {
+                            "path": "metric.event"
+                        },
+                        "sink": {
+                            "name": "event",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "_source_time",
-                      "type": "DateTime"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['docker']['container_id']"
+                    {
+                        "source": {
+                            "path": "values"
+                        },
+                        "sink": {
+                            "name": "values",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "_source_docker_container_id",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['container_name']"
+                    {
+                        "source": {
+                            "path": "$['filepath']"
+                        },
+                        "sink": {
+                            "name": "filepath",
+                            "type": "String"
+                        }
                     },
-                    "sink": {
-                      "name": "_source_kubernetes_container_name",
-                      "type": "String"
+                    {
+                        "source": {
+                            "path": "$['defectid']"
+                        },
+                        "sink": {
+                            "name": "defectid",
+                            "type": "String"
+                        }
                     }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['namespace_name']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_namespace_name",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['pod_name']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_pod_name",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['container_image']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_container_image",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['host']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_host",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['severity']"
-                    },
-                    "sink": {
-                      "name": "_source_severity",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['debug-string']"
-                    },
-                    "sink": {
-                      "name": "_source_debug_string",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['pei']"
-                    },
-                    "sink": {
-                      "name": "_source_pei",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['supi']"
-                    },
-                    "sink": {
-                      "name": "_source_supi",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['tid']"
-                    },
-                    "sink": {
-                      "name": "_source_tid",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['pdu-sessionid']"
-                    },
-                    "sink": {
-                      "name": "_source_pduSessionid",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['pcfid']"
-                    },
-                    "sink": {
-                      "name": "_source_pcfid",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['method']"
-                    },
-                    "sink": {
-                      "name": "_source_method",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['_source_eventLogger']"
-                    },
-                    "sink": {
-                      "name": "_source_eventLogger",
-                      "type": "String"
-                    }
-                  }
                 ],
+                "collectionReference": "$['data']['result']",
                 "mapComplexValuesToString": true
               }
             },
