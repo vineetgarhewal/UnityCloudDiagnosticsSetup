@@ -6,38 +6,37 @@ Please click on the link below to setup unity cloud diganostics pipeline
 
 # Kargo periodic collector tool
 
-Download KargoCollector.zip
-
 Overview
 
 The Kargo periodic collector tool and ingestion pipeline enables:
-•	To periodically collects the kargo logs based on the configurable parameters.
-•	To automatically uploads to the Azure blob or SFTP for ingestion to the Azure kusto on the Windows environment.
-•	To automatically uploads to the Azure blob for ingestion to the Azure kusto on the Linux environment.
-•	To use Azure kusto queries to process logs data and return the results of this processing.
+
+1. To periodically collects the kargo logs based on the configurable parameters. 
+2. To automatically uploads to the Azure blob or SFTP for ingestion to the Azure kusto on the Windows environment. 
+3. To automatically uploads to the Azure blob for ingestion to the Azure kusto on the Linux environment.
+4. To use Azure kusto queries to process logs data and return the results of this processing.
 The tool currently supports Windows and Linux environments.
 
 Known limitations
-1.	This periodically collects the kargo logs based on the configurable parameters.
-2.	Kargo output file is present in the pod also. It needs to be manually deleted else the K8 node may go for reboot because the disk size overflow.
-3.	Currently only collection with “logging”  and "prometheus" is supported. Provide invalid kibana dashboard in “kargo-log-collection-config.json” so only fluentd logs are collected.
-4.	More number of parallel writes to kusto cluster can cause out of memory (OOM) error, as per the known issue list by ADF team (From their CRI handling experiences).
+1. This periodically collects the kargo logs based on the configurable parameters.
+2. Kargo output file is present in the pod also. It needs to be manually deleted else the K8 node may go for reboot because the disk size overflow.
+3. Currently only collection with “logging”  and "prometheus" is supported. Provide invalid kibana dashboard in “kargo-log-collection-config.json” so only fluentd logs are collected.
+4. More number of parallel writes to kusto cluster can cause out of memory (OOM) error, as per the known issue list by ADF team (From their CRI handling experiences).
 
 Pre-requisites
-Requirement for Linux and Windows environment:
-Python 3.7 + ( set alias python=python3 , if required )
-pip install schedule
-pip install requests
-az cli
-kubectl 1.18+
-MSI credentials to access storage
-StorageAccount connection-string for VM deployed in private network.
+1. Requirement for Linux and Windows environment:
+2. Python 3.7 + ( set alias python=python3 , if required )
+3. pip install schedule
+4. pip install requests
+5. az cli
+6. kubectl 1.18+
+7. MSI credentials to access storage
+8. StorageAccount connection-string for VM deployed in private network.
 
 Follow the below steps to run script:
-•	Set Path: /{PathToKargoCollector}/KargoCollector
-•	Kubeconfig file needs to be fetched from K8 master (/etc/kubernetes/<kubeconfig>)) and copy it to jump server. This file path needs to be set as argument while running the script.
- Example : /etc/kubernetes/ group-maint.conf
-•	Set elastic search endpoint details under kargo-log-endpoint-config.json
+1. Set Path: /{PathToKargoCollector}/KargoCollector
+2. Kubeconfig file needs to be fetched from K8 master (/etc/kubernetes/<kubeconfig>)) and copy it to jump server. This file path needs to be set as argument while running the script. 
+Example : /etc/kubernetes/ group-maint.conf
+3. Set elastic search endpoint details under kargo-log-endpoint-config.json
  {
         "loggingConfig": {
                 "elasticPassword": "<your-password>",
@@ -45,13 +44,13 @@ Follow the below steps to run script:
                 "elasticUserName": "<your-username>"
         }
 }
-•	Set prometheus endpoint under kargo-prometheus-endpoint-config.json
+4. Set prometheus endpoint under kargo-prometheus-endpoint-config.json
  {
     "prometheusConfig": {
         "URL" : "http://<Valid-PrometheusIP>:<Valid-PrometheusPort>"
     }
 }
-•	Set storage account name , logsBlobContainerName , metricsBlobContainerName and ConnectionString ( as per requirement ) under storage-account-info.json
+5. Set storage account name , logsBlobContainerName , metricsBlobContainerName and ConnectionString ( as per requirement ) under storage-account-info.json
  {
     "Storage": {
                 "AccountName": "<Place-Your-storageAccountName-Here>",
@@ -60,16 +59,17 @@ Follow the below steps to run script:
                 "ConnectionString": "<Place-Your-StorageAccount-ConnectionString-Here>"
         }
 }
-•	Execution command: python KargoCollector.py -k <kubeConfigFile> -c <collectionTye> [-m <durationInMinutes>] [-o <outputfolder>] [-s <storageType>] [-i <identityType>]
+6. Execution command: python KargoCollector.py -k <kubeConfigFile> -c <collectionTye> [-m <durationInMinutes>] [-o <outputfolder>] [-s <storageType>] [-i <identityType>]
+
 Note: 
- k is the path to kubeconfig file ( mandatory )
- c is to specify the type of collcection . Currently supported are "prometheus" or "logging". (mandatory)
- m is the duration in minutes. default 15 minutes
- o is the folder where the tar.gz be pulled locally from the kargo server. default is "data\logging" or "data\prometheus" folder on the same path.
- s currently its optional , we only support "azblob" as remote storage
- i is for the identity of the machine, by default its managed identity. We can set is to "connectionstring".
+1. k is the path to kubeconfig file ( mandatory )
+2. c is to specify the type of collcection . Currently supported are "prometheus" or "logging". (mandatory)
+3. m is the duration in minutes. default 15 minutes
+4. o is the folder where the tar.gz be pulled locally from the kargo server. default is "data\logging" or "data\prometheus" folder on the same path.
+5. s currently its optional , we only support "azblob" as remote storage
+6. i is for the identity of the machine, by default its managed identity. We can set is to "connectionstring".
  
- Example:
+Examples:
  
  A.  To execute script to fetch logs for every 2 minutes from a system having managed identity
  
