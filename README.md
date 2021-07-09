@@ -1,13 +1,16 @@
 # Unity Cloud Diagnostics Pipeline Setup
 
 ## Provision Azure Services for diagnostics pipeline
+
+#### Custom Deployment 
 Please click on the link below to setup Diagnostics pipeline for Logs and Metrics for Unity Cloud components. 
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2Fazuredeploy.json)
 
 [![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2Fazuredeploy.json)
 
-### Deploying Azure Services for Diagnostics Pipeline
+#### Insructions
+Please follow the steps to setup and verify the pipeline deployment
 <details>
   <summary>Deploy Azure resource using custom arm template deployment.</summary>
   <img src="/images/CreateDeployment.JPG" />
@@ -34,10 +37,9 @@ Please click on the link below to setup Diagnostics pipeline for Logs and Metric
   <img src="/images/Storage.JPG" />
 </details>
 
-### Kargo periodic collector tool
+## Run the Kargo Logs and Metrics collector tool on jumpbox
 
-Overview
-
+#### Overview
 The Kargo periodic collector tool and ingestion pipeline enables:
 
 1. To periodically collects the kargo logs based on the configurable parameters. 
@@ -46,13 +48,15 @@ The Kargo periodic collector tool and ingestion pipeline enables:
 4. To use Azure kusto queries to process logs data and return the results of this processing.
 The tool currently supports Windows and Linux environments.
 
-Known limitations
-1. This periodically collects the kargo logs based on the configurable parameters.
+
+#### Known limitations
+1. This tool periodically collects the kargo logs based on the configurable parameters.
 2. Kargo output file is present in the pod also. It needs to be manually deleted else the K8 node may go for reboot because the disk size overflow.
 3. Currently only collection with “logging”  and "prometheus" is supported. Provide invalid kibana dashboard in “kargo-log-collection-config.json” so only fluentd logs are collected.
-4. More number of parallel writes to kusto cluster can cause out of memory (OOM) error, as per the known issue list by ADF team (From their CRI handling experiences).
+4. More number of parallel writes to kusto cluster can cause out of memory (OOM) error.
 
-Pre-requisites
+
+#### Pre-requisites
 1. Requirement for Linux and Windows environment:
 2. Python 3.7 + ( set alias python=python3 , if required )
 3. pip install schedule
@@ -62,7 +66,8 @@ Pre-requisites
 7. MSI credentials to access storage
 8. StorageAccount connection-string for VM deployed in private network.
 
-Follow the below steps to run script:
+#### Instructions
+Please follow the steps mentioned below to run the script:
 1. Set Path: /{PathToKargoCollector}/KargoCollector
 2. Kubeconfig file needs to be fetched from K8 master (/etc/kubernetes/<kubeconfig>)) and copy it to jump server. This file path needs to be set as argument while running the script. 
 Example : /etc/kubernetes/ group-maint.conf
@@ -91,7 +96,7 @@ Example : /etc/kubernetes/ group-maint.conf
 }
 6. Execution command: python KargoCollector.py -k <kubeConfigFile> -c <collectionTye> [-m <durationInMinutes>] [-o <outputfolder>] [-s <storageType>] [-i <identityType>]
 
-Note: 
+#### Note: 
 1. k is the path to kubeconfig file ( mandatory )
 2. c is to specify the type of collcection . Currently supported are "prometheus" or "logging". (mandatory)
 3. m is the duration in minutes. default 15 minutes
@@ -99,12 +104,11 @@ Note:
 5. s currently its optional , we only support "azblob" as remote storage
 6. i is for the identity of the machine, by default its managed identity. We can set is to "connectionstring".
  
-Examples:
- 
+#### Examples: 
  A.  To execute script to fetch logs for every 2 minutes from a system having managed identity
- 
+ ```
      collector> python KargoCollector.py -k group-maint.conf -c logging -m 2 
- 
+ ```
  B.  To execute script to fetch logs for every 2 minutes from a system having connection string to storage blob
  
      collector> python KargoCollector.py -k group-maint.conf -c logging -m 2 -i connectionstring
