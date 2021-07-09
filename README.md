@@ -1,20 +1,19 @@
 # Cloud Logs Exposure (CLX) Tool Setup
 
 ## Introduction
-This page describes the usage of Cloud Exposure Tool for Unity Cloud logs and metrics. It covers the following topis in details below -
-* Setting up the Azure resources for ingesting the logs and metrics
-* Setting up the KargoToolCollector to fetch the logs and metrics and upload to the blob storage
+This page describes the usage of Cloud Exposure Tool for Unity Cloud logs and metrics. It covers the following topics in details below -
+* Set up the Azure resources for ingesting the logs and metrics
+* Set up the KargoToolCollector to fetch the logs and metrics and upload to the blob storage
 * Query the logs and metrics from Azure Data Explorer 
 * Sample Queries
 
 ## Provision Azure Services for diagnostics pipeline
 
-
 #### Overview
-Diagnostics Pipeline depends on Azure Data Factory to read the logs from Azure Blob Storage and ingest into Azure Data Explorer to make it query-able throgh KQL Queries and Grafana dashboard. 
+Diagnostics Pipeline depends on the Azure Data Factory to read the logs from Azure Blob Storage and ingest into Azure Data Explorer to make it query-able throgh KQL Queries and be able to view using Grafana dashboard. 
 
 <details>
-  <summary>High level architecture of diagnostics pipeline</summary>
+  <summary>High level architecture of the CLX tool</summary>
   <img src="/images/Architecture.JPG" />
 </details>
 
@@ -53,20 +52,16 @@ Please follow the steps to setup and verify the pipeline deployment
   <img src="/images/Storage.JPG" />
 </details>
 
-## Run the Kargo Logs and Metrics collector tool on jumpbox
+## Run the Kargo Logs and Metrics collector tool on the jumpbox
 
 #### Overview
-The Kargo periodic collector tool and ingestion pipeline enables:
-
-1. To periodically collects the kargo logs based on the configurable parameters. 
-2. To automatically uploads to the Azure blob or SFTP for ingestion to the Azure kusto on the Windows environment. 
-3. To automatically uploads to the Azure blob for ingestion to the Azure kusto on the Linux environment.
-4. To use Azure kusto queries to process logs data and return the results of this processing.
+The Kargo periodic collector tool is a simple python script which:
+1. Periodically collects the kargo logs from the Kargo tool based on the configurable parameters. 
+2. Uploads to the Azure Blob Container for the ingestion. 
 The tool currently supports Windows and Linux environments.
 
 
 #### Known limitations
-1. This tool periodically collects the kargo logs based on the configurable parameters.
 2. Kargo output file is present in the pod also. It needs to be manually deleted else the K8 node may go for reboot because the disk size overflow.
 3. Currently only collection with “logging”  and "prometheus" is supported. Provide invalid kibana dashboard in “kargo-log-collection-config.json” so only fluentd logs are collected.
 4. More number of parallel writes to kusto cluster can cause out of memory (OOM) error.
@@ -79,8 +74,7 @@ The tool currently supports Windows and Linux environments.
 4. pip install requests
 5. az cli
 6. kubectl 1.18+
-7. MSI credentials to access storage (optional is not using Azure VM)
-8. StorageAccount connection-string for VM deployed in private network.
+8. Azure Blob Storage account (azure resource created in the steps above) connection-string .
 
 #### Instructions
 Please follow the steps mentioned below to run the script:
