@@ -60,14 +60,14 @@
     },
     "logsBlobContainerName": {
       "type": "string",
-      "defaultValue": "[format('logsBlob{0}', uniqueString(resourceGroup().id))]",
+      "defaultValue": "[format('logsblob{0}', uniqueString(resourceGroup().id))]",
       "metadata": {
         "description": "Name of the blob container in the Azure Storage account."
       }
     },
     "metricsBlobContainerName": {
       "type": "string",
-      "defaultValue": "[format('metricsBlob{0}', uniqueString(resourceGroup().id))]",
+      "defaultValue": "[format('metricsblob{0}', uniqueString(resourceGroup().id))]",
       "metadata": {
         "description": "Name of the blob container in the Azure Storage account."
       }
@@ -126,6 +126,21 @@
       }
     },
     {
+      "type": "Microsoft.Kusto/Clusters/Databases/PrincipalAssignments",
+      "apiVersion": "2020-09-18",
+      "name": "[concat(parameters('adxClusterName'), '/', parameters('adxDbName'), '/AFDidentity')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Kusto/Clusters/Databases', parameters('adxClusterName'), parameters('adxDbName'))]",
+        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]"
+      ],
+      "properties": {
+        "principalId": "[reference(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '2018-06-01', 'Full').identity.principalId]",
+        "principalType": "App",
+        "tenantId": "[reference(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '2018-06-01', 'Full').identity.tenantId]",
+        "role": "Admin"
+      }
+    },
+    {
       "type": "Microsoft.Kusto/Clusters/PrincipalAssignments",
       "apiVersion": "2020-09-18",
       "name": "[concat(parameters('adxClusterName'), '/MSIidentity')]",
@@ -167,7 +182,6 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Authorization/roleAssignments', variables('bootstrapRoleAssignmentId'))]",
-        "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]",
         "[resourceId('Microsoft.Kusto/clusters/databases', parameters('adxClusterName'), parameters('adxDbName'))]",
         "[resourceId('Microsoft.Kusto/Clusters/Databases/PrincipalAssignments', parameters('adxClusterName'), parameters('adxDbName'), 'MSIidentity')]",
         "[resourceId('Microsoft.Kusto/Clusters/PrincipalAssignments', parameters('adxClusterName'), 'MSIidentity')]"
@@ -182,7 +196,7 @@
       "properties": {
         "azPowerShellVersion": "5.0",
         "timeout": "PT30M",
-        "arguments": "[format(' -clusterUrl {0} -dbName {1} -logsTableName {2} -metricsTableName {3} -adfIdentity {4}', reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri, parameters('adxDbName'), parameters('adxLogsTableName'), parameters('adxMetricsTableName'), reference(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '2018-06-01', 'Full').identity.principalId)]",
+        "arguments": "[format(' -clusterUrl {0} -dbName {1} -logsTableName {2} -metricsTableName {3}', reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri, parameters('adxDbName'), parameters('adxLogsTableName'), parameters('adxMetricsTableName'))]",
         "primaryScriptUri": "https://raw.githubusercontent.com/vineetgarhewal/UnityCloudDiagnosticsSetup/main/ARMDeploymentTemplate/deploymentscript.ps1",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
@@ -357,7 +371,7 @@
       "properties": {
         "activities": [
           {
-            "name": "Ingest from blob to Kusto",
+            "name": "Ingest from logs blob to Kusto",
             "type": "Copy",
             "dependsOn": [],
             "policy": {
@@ -654,7 +668,7 @@
       "properties": {
         "activities": [
           {
-            "name": "Ingest from blob to Kusto",
+            "name": "Ingest from metrics blob to Kusto",
             "type": "Copy",
             "dependsOn": [],
             "policy": {
@@ -1033,5 +1047,11 @@
         "retentionInterval": "P1D"
       }
     }
-  ]
+  ],
+  "outputs": {
+    "actionGroupId": {
+        "type": "String",
+        "value": "[reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri]"
+    }
+}
 }

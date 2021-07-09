@@ -1,15 +1,14 @@
 param(
-            [string] [Parameter(Mandatory=$true)] $clusterUrl,
-            [string] [Parameter(Mandatory=$true)] $dbName,
-            [string] [Parameter(Mandatory=$true)] $logsTableName,
-            [string] [Parameter(Mandatory=$true)] $metricsTableName,
-			[string] [Parameter(Mandatory=$true)] $adfIdentity
-          )
+    [string] [Parameter(Mandatory=$true)] $clusterUrl,
+    [string] [Parameter(Mandatory=$true)] $dbName,
+    [string] [Parameter(Mandatory=$true)] $logsTableName,
+    [string] [Parameter(Mandatory=$true)] $metricsTableName
+)
+
 Write-Host $clusterUrl
 Write-Host $dbName
 Write-Host $logsTableName
 Write-Host $metricsTableName
-Write-Host $adfIdentity
 
 
 $token=(Get-AzAccessToken -ResourceUrl $clusterUrl).Token
@@ -18,14 +17,7 @@ $token
 $header = @{
  "Authorization"="Bearer $token"
  "Content-Type"="application/json"
-} 
-
-$body = @{
- "db"="$dbName"
- "csl"=".add database $dbName admins ('aadapp=$adfIdentity')"
-} | ConvertTo-Json
-$result = Invoke-RestMethod -Uri "$clusterUrl/v1/rest/mgmt" -Method 'Post' -Body $body -Headers $header 
-$result | ConvertTo-Json -Depth 5
+}
 
 
 $body = @{
