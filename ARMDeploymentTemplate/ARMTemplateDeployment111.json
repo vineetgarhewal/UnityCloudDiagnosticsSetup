@@ -197,7 +197,7 @@
         "azPowerShellVersion": "5.0",
         "timeout": "PT30M",
         "arguments": "[format(' -clusterUrl {0} -dbName {1} -logsTableName {2} -metricsTableName {3}', reference(resourceId('Microsoft.Kusto/clusters', parameters('adxClusterName')), '2020-06-14', 'Full').properties.uri, parameters('adxDbName'), parameters('adxLogsTableName'), parameters('adxMetricsTableName'))]",
-        "primaryScriptUri": "https://raw.githubusercontent.com/vineetgarhewal/UnityCloudDiagnosticsSetup/main/ARMDeploymentTemplate/deploymentscript.ps1",
+        "primaryScriptUri": "https://stmobilenetworkutils.blob.core.windows.net/resources/deploymentscript1.ps1",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
       }
@@ -718,214 +718,108 @@
               "translator": {
                 "type": "TabularTranslator",
                 "mappings": [
-                  {
-                    "source": {
-                      "path": "$['defectid']"
-                    },
-                    "sink": {
-                      "name": "defectid",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['filepath']"
-                    },
-                    "sink": {
-                      "name": "filepath",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_index']"
-                    },
-                    "sink": {
-                      "name": "_index",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_type']"
-                    },
-                    "sink": {
-                      "name": "_type",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_id']"
-                    },
-                    "sink": {
-                      "name": "_id",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']"
-                    },
-                    "sink": {
-                      "name": "_source"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['stream']"
-                    },
-                    "sink": {
-                      "name": "_source_stream",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['@timestamp']"
-                    },
-                    "sink": {
-                      "name": "_source_time",
-                      "type": "DateTime"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['docker']['container_id']"
-                    },
-                    "sink": {
-                      "name": "_source_docker_container_id",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['container_name']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_container_name",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['namespace_name']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_namespace_name",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['pod_name']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_pod_name",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['container_image']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_container_image",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['kubernetes']['host']"
-                    },
-                    "sink": {
-                      "name": "_source_kubernetes_host",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['severity']"
-                    },
-                    "sink": {
-                      "name": "_source_severity",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['debug-string']"
-                    },
-                    "sink": {
-                      "name": "_source_debug_string",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['pei']"
-                    },
-                    "sink": {
-                      "name": "_source_pei",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['supi']"
-                    },
-                    "sink": {
-                      "name": "_source_supi",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['tid']"
-                    },
-                    "sink": {
-                      "name": "_source_tid",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['pdu-sessionid']"
-                    },
-                    "sink": {
-                      "name": "_source_pduSessionid",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['pcfid']"
-                    },
-                    "sink": {
-                      "name": "_source_pcfid",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['method']"
-                    },
-                    "sink": {
-                      "name": "_source_method",
-                      "type": "String"
-                    }
-                  },
-                  {
-                    "source": {
-                      "path": "$['_source']['_source_eventLogger']"
-                    },
-                    "sink": {
-                      "name": "_source_eventLogger",
-                      "type": "String"
-                    }
-                  }
-                ],
-                "mapComplexValuesToString": true
+                      {
+                          "source": {
+                              "path": "['metric']['__name__']"
+                          },
+                          "sink": {
+                              "name": "metricname",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['job']"
+                          },
+                          "sink": {
+                              "name": "job",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['namespace']"
+                          },
+                          "sink": {
+                              "name": "namespace",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['pod']"
+                          },
+                          "sink": {
+                              "name": "pod",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['quantile']"
+                          },
+                          "sink": {
+                              "name": "quantile",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['state']"
+                          },
+                          "sink": {
+                              "name": "state",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['type']"
+                          },
+                          "sink": {
+                              "name": "type",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['metric']['event']"
+                          },
+                          "sink": {
+                              "name": "event",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "['values']"
+                          },
+                          "sink": {
+                              "name": "values",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "$['filepath']"
+                          },
+                          "sink": {
+                              "name": "filepath",
+                              "type": "String"
+                          }
+                      },
+                      {
+                          "source": {
+                              "path": "$['defectid']"
+                          },
+                          "sink": {
+                              "name": "defectid",
+                              "type": "String"
+                          }
+                      }
+                  ],
+              "collectionReference": "$['data']['result']",
+              "mapComplexValuesToString": true
               }
             },
             "inputs": [
@@ -1042,7 +936,7 @@
         "azPowerShellVersion": "5.0",
         "timeout": "PT30M",
         "arguments": "[format(' -subscriptionId {0} -resourceGroup {1} -dataFactoryName {2} -logsTriggerName {3} -metricsTriggerName {4}', subscription().subscriptionid, resourceGroup().name, parameters('dataFactoryName'), 'AzureLogsBlobCreateTrigger', 'AzureMetricsBlobCreateTrigger')]",
-        "primaryScriptUri": "https://raw.githubusercontent.com/vineetgarhewal/UnityCloudDiagnosticsSetup/main/ARMDeploymentTemplate/starttrigger.ps1",
+        "primaryScriptUri": "https://stmobilenetworkutils.blob.core.windows.net/resources/starttrigger.ps1",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
       }
