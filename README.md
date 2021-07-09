@@ -1,4 +1,4 @@
-# Unity Cloud Diagnostics Pipeline Setup
+# CLX Tool Setup
 
 ## Provision Azure Services for diagnostics pipeline
 
