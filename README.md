@@ -1,5 +1,12 @@
 # CLX Tool Setup
 
+## Introduction
+This page describes the usage of Cloud Exposure Tool for Unity Cloud logs and metrics. It covers the following topis in details below -
+* Setting up Azure resources for ingesting the logs and metrics
+* Setting up the KargoToolCollector to fetch the logs and metrics and upload to the blob storage
+* Query the logs and metrics from Azure Data Explorer 
+* Sample Query
+
 ## Provision Azure Services for diagnostics pipeline
 
 
