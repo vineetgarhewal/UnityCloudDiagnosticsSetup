@@ -2,6 +2,15 @@
 
 ## Provision Azure Services for diagnostics pipeline
 
+
+#### Overview
+Diagnostics Pipeline depends on Azure Data Factory to read the logs from Azure Blob Storage and ingest into Azure Data Explorer to make it query-able throgh KQL Queries and Grafana dashboard. 
+
+<details>
+  <summary>High level architecture of diagnostics pipeline</summary>
+  <img src="/images/Architecture.JPG" />
+</details>
+
 #### Custom Deployment 
 Please click on the link below to setup Diagnostics pipeline for Logs and Metrics for Unity Cloud components. 
 
@@ -12,7 +21,7 @@ Please click on the link below to setup Diagnostics pipeline for Logs and Metric
 #### Insructions
 Please follow the steps to setup and verify the pipeline deployment
 <details>
-  <summary>Deploy Azure resource using custom arm template deployment.</summary>
+  <summary>Deploy Azure resource using custom arm template deployment</summary>
   <img src="/images/CreateDeployment.JPG" />
 </details>
 
