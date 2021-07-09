@@ -1,6 +1,7 @@
 # Unity Cloud Diagnostics Pipeline Setup
 
-Please click on the link below to setup unity cloud diganostics pipeline
+## Provision Azure Services for diagnostics pipeline
+Please click on the link below to setup Diagnostics pipeline for Logs and Metrics for Unity Cloud components. 
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2Fazuredeploy.json)
 
@@ -21,13 +22,6 @@ Please click on the link below to setup unity cloud diganostics pipeline
   <summary>Verify the deployed resources in resource group</summary>
   <img src="/images/ResourceGroup.JPG" />
 </details>
-
-
-<details>
-  <summary>Create a custom deployment</summary>
-  <img src="/images/CreateDeployment.JPG" />
-</details>
-
 
 <details>
   <summary>Get the Azure Data Explorer Url</summary>
