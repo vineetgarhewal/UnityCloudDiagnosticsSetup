@@ -6,7 +6,7 @@ Please click on the link below to setup unity cloud diganostics pipeline
 
 # Kargo periodic collector tool
 
-Download 'Insert script name'
+Download KargoCollector.zip
 
 Overview
 
