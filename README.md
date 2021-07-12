@@ -127,24 +127,27 @@ Example : /etc/kubernetes/ group-maint.conf
 4. o is the folder where the tar.gz be pulled locally from the kargo server. default is "data\logging" or "data\prometheus" folder on the same path.
 5. s currently its optional , we only support "azblob" as remote storage
 6. i is for the identity of the machine, by default its managed identity. We can set is to "connectionstring".
- 
-#### Examples: 
- A.  To execute script to fetch logs for every 2 minutes from a system having managed identity
 	
+	
+#### Examples: 
+ A.  To execute script to fetch logs for every 2 minutes from a system having managed identity  
+     ```
      collector> python KargoCollector.py -k group-maint.conf -c logging -m 2 
+     ```  
      <details>
           <summary>Log collection using managed identity</summary>
-          <img src="/images/LogCollectionUsingManaged-dentity.PNG" />
+          <img src="/images/LogCollectionUsingManagedIdentity.JPG" />
      </details>
 	
- B.  To execute script to fetch logs for every 2 minutes from a system having connection string to storage blob
- 
+ B.  To execute script to fetch logs for every 2 minutes from a system having connection string to storage blob  
+     ```
      collector> python KargoCollector.py -k group-maint.conf -c logging -m 2 -i connectionstring
-
+     ```  
      <details>
 	<summary>Log collection using blob connection string</summary>
-     	<img src="/images/LogCollectionUsingConnection-string.PNG" />
-     </details>	
+     	<img src="/images/LogCollectionUsingConnectionString.JPG" />
+     </details>	  
+	
  C.  To execute script to fetch prometheus metrics for every 2 minutes from a system having managed identity.
  
      collector> python KargoCollector.py -k group-maint.conf -c prometheus -m 2 
