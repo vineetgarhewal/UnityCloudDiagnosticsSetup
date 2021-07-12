@@ -24,8 +24,8 @@ BPurple='\033[1;35m'      # Purple
 BCyan='\033[1;36m'        # Cyan
 BWhite='\033[1;37m'       # White
 
-
-allppepods=$(kubectl get pods -n fed-upf -o json | jq -r '.items[].metadata.name' | grep '^(ppe|ippe)' -i -E)
+upfns=$(kubectl get ns -A | grep -Ei "upf"| awk '{print$1}')
+allppepods=$(kubectl get pods -n $upfns | grep -Ei "^(ppe|ippe)" | awk '{print$1}')
 
 #iterate over each ppe pods and find the bad pods
 badppepods=()
@@ -68,7 +68,6 @@ do
   #echo -e "Neighbors of the pod before fix are written to: output/${badpod}_neighbors_pre.txt"
   rowcount=$(cat output/${badpod}_neighbors_pre.txt | wc -l)
   echo -e "Total # of neighbors: ${rowcount}"
-  i=0
   for (( i=1; i<=$rowcount; i++ )); 
   do
     ipaddress=$(cat output/${badpod}_neighbors_pre.txt | awk -v i=1 -v j=2 'FNR == i {print $j}')
