@@ -70,9 +70,9 @@ do
   echo -e "Total # of neighbors: ${rowcount}"
   for (( i=1; i<=$rowcount; i++ )); 
   do
-    ipaddress=$(cat output/${badpod}_neighbors_pre.txt | awk -v i=1 -v j=2 'FNR == i {print $j}')
-    macaddress=$(cat output/${badpod}_neighbors_pre.txt | awk -v i=1 -v j=4 'FNR == i {print $j}')
-    device=$(cat output/${badpod}_neighbors_pre.txt | awk -v i=1 -v j=5 'FNR == i {print $j}')
+    ipaddress=$(cat output/${badpod}_neighbors_pre.txt | awk -v i=$i -v j=2 'FNR == i {print $j}')
+    macaddress=$(cat output/${badpod}_neighbors_pre.txt | awk -v i=$i -v j=4 'FNR == i {print $j}')
+    device=$(cat output/${badpod}_neighbors_pre.txt | awk -v i=$i -v j=5 'FNR == i {print $j}')
     #echo -e "Refreshing the neighbor: $ipaddress"
     kubectl exec -it $badpod -n fed-upf -c ppe -- vppctl set ip neighbor del $device $ipaddress $macaddress
     kubectl exec -it $badpod -n fed-upf -c ppe -- vppctl ping $ipaddress source $device > output/${badpod}_neighbors_ping.txt 
