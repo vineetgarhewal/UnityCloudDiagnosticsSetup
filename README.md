@@ -222,5 +222,55 @@ let ErrorTime = toscalar(5GDebugLogs
 | summarize min(_source_time));
 5GDebugLogs
 | where _source_time >= ErrorTime and _source_time < (ErrorTime + 20s)
-```							  
+```
+* Find out the known issue based on pattern match 
+```
+let getJIRA=(log:string) {
+	case(
+	log contains 'WARNING  Duplicate session exists for new create', 'CN-29919',
+	log contains 'ERROR response received for etcd range request; Transaction ID: 300; Response code: 460, Response message, Response message', 'CN-29360',
+	log contains 'Received failure response from DB ReadAndLock. responseCode:404', 'CN-29692',
+	log contains 'Get UDSF record not found', 'CN-29327',
+	'CN-NotFound')
+};
+let getTitle=(log:string) {
+	case(
+	log contains 'WARNING  Duplicate session exists for new create', '[AT&T-QC TBD] 2.2.1 SMFCC (fed-smf-2.2.0-45-patch-2-2-1) did not reply to a PDU Session Establishment Request',
+	log contains 'ERROR response received for etcd range request; Transaction ID: 300; Response code: 460, Response message, Response message', '[AT&T-QC-TBD] 2.2.1 BCV-UPF : UPF ip-interfaces are not coming up - issue with etcd watch and range response errors',
+	log contains 'Received failure response from DB ReadAndLock. responseCode:404', '30% PDU Session Establishment Reject during traffic',
+	log contains 'Get UDSF record not found', 'mongos/datashard pods Restarted during traffic',
+	'Title-NotFound')
+};
+let getNFType=(log:string) {
+	case(
+	log contains 'WARNING  Duplicate session exists for new create', 'SMF',
+	log contains 'ERROR response received for etcd range request; Transaction ID: 300; Response code: 460, Response message, Response message', 'UPF',
+	log contains 'Received failure response from DB ReadAndLock. responseCode:404', 'SMF',
+	log contains 'Get UDSF record not found', 'SMF',
+	'CN-NotFound')
+};
+let getIssue=(log:string) {
+	case(
+	log contains 'WARNING  Duplicate session exists for new create', 'There were pre-existing etcd entries',
+	log contains 'ERROR response received for etcd range request; Transaction ID: 300; Response code: 460, Response message, Response message', 'MongoDB',
+	log contains 'Received failure response from DB ReadAndLock. responseCode:404', 'MongoDB',
+	log contains 'Get UDSF record not found', 'race condition in handling multiple Create SM contexts arrive back-to-back',
+	'CN-NotFound')
+};
+let SampleLogAnalysisPattern = datatable(pattern:string)
+[
+	'WARNING  Duplicate session exists for new create',
+	'ERROR response received for etcd range request; Transaction ID: 300; Response code: 460, Response message',
+	'Received failure response from DB ReadAndLock. responseCode:404',
+	'Get UDSF record not found'
+];
+5GFluendDebugLogs
+| where _source has_any (SampleLogAnalysisPattern)
+| extend JIRA = getJIRA(_source)
+| extend Title = getTitle(_source)
+| extend NFType = getNFType(_source)
+| extend Issue = getIssue(_source)
+| distinct _index, tostring(_source), JIRA, Title, NFType, Issue, _source_time
+```		
+							     
 							  
