@@ -18,7 +18,7 @@ Diagnostics Pipeline depends on the Azure Data Factory to read the logs from Azu
 </details>
 
 #### Azure Resouce Deployment 
-Please click on the link below to setup Diagnostics pipeline for Logs and Metrics for Unity Cloud components. This may take upto 25-30 minutes. You need to be the owner of the Azure subscription where these resources are being created.
+Please click on the link below to setup Diagnostics pipeline for Logs and Metrics for Unity Cloud components. This may take upto 25-30 minutes. Please note that you need to be the owner of the Azure subscription where these resources are being created.
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fvineetgarhewal%2FUnityCloudDiagnosticsSetup%2Fmain%2FARMDeploymentTemplate%2Fazuredeploy.json)
 
@@ -62,7 +62,7 @@ The tool currently supports Windows and Linux environments.
 
 
 #### Known limitations
-2. Kargo output file is present in the pod also. It needs to be manually deleted else the K8 node may go for reboot because the disk size overflow.
+1. Kargo output file is present in the pod also. It needs to be manually deleted or else the K8 node may go for reboot because of the disk size overflow.
 3. Currently only collection with “logging”  and "prometheus" is supported. Provide invalid kibana dashboard in “kargo-log-collection-config.json” so only fluentd logs are collected.
 4. More number of parallel writes to kusto cluster can cause out of memory (OOM) error.
 
