@@ -76,7 +76,7 @@ do
     device=$(cat output/${badpod}_neighbors_pre.txt | awk -v i=1 -v j=5 'FNR == i {print $j}')
     #echo -e "Refreshing the neighbor: $ipaddress"
     kubectl exec -it $badpod -n fed-upf -c ppe -- vppctl set ip neighbor del $device $ipaddress $macaddress
-    kubectl exec -it $badpod -n fed-upf -c ppe -- vppctl ping $ipaddress table-id 1 > output/${badpod}_neighbors_ping.txt 
+    kubectl exec -it $badpod -n fed-upf -c ppe -- vppctl ping $ipaddress $device > output/${badpod}_neighbors_ping.txt 
     # verify that entry has been deleted, needs to be done on table values returned on vppctl not helpful 
     echo -e "Refreshed neighbor: $ipaddress"
   done
