@@ -807,6 +807,15 @@
                             "type": "String"
                         }
                     },
+                  {
+                        "source": {
+                            "path": "metric"
+                        },
+                        "sink": {
+                            "name": "metric",
+                            "type": "String"
+                        }
+                    },
                     {
                         "source": {
                             "path": "$['filepath']"
