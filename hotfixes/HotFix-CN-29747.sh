@@ -27,7 +27,7 @@ BWhite='\033[1;37m'       # White
 
 allppepods=$(kubectl get pods -n fed-upf -o json | jq -r '.items[].metadata.name' | grep '^(ppe|ippe)' -i -E)
 
-#iterate over each bad pods
+#iterate over each ppe pods and find the bad pods
 badppepods=()
 mkdir -p output
 for pod in $allppepods
