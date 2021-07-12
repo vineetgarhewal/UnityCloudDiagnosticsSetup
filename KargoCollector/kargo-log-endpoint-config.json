@@ -1,7 +1,8 @@
-{
+ {
         "loggingConfig": {
                 "elasticPassword": "<your-password>",
-                "elasticURL": "<your-elastic-url>",
-                "elasticUserName": "<your-username>"
+                "elasticURL": "<your-valid-elastic-url>",
+                "elasticUserName": "<your-username>",
+	        "kibanaURL": "<your-valid-kibana-url>"
         }
 }
