@@ -73,7 +73,7 @@ The tool currently supports Windows and Linux environments.
 
 #### Pre-requisites
 1. Requirement for Linux and Windows environment:
-2. Python 3.7 + ( set alias python=python3 , if required )
+2. Python 3.7 + ( create a symlink: sudo ln -s /usr/bin/python3 /usr/bin/python , if required )
 3. pip install schedule
 4. pip install requests
 5. az cli
@@ -83,15 +83,18 @@ The tool currently supports Windows and Linux environments.
 #### Instructions
 Please follow the steps mentioned below to run the script:
 1. Set Path: /{PathToKargoCollector}/KargoCollector
-2. Kubeconfig file needs to be fetched from K8 master (/etc/kubernetes/<kubeconfig>)) and copy it to jump server. This file path needs to be set as argument while running the script. 
+2. chmod 755 KargoCollector.py
+3. chmod 755 kubectl-afn-kargo-collect
+4. Kubeconfig file needs to be fetched from K8 master (/etc/kubernetes/<kubeconfig>)) and copy it to jump server. This file path needs to be set as argument while running the script. 
 Example : /etc/kubernetes/ group-maint.conf
 3. Set elastic search endpoint details under kargo-log-endpoint-config.json
 ```json	
  {
         "loggingConfig": {
                 "elasticPassword": "<your-password>",
-                "elasticURL": "<your-elastic-url>",
-                "elasticUserName": "<your-username>"
+                "elasticURL": "<your-valid-elastic-url>",
+                "elasticUserName": "<your-username>",
+	        "kibanaURL": "<your-valid-kibana-url>"
         }
 }
 ```
@@ -104,6 +107,7 @@ Example : /etc/kubernetes/ group-maint.conf
 }
 ```
 5. Set storage account name , logsBlobContainerName , metricsBlobContainerName and ConnectionString ( as per requirement ) under storage-account-info.json
+   Use the portal to retrive the deployment resources to set the values.	
  ```json
 {
     "Storage": {
