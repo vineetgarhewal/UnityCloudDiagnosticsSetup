@@ -49,7 +49,7 @@ def pushToCommonStorage(collectionType,scanfolder,destinationType,authType):
                     cmd2 = f"{cmd2} --auth-mode login"
                 elif AUTH_TYPE_CONNECTION_STRING == authType:
                     if verbose: print("configuring the upload command to use the connection string...")
-                    cmd2 = f"{cmd2} --connection-string {stroageConnectionString}"                
+                    cmd2 = f'{cmd2} --connection-string "{stroageConnectionString}"'
                 if verbose: print("upload to blob...")
                 os.system(cmd2)
                 if verbose: print("deleting local file... ")
