@@ -132,11 +132,19 @@ Example : /etc/kubernetes/ group-maint.conf
  A.  To execute script to fetch logs for every 2 minutes from a system having managed identity
 	
      collector> python KargoCollector.py -k group-maint.conf -c logging -m 2 
+     <details>
+          <summary>Log collection using managed identity</summary>
+          <img src="/images/LogCollectionUsingManaged-dentity.PNG" />
+     </details>
 	
  B.  To execute script to fetch logs for every 2 minutes from a system having connection string to storage blob
  
      collector> python KargoCollector.py -k group-maint.conf -c logging -m 2 -i connectionstring
- 
+
+     <details>
+	<summary>Log collection using blob connection string</summary>
+     	<img src="/images/LogCollectionUsingConnection-string.PNG" />
+     </details>	
  C.  To execute script to fetch prometheus metrics for every 2 minutes from a system having managed identity.
  
      collector> python KargoCollector.py -k group-maint.conf -c prometheus -m 2 
