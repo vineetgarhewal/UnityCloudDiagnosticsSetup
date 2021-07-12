@@ -29,7 +29,7 @@ $result = Invoke-RestMethod -Uri "$clusterUrl/v1/rest/mgmt" -Method 'Post' -Body
 
 $body = @{
  "db"="$dbName"
- "csl"=".create table [$metricsTableName]  ([defectid]:string,[filepath]:string,[metricname]:string,[job]:string,[namespace]:string,[pod]:string,[quantile]:string,[state]:string,[type]:string,[event]:string,[database]:string,[values]:dynamic)"
+ "csl"=".create table [$metricsTableName]  ([defectid]:string,[filepath]:string,[metric]:dynamic,[metricname]:string,[job]:string,[namespace]:string,[pod]:string,[quantile]:string,[state]:string,[type]:string,[event]:string,[database]:string,[values]:dynamic)"
 } | ConvertTo-Json
 $result = Invoke-RestMethod -Uri "$clusterUrl/v1/rest/mgmt" -Method 'Post' -Body $body -Headers $header 
 
