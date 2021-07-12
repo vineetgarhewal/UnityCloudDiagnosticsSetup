@@ -33,7 +33,7 @@ mkdir -p output
 for pod in $allppepods
 do
   echo -e "Scanning the pod: ${Cyan}$pod${Color_Off}"
-  searchLogs=$(kubectl logs $pod -n fed-upf -c ppe | grep -i 'vl_api_sw_interface_add_del_mac_address_reply_t_handler(): Reply code : -')
+  searchLogs=$(kubectl logs $pod -n fed-upf -c ppe | grep -i 'vl_api_sw_interface_add_del_mac_address_reply_t_handler(): Reply code :-')
   searchResult=$?
   if [ $searchResult -eq 0 ] ; then 
     #echo -e "Error found in pod: ${Red}$pod${Color_Off}"
