@@ -1,6 +1,3 @@
-## Prereqsuites 
-Please install [jq](https://stedolan.github.io/jq/)
-
 ## Usage
 
 ### Dry run only - does not fix PPE pods
