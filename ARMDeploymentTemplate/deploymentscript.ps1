@@ -12,7 +12,6 @@ Write-Host $metricsTableName
 
 
 $token=(Get-AzAccessToken -ResourceUrl $clusterUrl).Token
-$token
 
 $header = @{
  "Authorization"="Bearer $token"
