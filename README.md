@@ -198,6 +198,15 @@ This seconds describes few sample queries. You can construct your own queries ba
 | where _source_time < datetime('2021-07-05T16:16:26.9529494Z')
 ```
 
+* Query the logs by Tid and time range
+```
+let varTid = '0x7f09d66c5780';
+let _start_time = datetime('2021-07-12T12:34:54.1708095Z');
+let _end_time = datetime('2021-07-12T14:03:02.9320405Z');
+5GDebugLogs
+| where _source_tid contains varTid and _source_time between (_start_time .. _end_time)
+```
+							  
 * Query the logs by time range
 ```
 5GDebugLogs
