@@ -1,0 +1,24 @@
+{
+	"name": "Periodic5Mins",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Stream Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 5,
+				"startTime": "2021-07-24T01:43:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

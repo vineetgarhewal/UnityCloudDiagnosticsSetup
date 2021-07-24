@@ -1,0 +1,11 @@
+{
+	"name": "AzureKeyVault_kv_unityclouddiag",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-unityclouddiag.vault.azure.net/"
+		}
+	}
+}

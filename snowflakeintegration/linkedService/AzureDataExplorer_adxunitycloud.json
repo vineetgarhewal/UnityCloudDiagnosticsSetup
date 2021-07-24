@@ -1,0 +1,12 @@
+{
+	"name": "AzureDataExplorer_adxunitycloud",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDataExplorer",
+		"typeProperties": {
+			"endpoint": "https://adxunitycloud.eastus2.kusto.windows.net",
+			"database": "mobilitycore"
+		}
+	}
+}

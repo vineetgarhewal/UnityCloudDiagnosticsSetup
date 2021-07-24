@@ -1,0 +1,18 @@
+{
+	"name": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Snowflake",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault_kv_unityclouddiag",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
+			}
+		}
+	}
+}
