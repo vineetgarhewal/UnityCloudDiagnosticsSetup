@@ -622,7 +622,7 @@
 									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
 									"type": "LinkedServiceReference"
 								},
-								"path": "mobilecoreintegration"
+								"path": "mobilecoresmfmanual"
 							},
 							"translator": {
 								"type": "TabularTranslator",
@@ -936,7 +936,7 @@
 									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
 									"type": "LinkedServiceReference"
 								},
-								"path": "mobilecoresteam"
+								"path": "mobilecoresmfsteam"
 							},
 							"translator": {
 								"type": "TabularTranslator",
