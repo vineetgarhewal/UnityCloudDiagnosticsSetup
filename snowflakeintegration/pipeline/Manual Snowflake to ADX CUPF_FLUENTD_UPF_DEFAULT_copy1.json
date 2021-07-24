@@ -1,5 +1,5 @@
 {
-	"name": "Manual Snowflake to ADX CUPF_FLUENTD_SMF_DEFAULT_copy1",
+	"name": "Manual Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT_copy1",
 	"properties": {
 		"activities": [
 			{
@@ -31,7 +31,7 @@
 							"referenceName": "AzureBlobStorage_stunitycloud_SAS",
 							"type": "LinkedServiceReference"
 						},
-						"path": "mobilecoreintegration"
+						"path": "mobilecoreupfmanual"
 					},
 					"translator": {
 						"type": "TabularTranslator",
