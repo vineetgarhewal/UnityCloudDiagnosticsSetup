@@ -1229,6 +1229,13 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Stream Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -1242,7 +1249,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT')]"
+				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT')]"
 			]
 		}
 	]
