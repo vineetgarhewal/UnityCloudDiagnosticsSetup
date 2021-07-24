@@ -1,0 +1,16 @@
+{
+	"name": "SinkADXMobilityCoreCUPF",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataExplorer_adxunitycloud",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [],
+		"typeProperties": {
+			"table": "CUPF_FLUENTD_UPF_DEFAULT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
