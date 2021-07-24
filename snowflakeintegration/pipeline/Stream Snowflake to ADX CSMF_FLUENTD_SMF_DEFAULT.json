@@ -31,7 +31,7 @@
 							"referenceName": "AzureBlobStorage_stunitycloud_SAS",
 							"type": "LinkedServiceReference"
 						},
-						"path": "mobilecoresteam"
+						"path": "mobilecoresmfsteam"
 					},
 					"translator": {
 						"type": "TabularTranslator",
