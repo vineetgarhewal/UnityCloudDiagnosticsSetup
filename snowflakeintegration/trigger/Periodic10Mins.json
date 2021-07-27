@@ -1,5 +1,5 @@
 {
-	"name": "Periodic5Mins",
+	"name": "Periodic10Mins",
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
@@ -21,7 +21,7 @@
 		"typeProperties": {
 			"recurrence": {
 				"frequency": "Minute",
-				"interval": 5,
+				"interval": 10,
 				"startTime": "2021-07-24T01:43:00Z",
 				"timeZone": "UTC"
 			}
