@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "SELECT top 10 * FROM MSLOGS.STREAM_CUPF_FLUENTD_UPF_DEFAULT",
+						"query": "SELECT * FROM MSLOGS.STREAM_CUPF_FLUENTD_UPF_DEFAULT",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
