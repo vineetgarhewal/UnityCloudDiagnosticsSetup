@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "SELECT top 10 * FROM MOBILITYCORELOCAL.MSLOGS.STREAM_CSMF_FLUENTD_SMF_DEFAULT",
+						"query": "SELECT top * FROM MOBILITYCORELOCAL.MSLOGS.STREAM_CSMF_FLUENTD_SMF_DEFAULT",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
