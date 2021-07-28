@@ -375,7 +375,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "SELECT top 10 * FROM MOBILITYCORELOCAL.MSLOGS.STREAM_CSMF_FLUENTD_SMF_DEFAULT",
+								"query": "SELECT * FROM MOBILITYCORELOCAL.MSLOGS.STREAM_CSMF_FLUENTD_SMF_DEFAULT",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -532,7 +532,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "SELECT top 10 * FROM MSLOGS.STREAM_CUPF_FLUENTD_UPF_DEFAULT",
+								"query": "SELECT * FROM MSLOGS.STREAM_CUPF_FLUENTD_UPF_DEFAULT",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -1216,7 +1216,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Periodic5Mins')]",
+			"name": "[concat(parameters('factoryName'), '/Periodic10Mins')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1242,7 +1242,7 @@
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Minute",
-						"interval": 5,
+						"interval": 10,
 						"startTime": "2021-07-24T01:43:00Z",
 						"timeZone": "UTC"
 					}
