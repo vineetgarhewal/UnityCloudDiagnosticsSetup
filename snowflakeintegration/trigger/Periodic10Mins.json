@@ -15,6 +15,12 @@
 					"referenceName": "Stream - STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "Stream - STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
