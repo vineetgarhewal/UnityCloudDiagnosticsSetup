@@ -6,7 +6,13 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Stream - LOGS_FLUENTD_SYSLOG_CSM_RAW",
+					"referenceName": "Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
+					"type": "PipelineReference"
+				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "Stream - STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW",
 					"type": "PipelineReference"
 				}
 			}
