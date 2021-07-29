@@ -1221,7 +1221,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -1251,6 +1251,74 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Src_LOGS_FLUENTD_ANY_RAW')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS",
+						"type": "TIMESTAMP_NTZ",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RAW_RECORD",
+						"type": "VARIANT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "FILE_NAME",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "LOGS_FLUENTD_SYSLOG_CSMF_RAW"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sink_LOGS_FLUENTD_ANY_RAW')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataExplorer_adxunitycloud",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TABLENAME": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [],
+				"typeProperties": {
+					"table": {
+						"value": "@dataset().TABLENAME",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataExplorer_adxunitycloud')]"
 			]
 		}
 	]
