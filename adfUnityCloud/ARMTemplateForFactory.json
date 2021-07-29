@@ -1222,7 +1222,15 @@
 			"properties": {
 				"annotations": [],
 				"runtimeState": "Stopped",
-				"pipelines": [],
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
@@ -1233,7 +1241,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Src_LOGS_FLUENTD_ANY_RAW')]",
@@ -1301,6 +1311,103 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataExplorer_adxunitycloud')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT * FROM MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FILE_NAME"
+										},
+										"sink": {
+											"name": "FILE_NAME",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_DEBUG_CSMF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2021-07-24T01:50:46Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]",
+				"[concat(variables('factoryId'), '/datasets/Sink_LOGS_FLUENTD_ANY_RAW')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_stunitycloud_SAS')]"
 			]
 		}
 	]
