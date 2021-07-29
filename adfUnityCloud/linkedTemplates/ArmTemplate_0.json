@@ -82,6 +82,26 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Periodic10Mins')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 10,
+						"startTime": "2021-07-24T01:43:00Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SinkADXMobilityCoreCSMF')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1005,163 +1025,6 @@
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresmfsteam"
-							},
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "SF_LOAD_TS",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "SF_LOAD_TS",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "TIMESTAMP",
-											"type": "String"
-										},
-										"sink": {
-											"name": "TIMESTAMP",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "KUBERNETES_CONTAINER_NAME",
-											"type": "String"
-										},
-										"sink": {
-											"name": "KUBERNETES_CONTAINER_NAME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "KUBERNETES_HOST",
-											"type": "String"
-										},
-										"sink": {
-											"name": "KUBERNETES_HOST",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "KUBERNETES_CONTAINER_IMAGE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "KUBERNETES_CONTAINER_IMAGE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DOCKER_CONTAINER_ID",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DOCKER_CONTAINER_ID",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DEBUG_STRING",
-											"type": "String"
-										},
-										"sink": {
-											"name": "DEBUG_STRING",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "LOG",
-											"type": "String"
-										},
-										"sink": {
-											"name": "LOG",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ORIGINAL_RECORD"
-										},
-										"sink": {
-											"name": "ORIGINAL_RECORD",
-											"type": "String"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SrcSnowflakeMobilityCoreLocalCSMF",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SinkADXMobilityCoreCSMF",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": [],
-				"lastPublishTime": "2021-07-24T01:50:46Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SrcSnowflakeMobilityCoreLocalCSMF')]",
-				"[concat(variables('factoryId'), '/datasets/SinkADXMobilityCoreCSMF')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_stunitycloud_SAS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SnowflakeSource",
-								"query": "SELECT * FROM MSLOGS.STREAM_CUPF_FLUENTD_UPF_DEFAULT",
-								"exportSettings": {
-									"type": "SnowflakeExportCopyCommand"
-								}
-							},
-							"sink": {
-								"type": "AzureDataExplorerSink"
-							},
-							"enableStaging": true,
-							"stagingSettings": {
-								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
-									"type": "LinkedServiceReference"
-								},
-								"path": "mobilecoresteam"
 							},
 							"translator": {
 								"type": "TabularTranslator",

@@ -1222,22 +1222,7 @@
 			"properties": {
 				"annotations": [],
 				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
+				"pipelines": [],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
@@ -1248,10 +1233,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Src_LOGS_FLUENTD_ANY_RAW')]",
