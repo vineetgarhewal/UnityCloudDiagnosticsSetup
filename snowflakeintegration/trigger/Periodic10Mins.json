@@ -6,12 +6,6 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Stream Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT",
-					"type": "PipelineReference"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "Stream Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT",
 					"type": "PipelineReference"
 				}
