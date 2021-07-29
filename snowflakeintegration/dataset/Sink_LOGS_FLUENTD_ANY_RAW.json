@@ -1,15 +1,23 @@
 {
-	"name": "Sink_LOGS_FLUENTD_DEBUG_CSMF_RAW",
+	"name": "Sink_LOGS_FLUENTD_ANY_RAW",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataExplorer_adxunitycloud",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"TABLENAME": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureDataExplorerTable",
 		"schema": [],
 		"typeProperties": {
-			"table": "LOGS_FLUENTD_DEBUG_CSMF_RAW"
+			"table": {
+				"value": "@dataset().TABLENAME",
+				"type": "Expression"
+			}
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
