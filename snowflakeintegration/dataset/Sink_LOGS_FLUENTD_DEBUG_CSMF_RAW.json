@@ -1,0 +1,16 @@
+{
+	"name": "Sink_LOGS_FLUENTD_DEBUG_CSMF_RAW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataExplorer_adxunitycloud",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [],
+		"typeProperties": {
+			"table": "LOGS_FLUENTD_DEBUG_CSMF_RAW"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
