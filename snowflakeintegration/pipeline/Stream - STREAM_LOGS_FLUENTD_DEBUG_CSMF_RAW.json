@@ -1,5 +1,5 @@
 {
-	"name": "Stream - LOGS_FLUENTD_SYSLOG_CSM_RAW",
+	"name": "Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
 	"properties": {
 		"activities": [
 			{
@@ -77,7 +77,7 @@
 						"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
 						"type": "DatasetReference",
 						"parameters": {
-							"TABLENAME": "LOGS_FLUENTD_SYSLOG_CSMF_RAW"
+							"TABLENAME": "LOGS_FLUENTD_DEBUG_CSMF_RAW"
 						}
 					}
 				]
