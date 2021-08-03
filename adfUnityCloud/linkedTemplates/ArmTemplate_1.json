@@ -63,6 +63,15 @@
 									},
 									{
 										"source": {
+											"name": "TIMESTAMP"
+										},
+										"sink": {
+											"name": "TIMESTAMP",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
 											"name": "RAW_RECORD"
 										},
 										"sink": {
@@ -77,15 +86,6 @@
 										"sink": {
 											"name": "FILE_NAME",
 											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "TIMESTAMP"
-										},
-										"sink": {
-											"name": "TIMESTAMP",
-											"type": "DateTime"
 										}
 									}
 								]
