@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "SELECT * FROM MSLOGS.STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW",
+						"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS TIMESTAMP, * FROM MSLOGS.STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
@@ -61,6 +61,14 @@
 								"sink": {
 									"name": "FILE_NAME",
 									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TIMESTAMP"
+								},
+								"sink": {
+									"name": "TIMESTAMP"
 								}
 							}
 						]
