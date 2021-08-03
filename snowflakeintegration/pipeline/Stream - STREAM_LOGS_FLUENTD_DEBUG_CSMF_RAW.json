@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS TIMESTAMP, * FROM MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
+						"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS AT_TIMESTAMP, * FROM MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
@@ -47,10 +47,10 @@
 							},
 							{
 								"source": {
-									"name": "TIMESTAMP"
+									"name": "AT_TIMESTAMP"
 								},
 								"sink": {
-									"name": "TIMESTAMP",
+									"name": "AT_TIMESTAMP",
 									"type": "DateTime"
 								}
 							},
