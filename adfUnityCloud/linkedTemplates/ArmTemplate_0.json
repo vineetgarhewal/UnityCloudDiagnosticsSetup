@@ -990,7 +990,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "SELECT * FROM MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -1024,15 +1024,6 @@
 										},
 										"sink": {
 											"name": "RAW_RECORD",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FILE_NAME"
-										},
-										"sink": {
-											"name": "FILE_NAME",
 											"type": "String"
 										}
 									}
