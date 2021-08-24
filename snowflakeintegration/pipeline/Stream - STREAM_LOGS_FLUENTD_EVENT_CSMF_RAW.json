@@ -68,7 +68,7 @@
 						"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
 						"type": "DatasetReference",
 						"parameters": {
-							"TABLENAME": "LOGS_FLUENTD_DEBUG_CSMF_RAW"
+							"TABLENAME": "LOGS_FLUENTD_EVENT_CSMF_RAW"
 						}
 					}
 				]
