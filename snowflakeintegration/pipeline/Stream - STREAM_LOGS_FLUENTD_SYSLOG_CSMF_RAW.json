@@ -53,15 +53,6 @@
 									"name": "RAW_RECORD",
 									"type": "String"
 								}
-							},
-							{
-								"source": {
-									"name": "FILE_NAME"
-								},
-								"sink": {
-									"name": "FILE_NAME",
-									"type": "String"
-								}
 							}
 						]
 					}
