@@ -656,7 +656,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Manual Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT updated')]",
+			"name": "[concat(parameters('factoryName'), '/Manual Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
