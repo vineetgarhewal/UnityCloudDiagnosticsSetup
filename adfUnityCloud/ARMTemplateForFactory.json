@@ -41,7 +41,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Manual Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT')]",
+			"name": "[concat(parameters('factoryName'), '/Manual Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT updated')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
