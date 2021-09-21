@@ -188,6 +188,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:46:17Z"
 			},
@@ -345,6 +349,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:46:17Z"
 			},
@@ -433,6 +441,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:50:46Z"
 			},
@@ -521,6 +533,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:50:46Z"
 			},
@@ -609,6 +625,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:50:46Z"
 			},
@@ -697,6 +717,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:50:46Z"
 			},
@@ -785,6 +809,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:50:46Z"
 			},
@@ -873,6 +901,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:50:46Z"
 			},
@@ -1030,6 +1062,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:50:46Z"
 			},
@@ -1187,6 +1223,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": [],
 				"lastPublishTime": "2021-07-24T01:50:46Z"
 			},
@@ -1853,13 +1893,6 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -1877,8 +1910,7 @@
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]"
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]"
 			]
 		}
 	]
