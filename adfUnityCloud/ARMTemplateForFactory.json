@@ -1912,6 +1912,36 @@
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 10,
+						"startTime": "2021-10-22T17:01:00Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]"
+			]
 		}
 	]
 }
