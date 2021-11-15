@@ -7,7 +7,7 @@ This page describes the usage of Cloud Exposure Tool for Unity Cloud logs and me
 * Query the logs and metrics from Azure Data Explorer 
 * Sample Queries
 
-## Provision Azure Services for diagnostics pipeline
+## Provision Azure Services for diagnostics pipeline.
 
 #### Overview
 Diagnostics Pipeline depends on the Azure Data Factory to read the logs from Azure Blob Storage and ingest into Azure Data Explorer to make it query-able throgh KQL Queries and be able to view using Grafana dashboard. 
