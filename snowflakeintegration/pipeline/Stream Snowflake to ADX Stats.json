@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT",
+				"name": "Snowflake to ADX Stats",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
