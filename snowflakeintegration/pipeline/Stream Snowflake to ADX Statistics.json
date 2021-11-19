@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Snowflake to ADX Stats",
+				"name": "Snowflake to ADX Statistics",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
