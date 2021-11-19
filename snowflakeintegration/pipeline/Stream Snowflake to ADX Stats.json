@@ -37,31 +37,43 @@
 						"type": "TabularTranslator",
 						"mappings": [
 							{
+								"source": {
+									"name": "FED_UNIQUE_NAME",
+									"type": "String"
+								},
 								"sink": {
-									"name": "LOAD_TIME",
+									"name": "FED_UNIQUE_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "SF_LOAD_TS_EST",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "SF_LOAD_TS_EST",
 									"type": "DateTime"
 								}
 							},
 							{
 								"source": {
-									"name": "TIME",
-									"type": "DateTime"
+									"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
+									"type": "Int64"
 								},
 								"sink": {
-									"name": "TIME",
-									"type": "DateTime"
+									"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
+									"type": "Int64"
 								}
 							},
 							{
+								"source": {
+									"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
+									"type": "Int64"
+								},
 								"sink": {
-									"name": "HANDOVER_ATTEMPTS",
-									"type": "Int32"
-								}
-							},
-							{
-								"sink": {
-									"name": "HANDOVER_SUCCESSES",
-									"type": "Int32"
+									"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
+									"type": "Int64"
 								}
 							}
 						]
