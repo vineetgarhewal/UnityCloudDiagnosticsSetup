@@ -34,7 +34,79 @@
 						"path": "mobilecoresteam"
 					},
 					"translator": {
-						"type": "TabularTranslator"
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "SF_LOAD_TS_EST",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "SF_LOAD_TS_EST",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "TIME",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "TIME",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "FED_UNIQUE_NAME",
+									"type": "String"
+								},
+								"sink": {
+									"name": "FED_UNIQUE_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "SMFCC_EPS_TO_5GS_HANDOVER_ATTEMPTS",
+									"type": "String"
+								},
+								"sink": {
+									"name": "SMFCC_EPS_TO_5GS_HANDOVER_ATTEMPTS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "SMFCC_EPS_TO_5GS_HANDOVER_SUCCESSES",
+									"type": "String"
+								},
+								"sink": {
+									"name": "SMFCC_EPS_TO_5GS_HANDOVER_SUCCESSES",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
+									"type": "Int64"
+								}
+							}
+						]
 					}
 				},
 				"inputs": [
