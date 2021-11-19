@@ -136,7 +136,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "SinkADXMobilityCoreCSMF",
+						"referenceName": "SinkADXMobilityCoreStatistics",
 						"type": "DatasetReference"
 					}
 				]
