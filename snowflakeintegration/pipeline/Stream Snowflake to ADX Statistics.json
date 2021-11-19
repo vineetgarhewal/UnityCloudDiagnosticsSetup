@@ -34,49 +34,7 @@
 						"path": "mobilecoresteam"
 					},
 					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "SF_LOAD_TS_EST",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "LOAD_TIME",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "TIME",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "TIME",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
-									"type": "Int64"
-								},
-								"sink": {
-									"name": "HANDOVER_ATTEMPTS",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
-									"type": "Int64"
-								},
-								"sink": {
-									"name": "HANDOVER_SUCCESSES",
-									"type": "Int32"
-								}
-							}
-						]
+						"type": "TabularTranslator"
 					}
 				},
 				"inputs": [
