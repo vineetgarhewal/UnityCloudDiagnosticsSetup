@@ -65,6 +65,36 @@
 									"name": "TIME",
 									"type": "DateTime"
 								}
+							},
+							{
+								"source": {
+									"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
+									"type": "Int64"
+								}
 							}
 						]
 					}
