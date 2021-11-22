@@ -68,19 +68,37 @@
 							},
 							{
 								"source": {
-									"name": "ZEROIFNULL(SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS)"
+									"name": "ZEROIFNULL(SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_ATTEMPTS)"
 								},
 								"sink": {
-									"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
+									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_ATTEMPTS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "ZEROIFNULL(SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES)"
+									"name": "ZEROIFNULL(SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_SUCCESSES)"
 								},
 								"sink": {
-									"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
+									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_SUCCESSES",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "ZEROIFNULL(SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_ATTEMPTS)"
+								},
+								"sink": {
+									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_ATTEMPTS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "ZEROIFNULL(SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_SUCCESSES)"
+								},
+								"sink": {
+									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_SUCCESSES",
 									"type": "Int64"
 								}
 							}
@@ -95,7 +113,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "SinkADXMobilityCore_SMFCC_PROCEDURE",
+						"referenceName": "SinkADXMobilityCore_SMFCC_INTERFACE",
 						"type": "DatasetReference"
 					}
 				]
