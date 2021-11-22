@@ -67,24 +67,18 @@
 								}
 							},
 							{
-								"sink": {
-									"name": "SMFCC_EPS_TO_5GS_HANDOVER_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"sink": {
-									"name": "SMFCC_EPS_TO_5GS_HANDOVER_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
+								"source": {
+									"name": "ZEROIFNULL(SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS)"
+								},
 								"sink": {
 									"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
 									"type": "Int64"
 								}
 							},
 							{
+								"source": {
+									"name": "ZEROIFNULL(SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES)"
+								},
 								"sink": {
 									"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
 									"type": "Int64"
