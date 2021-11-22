@@ -32,6 +32,68 @@
 							"type": "LinkedServiceReference"
 						},
 						"path": "mobilecoresteam"
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "FED_UNIQUE_NAME",
+									"type": "String"
+								},
+								"sink": {
+									"name": "FED_UNIQUE_NAME",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "SF_LOAD_TS_EST",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "SF_LOAD_TS_EST",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "TIME",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "TIME",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "ZEROIFNULL(SMFCC_GTPC_CREATE_SESSION_ATTEMPTS)"
+								},
+								"sink": {
+									"name": "SMFCC_GTPC_CREATE_SESSION_ATTEMPTS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "ZEROIFNULL(SMFCC_GTPC_CREATE_SESSION_ACCEPTS)"
+								},
+								"sink": {
+									"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "ZEROIFNULL(SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS)"
+								},
+								"sink": {
+									"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
+									"type": "Int64"
+								}
+							}
+						]
 					}
 				},
 				"inputs": [
