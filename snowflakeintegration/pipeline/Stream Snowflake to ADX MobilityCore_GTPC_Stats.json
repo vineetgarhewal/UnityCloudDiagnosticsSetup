@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select FED_UNIQUE_NAME, SF_LOAD_TS_EST, TIME, SMFCC_GTPC_CREATE_SESSION_ATTEMPTS, SMFCC_GTPC_CREATE_SESSION_ACCEPTS, SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS, SMFCC_GTPC_UPDATE_BEARER_SUCCESSES from  MOBILITYCORE.MOB_PM_CORE_METRICS_5G_NORTHRIM.SMFCC_GTPCINTERFACE",
+						"query": "select FED_UNIQUE_NAME, SF_LOAD_TS_EST, TIME, \nzeroifnull(SMFCC_GTPC_CREATE_SESSION_ATTEMPTS), \nzeroifnull(SMFCC_GTPC_CREATE_SESSION_ACCEPTS), \nzeroifnull(SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS), \nzeroifnull(SMFCC_GTPC_UPDATE_BEARER_SUCCESSES)\nfrom  MOBILITYCORE.MOB_PM_CORE_METRICS_5G_NORTHRIM.SMFCC_GTPCINTERFACE",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
@@ -32,61 +32,6 @@
 							"type": "LinkedServiceReference"
 						},
 						"path": "mobilecoresteam"
-					},
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "FED_UNIQUE_NAME",
-									"type": "String"
-								},
-								"sink": {
-									"name": "FED_UNIQUE_NAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SF_LOAD_TS_EST",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "SF_LOAD_TS_EST",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "TIME",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "TIME",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
-									"type": "Int64"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
-									"type": "Int64"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
-									"type": "Int64"
-								}
-							}
-						]
 					}
 				},
 				"inputs": [
