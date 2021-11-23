@@ -92,6 +92,15 @@
 									"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
 									"type": "Int64"
 								}
+							},
+							{
+								"source": {
+									"name": "ZEROIFNULL(SMFCC_GTPC_UPDATE_BEARER_SUCCESSES)"
+								},
+								"sink": {
+									"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
+									"type": "Int64"
+								}
 							}
 						]
 					}
