@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select FED_UNIQUE_NAME, SF_LOAD_TS_EST, TIME, \nzeroifnull(SMFCC_GTPC_CREATE_SESSION_ATTEMPTS), \nzeroifnull(SMFCC_GTPC_CREATE_SESSION_ACCEPTS), \nzeroifnull(SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS), \nzeroifnull(SMFCC_GTPC_UPDATE_BEARER_SUCCESSES)\nfrom  MOBILITYCORE.MOB_PM_CORE_METRICS_5G_NORTHRIM.SMFCC_GTPCINTERFACE",
+						"query": "select FED_UNIQUE_NAME, SF_LOAD_TS_EST, TIME, \nzeroifnull(SMFCC_GTPC_CREATE_SESSION_ATTEMPTS), \nzeroifnull(SMFCC_GTPC_CREATE_SESSION_ACCEPTS), \nzeroifnull(SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS), \nzeroifnull(SMFCC_GTPC_UPDATE_BEARER_SUCCESSES)\nfrom  MOBILITYCORE.MOB_PM_CORE_METRICS_5G_NORTHRIM.SMFCC_GTPCINTERFACE where substr(FED_UNIQUE_NAME, 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
