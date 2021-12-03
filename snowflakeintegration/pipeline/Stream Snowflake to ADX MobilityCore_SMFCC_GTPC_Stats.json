@@ -1,5 +1,5 @@
 {
-	"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_Stats_copy1",
+	"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_Stats",
 	"properties": {
 		"activities": [
 			{
