@@ -10,8 +10,7 @@
 					"referenceName": "AzureKeyVault1",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "SnowflakeMobilityCoreLocalSysAdminConnectionString",
-				"secretVersion": "bea8cc1fd68b4cb588264aba6dafb89a"
+				"secretName": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
 			}
 		}
 	},
