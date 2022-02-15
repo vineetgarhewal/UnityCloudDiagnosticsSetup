@@ -1,0 +1,111 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "unitycloudADF"
+		},
+		"AzureBlobStorage_stunitycloud_Identity_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://stunitycloud.blob.core.windows.net"
+		},
+		"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
+			"type": "string",
+			"defaultValue": "BlobstunitycloudSas"
+		},
+		"AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint": {
+			"type": "string",
+			"defaultValue": "https://adxunitycloud.eastus2.kusto.windows.net"
+		},
+		"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "mobilitycore"
+		},
+		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-unityclouddiag.vault.azure.net/"
+		},
+		"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "SnowflakeMobilityCoreSysAdminConnectionString"
+		},
+		"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "unitycloudADF_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage_stunitycloud_Identity_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('AzureBlobStorage_stunitycloud_Identity_properties_typeProperties_serviceEndpoint')]"
+					},
+					"AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint": {
+						"value": "[parameters('AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint')]"
+					},
+					"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
+						"value": "[parameters('AzureDataExplorer_adxunitycloud_properties_typeProperties_database')]"
+					},
+					"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl')]"
+					},
+					"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
+						"value": "[parameters('AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName')]"
+					},
+					"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName')]"
+					},
+					"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "unitycloudADF_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'unitycloudADF_ArmTemplate_0')]"
+			]
+		}
+	]
+}

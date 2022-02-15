@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "unitycloudADF"
+		},
+		"AzureBlobStorage_stunitycloud_Identity_properties_typeProperties_serviceEndpoint": {
+			"value": "https://stunitycloud.blob.core.windows.net"
+		},
+		"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
+			"value": "BlobstunitycloudSas"
+		},
+		"AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint": {
+			"value": "https://adxunitycloud.eastus2.kusto.windows.net"
+		},
+		"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
+			"value": "mobilitycore"
+		},
+		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
+			"value": "https://kv-unityclouddiag.vault.azure.net/"
+		},
+		"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
+			"value": "SnowflakeMobilityCoreSysAdminConnectionString"
+		},
+		"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
+			"value": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
