@@ -1,0 +1,9 @@
+{
+	"name": "unitycloudADF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "80eaa0a8-db0c-4766-8e3e-12b33b095303",
+		"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+	}
+}
