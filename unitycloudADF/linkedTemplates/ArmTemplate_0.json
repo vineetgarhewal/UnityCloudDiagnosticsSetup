@@ -13,7 +13,7 @@
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint": {
 			"type": "string",
-			"defaultValue": "https://adxunitycloud.eastus2.kusto.windows.net"
+			"defaultValue": "https://unitycloudadx.eastus.kusto.windows.net"
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
 			"type": "string",
@@ -21,7 +21,11 @@
 		},
 		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://kv-unityclouddiag.vault.azure.net/"
+			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
 		},
 		"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
 			"type": "string",
@@ -77,6 +81,19 @@
 				"type": "AzureKeyVault",
 				"typeProperties": {
 					"baseUrl": "[parameters('AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
 				}
 			},
 			"dependsOn": []
@@ -284,7 +301,7 @@
 					"connectionString": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
-							"referenceName": "AzureKeyVault_kv_unityclouddiag",
+							"referenceName": "AzureKeyVault1",
 							"type": "LinkedServiceReference"
 						},
 						"secretName": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
@@ -292,7 +309,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault_kv_unityclouddiag')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
 			]
 		},
 		{
@@ -2617,7 +2634,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -2684,163 +2701,11 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
 			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreCUPF')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIMESTAMP",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_HOST",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_IMAGE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DOCKER_CONTAINER_ID",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DEBUG_STRING",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "LOG",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ORIGINAL_RECORD",
-						"type": "VARIANT",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "CUPF_FLUENTD_UPF_DEFAULT"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreDemo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIMESTAMP",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_HOST",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_IMAGE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DOCKER_CONTAINER_ID",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DEBUG_STRING",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "LOG",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ORIGINAL_RECORD",
-						"type": "VARIANT",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "CSMF_FLUENTD_SMF_DEFAULT"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreLocalCSMF')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -2908,7 +2773,83 @@
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "UNITYCLOUDLOGSDEMO"
+					"table": "CUPF_FLUENTD_UPF_DEFAULT"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreDemo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS",
+						"type": "TIMESTAMP_NTZ",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "TIMESTAMP",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "KUBERNETES_CONTAINER_NAME",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "KUBERNETES_HOST",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "KUBERNETES_CONTAINER_IMAGE",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "DOCKER_CONTAINER_ID",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "DEBUG_STRING",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "LOG",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ORIGINAL_RECORD",
+						"type": "VARIANT",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "CSMF_FLUENTD_SMF_DEFAULT"
 				}
 			},
 			"dependsOn": [

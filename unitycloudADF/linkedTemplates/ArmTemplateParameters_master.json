@@ -12,19 +12,22 @@
 			"value": "BlobstunitycloudSas"
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint": {
-			"value": "https://adxunitycloud.eastus2.kusto.windows.net"
+			"value": "https://unitycloudadx.eastus.kusto.windows.net"
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
 			"value": "mobilitycore"
 		},
 		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
-			"value": "https://kv-unityclouddiag.vault.azure.net/"
+			"value": "https://unitycloudkeyvault.vault.azure.net/"
 		},
 		"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
 			"value": "SnowflakeMobilityCoreSysAdminConnectionString"
 		},
 		"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
 			"value": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://unitycloudkeyvault.vault.azure.net/"
 		},
 		"containerUri": {
 			"value": ""

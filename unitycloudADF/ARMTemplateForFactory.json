@@ -17,7 +17,7 @@
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint": {
 			"type": "string",
-			"defaultValue": "https://adxunitycloud.eastus2.kusto.windows.net"
+			"defaultValue": "https://unitycloudadx.eastus.kusto.windows.net"
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
 			"type": "string",
@@ -25,7 +25,7 @@
 		},
 		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://kv-unityclouddiag.vault.azure.net/"
+			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
 		},
 		"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
@@ -34,6 +34,10 @@
 		"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
 		}
 	},
 	"variables": {
@@ -4102,7 +4106,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -4169,7 +4173,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
 			]
 		},
 		{
@@ -4178,7 +4182,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -4245,7 +4249,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
 			]
 		},
 		{
@@ -4254,7 +4258,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -4321,7 +4325,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
 			]
 		},
 		{
@@ -4612,7 +4616,7 @@
 					"connectionString": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
-							"referenceName": "AzureKeyVault_kv_unityclouddiag",
+							"referenceName": "AzureKeyVault1",
 							"type": "LinkedServiceReference"
 						},
 						"secretName": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
@@ -4620,7 +4624,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault_kv_unityclouddiag')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
 			]
 		},
 		{
@@ -4714,6 +4718,19 @@
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
