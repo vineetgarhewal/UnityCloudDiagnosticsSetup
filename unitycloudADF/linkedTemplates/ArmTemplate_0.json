@@ -318,7 +318,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -1081,7 +1081,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
 			]
 		},
 		{
@@ -1090,7 +1090,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -1853,7 +1853,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
 			]
 		},
 		{
@@ -1862,7 +1862,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -2625,7 +2625,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCore')]"
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
 			]
 		},
 		{
