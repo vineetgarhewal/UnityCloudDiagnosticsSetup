@@ -2,7 +2,7 @@
 	"name": "SrcSnowflakeMobilityCoreDemo",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
