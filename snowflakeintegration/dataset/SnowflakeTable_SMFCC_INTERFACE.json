@@ -2,7 +2,7 @@
 	"name": "SnowflakeTable_SMFCC_INTERFACE",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Snowflake_UnityCloudFFA_MobilityCore",
+			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
