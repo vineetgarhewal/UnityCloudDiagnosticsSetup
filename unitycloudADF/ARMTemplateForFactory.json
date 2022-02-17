@@ -23,6 +23,10 @@
 			"type": "string",
 			"defaultValue": "mobilitycore"
 		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
+		},
 		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
@@ -35,9 +39,9 @@
 			"type": "string",
 			"defaultValue": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
 		},
-		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+		"linkedService1_properties_typeProperties_sasUri_secretName": {
 			"type": "string",
-			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
+			"defaultValue": "StagingBlobSas"
 		}
 	},
 	"variables": {
@@ -398,7 +402,7 @@
 							"enableStaging": true,
 							"stagingSettings": {
 								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"referenceName": "linkedService1",
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresteam"
@@ -455,7 +459,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]",
 				"[concat(variables('factoryId'), '/datasets/Sink_LOGS_FLUENTD_ANY_RAW')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_stunitycloud_SAS')]"
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
 			]
 		},
 		{
@@ -4571,6 +4575,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureKeyVault_kv_unityclouddiag')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -4620,6 +4637,28 @@
 							"type": "LinkedServiceReference"
 						},
 						"secretName": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/linkedService1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"sasUri": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault1",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('linkedService1_properties_typeProperties_sasUri_secretName')]"
 					}
 				}
 			},
@@ -4718,19 +4757,6 @@
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }

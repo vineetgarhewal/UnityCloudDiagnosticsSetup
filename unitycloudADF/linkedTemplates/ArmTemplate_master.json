@@ -23,6 +23,10 @@
 			"type": "string",
 			"defaultValue": "mobilitycore"
 		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
+		},
 		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
@@ -35,9 +39,9 @@
 			"type": "string",
 			"defaultValue": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
 		},
-		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+		"linkedService1_properties_typeProperties_sasUri_secretName": {
 			"type": "string",
-			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
+			"defaultValue": "StagingBlobSas"
 		},
 		"containerUri": {
 			"type": "string",
@@ -75,11 +79,11 @@
 					"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
 						"value": "[parameters('AzureDataExplorer_adxunitycloud_properties_typeProperties_database')]"
 					},
-					"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
-						"value": "[parameters('AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl')]"
-					},
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl')]"
 					},
 					"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
 						"value": "[parameters('AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName')]"
@@ -89,6 +93,9 @@
 					},
 					"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
+					},
+					"linkedService1_properties_typeProperties_sasUri_secretName": {
+						"value": "[parameters('linkedService1_properties_typeProperties_sasUri_secretName')]"
 					}
 				}
 			},

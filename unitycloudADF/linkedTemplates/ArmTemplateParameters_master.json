@@ -17,6 +17,9 @@
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
 			"value": "mobilitycore"
 		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://unitycloudkeyvault.vault.azure.net/"
+		},
 		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
 			"value": "https://unitycloudkeyvault.vault.azure.net/"
 		},
@@ -26,8 +29,8 @@
 		"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
 			"value": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
 		},
-		"AzureKeyVault1_properties_typeProperties_baseUrl": {
-			"value": "https://unitycloudkeyvault.vault.azure.net/"
+		"linkedService1_properties_typeProperties_sasUri_secretName": {
+			"value": "StagingBlobSas"
 		},
 		"containerUri": {
 			"value": ""
