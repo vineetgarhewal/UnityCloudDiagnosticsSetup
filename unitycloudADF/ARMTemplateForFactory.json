@@ -494,7 +494,7 @@
 							"enableStaging": true,
 							"stagingSettings": {
 								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"referenceName": "linkedService1",
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresteam"
@@ -551,7 +551,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]",
 				"[concat(variables('factoryId'), '/datasets/Sink_LOGS_FLUENTD_ANY_RAW')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_stunitycloud_SAS')]"
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
 			]
 		},
 		{
@@ -586,7 +586,7 @@
 							"enableStaging": true,
 							"stagingSettings": {
 								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"referenceName": "linkedService1",
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresteam"
@@ -643,7 +643,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]",
 				"[concat(variables('factoryId'), '/datasets/Sink_LOGS_FLUENTD_ANY_RAW')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_stunitycloud_SAS')]"
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
 			]
 		},
 		{
@@ -678,7 +678,7 @@
 							"enableStaging": true,
 							"stagingSettings": {
 								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"referenceName": "linkedService1",
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresteam"
@@ -735,7 +735,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]",
 				"[concat(variables('factoryId'), '/datasets/Sink_LOGS_FLUENTD_ANY_RAW')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_stunitycloud_SAS')]"
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
 			]
 		},
 		{
@@ -770,7 +770,7 @@
 							"enableStaging": true,
 							"stagingSettings": {
 								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"referenceName": "linkedService1",
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresteam"
@@ -827,7 +827,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]",
 				"[concat(variables('factoryId'), '/datasets/Sink_LOGS_FLUENTD_ANY_RAW')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_stunitycloud_SAS')]"
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
 			]
 		},
 		{
@@ -862,7 +862,7 @@
 							"enableStaging": true,
 							"stagingSettings": {
 								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"referenceName": "linkedService1",
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresteam"
@@ -919,7 +919,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]",
 				"[concat(variables('factoryId'), '/datasets/Sink_LOGS_FLUENTD_ANY_RAW')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_stunitycloud_SAS')]"
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
 			]
 		},
 		{
