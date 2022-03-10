@@ -33,6 +33,12 @@
 					"referenceName": "Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
