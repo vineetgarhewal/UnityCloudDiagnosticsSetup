@@ -315,8 +315,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "SMFCC_PGW_MODIFY_BEARER_REQUEST_SUCCESSES"
+								},
 								"sink": {
-									"name": "SMFCC_PGW_MODIFY_BEARER_REQUEST_SUCCESSESL",
+									"name": "SMFCC_PGW_MODIFY_BEARER_REQUEST_SUCCESSES",
 									"type": "Int64"
 								}
 							},
