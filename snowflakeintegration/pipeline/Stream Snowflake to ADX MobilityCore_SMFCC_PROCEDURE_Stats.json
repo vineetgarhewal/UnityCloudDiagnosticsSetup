@@ -38,8 +38,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "FED_UNIQUE_NAME",
-									"type": "String"
+									"name": "FED_UNIQUE_NAME"
 								},
 								"sink": {
 									"name": "FED_UNIQUE_NAME",
@@ -48,8 +47,7 @@
 							},
 							{
 								"source": {
-									"name": "SF_LOAD_TS_EST",
-									"type": "DateTime"
+									"name": "SF_LOAD_TS_EST"
 								},
 								"sink": {
 									"name": "SF_LOAD_TS_EST",
@@ -58,8 +56,7 @@
 							},
 							{
 								"source": {
-									"name": "TIME",
-									"type": "DateTime"
+									"name": "TIME"
 								},
 								"sink": {
 									"name": "TIME",
