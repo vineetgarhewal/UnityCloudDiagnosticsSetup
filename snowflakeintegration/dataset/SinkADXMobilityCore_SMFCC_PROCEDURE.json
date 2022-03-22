@@ -7,7 +7,28 @@
 		},
 		"annotations": [],
 		"type": "AzureDataExplorerTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "FED_UNIQUE_NAME",
+				"type": "string"
+			},
+			{
+				"name": "SF_LOAD_TS_EST",
+				"type": "datetime"
+			},
+			{
+				"name": "TIME",
+				"type": "datetime"
+			},
+			{
+				"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
+				"type": "long"
+			},
+			{
+				"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
+				"type": "long"
+			}
+		],
 		"typeProperties": {
 			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_PROCEDURE"
 		}
