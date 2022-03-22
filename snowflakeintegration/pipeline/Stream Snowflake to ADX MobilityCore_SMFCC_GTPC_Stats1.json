@@ -27,7 +27,7 @@
 					"enableStaging": true,
 					"stagingSettings": {
 						"linkedServiceName": {
-							"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+							"referenceName": "linkedService1",
 							"type": "LinkedServiceReference"
 						},
 						"path": "mobilecoresteam"
