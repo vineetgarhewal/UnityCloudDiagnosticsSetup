@@ -760,7 +760,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "METRICS",
+			"schema": "MSLOGS",
 			"table": "STREAM_SMFCC_GTPCINTERFACE"
 		}
 	}
