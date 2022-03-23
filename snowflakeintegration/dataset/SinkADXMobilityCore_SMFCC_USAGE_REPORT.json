@@ -1,0 +1,89 @@
+{
+	"name": "SinkADXMobilityCore_SMFCC_USAGE_REPORT",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataExplorer_adxunitycloud",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [
+			{
+				"name": "SF_LOAD_TS_EST",
+				"type": "datetime"
+			},
+			{
+				"name": "TIME",
+				"type": "datetime"
+			},
+			{
+				"name": "FED_UNIQUE_NAME",
+				"type": "string"
+			},
+			{
+				"name": "APPNAME",
+				"type": "string"
+			},
+			{
+				"name": "POD",
+				"type": "string"
+			},
+			{
+				"name": "SNSSAI",
+				"type": "string"
+			},
+			{
+				"name": "APPLICATIONID",
+				"type": "string"
+			},
+			{
+				"name": "RATINGGROUP",
+				"type": "long"
+			},
+			{
+				"name": "SERVICEID",
+				"type": "long"
+			},
+			{
+				"name": "QUOTATYPE",
+				"type": "string"
+			},
+			{
+				"name": "SMFCC_USAGE_REPORT_TOTAL_VOLUME",
+				"type": "long"
+			},
+			{
+				"name": "SMFCC_USAGE_REPORT_DOWNLINK_VOLUME",
+				"type": "long"
+			},
+			{
+				"name": "SMFCC_USAGE_REPORT_UPLINK_VOLUME",
+				"type": "long"
+			},
+			{
+				"name": "SMFCC_USAGE_REPORT_DROP_COUNT",
+				"type": "long"
+			},
+			{
+				"name": "SMFCC_USAGE_REPORT_ADC_START_COUNT",
+				"type": "long"
+			},
+			{
+				"name": "SMFCC_USAGE_REPORT_ADC_STOP_COUNT",
+				"type": "long"
+			},
+			{
+				"name": "RECEIVED_FILE_NAME",
+				"type": "string"
+			},
+			{
+				"name": "FILE_ROW_NUMBER",
+				"type": "long"
+			}
+		],
+		"typeProperties": {
+			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_USAGE_REPORT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
