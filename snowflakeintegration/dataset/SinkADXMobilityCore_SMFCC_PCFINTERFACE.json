@@ -25,10 +25,6 @@
 				"type": "string"
 			},
 			{
-				"name": "POD",
-				"type": "string"
-			},
-			{
 				"name": "DNN",
 				"type": "string"
 			},
@@ -41,67 +37,71 @@
 				"type": "string"
 			},
 			{
+				"name": "POD",
+				"type": "string"
+			},
+			{
 				"name": "PEERID",
 				"type": "string"
 			},
 			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
 				"type": "long"
 			},
 			{
@@ -114,7 +114,7 @@
 			}
 		],
 		"typeProperties": {
-			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_CHFINTERFACE"
+			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_PCFINTERFACE"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
