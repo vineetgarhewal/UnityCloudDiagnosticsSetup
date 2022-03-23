@@ -1,0 +1,162 @@
+{
+	"name": "SrcSnowflakeMobilityCoreSMFCC_MONITOR_SERVICE_INTERFACE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "SF_LOAD_TS_EST",
+				"precision": 29,
+				"scale": 9
+			},
+			{
+				"name": "TIME",
+				"precision": 29,
+				"scale": 9
+			},
+			{
+				"name": "FED_UNIQUE_NAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "APPNAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "POD",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DNN",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SNSSAI",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CAUSECODE",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PEERID",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "RECEIVED_FILE_NAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FILE_ROW_NUMBER",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ACTION",
+				"precision": 6,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ISUPDATE",
+				"precision": 1,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ROW_ID",
+				"precision": 40,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "MSLOGS",
+			"table": "STREAM_SMFCC_CHFINTERFACE"
+		}
+	}
+}
