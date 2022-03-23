@@ -34,97 +34,17 @@
 				"scale": 0
 			},
 			{
-				"name": "DNN",
+				"name": "GAUGE",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "SNSSAI",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "CAUSECODE",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "PEERID",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
+				"name": "SMFCC_GET_SMFCC_GAUGE_ATTEMPTS",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
+				"name": "SMFCC_GET_SMFCC_GAUGE_SUCCESS",
 				"precision": 38,
 				"scale": 0
 			},
@@ -156,7 +76,7 @@
 		],
 		"typeProperties": {
 			"schema": "MSLOGS",
-			"table": "STREAM_SMFCC_CHFINTERFACE"
+			"table": "STREAM_SMFCC_MONITOR_SERVICE_INTERFACE"
 		}
 	}
 }
