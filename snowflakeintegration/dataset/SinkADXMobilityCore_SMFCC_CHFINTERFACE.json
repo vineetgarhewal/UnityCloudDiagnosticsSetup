@@ -41,139 +41,67 @@
 				"type": "string"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_SESSION_ATTEMPTS",
+				"name": "PEERID",
+				"type": "string"
+			},
+			{
+				"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS",
+				"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_SESSION_REJECTS",
+				"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_SESSION_ATTEMPTS",
+				"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_SESSION_SUCCESSES",
+				"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_SESSION_FAILURES",
+				"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_ATTEMPTS",
+				"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_SUCCESSES",
+				"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_FAILURES",
+				"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_BEARER_ATTEMPTS",
+				"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_BEARER_SUCCESSES",
+				"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_BEARER_FAILURES",
+				"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
+				"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
+				"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_UPDATE_BEARER_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ACCEPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_CREATE_SESSION_REJECTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_SESSION_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_SESSION_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_SESSION_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_FAILURES",
+				"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
 				"type": "long"
 			},
 			{
@@ -186,7 +114,7 @@
 			}
 		],
 		"typeProperties": {
-			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_GTPCINTERFACE"
+			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_CHFINTERFACE"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
