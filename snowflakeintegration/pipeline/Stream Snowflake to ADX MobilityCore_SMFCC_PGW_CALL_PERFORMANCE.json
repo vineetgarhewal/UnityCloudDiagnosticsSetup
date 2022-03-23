@@ -82,15 +82,6 @@
 							},
 							{
 								"source": {
-									"name": "DNN"
-								},
-								"sink": {
-									"name": "DNN",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"name": "SNSSAI"
 								},
 								"sink": {
@@ -100,317 +91,83 @@
 							},
 							{
 								"source": {
-									"name": "CAUSECODE"
+									"name": "QCI"
 								},
 								"sink": {
-									"name": "CAUSECODE",
+									"name": "QCI",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "ARP"
+								},
+								"sink": {
+									"name": "ARP",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "CAUSE"
+								},
+								"sink": {
+									"name": "CAUSE",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_GTPC_CREATE_SESSION_ATTEMPTS"
+									"name": "SMFCC_PGW_BEARER_SETUP_SUCCESS"
 								},
 								"sink": {
-									"name": "SMFCC_GTPC_CREATE_SESSION_ATTEMPTS",
+									"name": "SMFCC_PGW_BEARER_SETUP_SUCCESS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS"
+									"name": "SMFCC_PGW_BEARER_SETUP_FAILURE"
 								},
 								"sink": {
-									"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS",
+									"name": "SMFCC_PGW_BEARER_SETUP_FAILURE",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_GTPC_CREATE_SESSION_REJECTS"
+									"name": "SMFCC_PGW_NW_INIT_BEARER_RELEASE"
 								},
 								"sink": {
-									"name": "SMFCC_GTPC_CREATE_SESSION_REJECTS",
+									"name": "SMFCC_PGW_NW_INIT_BEARER_RELEASE",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_GTPC_DELETE_SESSION_ATTEMPTS"
+									"name": "SMFCC_PGW_ACCESS_INIT_BEARER_RELEASE"
 								},
 								"sink": {
-									"name": "SMFCC_GTPC_DELETE_SESSION_ATTEMPTS",
+									"name": "SMFCC_PGW_ACCESS_INIT_BEARER_RELEASE",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_GTPC_DELETE_SESSION_SUCCESSES"
+									"name": "SMFCC_PGW_ABNORMAL_BEARER_RELEASE"
 								},
 								"sink": {
-									"name": "SMFCC_GTPC_DELETE_SESSION_SUCCESSES",
+									"name": "SMFCC_PGW_ABNORMAL_BEARER_RELEASE",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_GTPC_DELETE_SESSION_FAILURES"
+									"name": "SMFCC_PG"
 								},
 								"sink": {
-									"name": "SMFCC_GTPC_DELETE_SESSION_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_CREATE_BEARER_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_CREATE_BEARER_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_CREATE_BEARER_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_CREATE_BEARER_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_CREATE_BEARER_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_CREATE_BEARER_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_UPDATE_BEARER_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ACCEPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ACCEPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_CREATE_SESSION_REJECTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_CREATE_SESSION_REJECTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_DELETE_SESSION_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_DELETE_SESSION_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_DELETE_SESSION_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_DELETE_SESSION_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_DELETE_SESSION_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_DELETE_SESSION_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_FAILURES",
-									"type": "Int64"
+									"name": "SMFCC_PG",
+									"type": "String"
 								}
 							},
 							{
@@ -436,13 +193,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SrcSnowflakeMobilityCoreSMFCC_GTPCINTERFACE",
+						"referenceName": "SrcSnowflakeMobilityCoreSMFCC_PGW_CALL_PERFORMANCE",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "SinkADXMobilityCore_SMFCC_GTPCINTERFACE",
+						"referenceName": "SinkADXMobilityCore_SMFCC_PGW_CALL_PERFORMANCE",
 						"type": "DatasetReference"
 					}
 				]
