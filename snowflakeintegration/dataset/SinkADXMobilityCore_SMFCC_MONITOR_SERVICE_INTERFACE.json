@@ -29,79 +29,15 @@
 				"type": "string"
 			},
 			{
-				"name": "DNN",
+				"name": "GAUGE",
 				"type": "string"
 			},
 			{
-				"name": "SNSSAI",
-				"type": "string"
-			},
-			{
-				"name": "CAUSECODE",
-				"type": "string"
-			},
-			{
-				"name": "PEERID",
-				"type": "string"
-			},
-			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
+				"name": "SMFCC_GET_SMFCC_GAUGE_ATTEMPTS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
+				"name": "SMFCC_GET_SMFCC_GAUGE_SUCCESS",
 				"type": "long"
 			},
 			{
@@ -114,7 +50,7 @@
 			}
 		],
 		"typeProperties": {
-			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_CHFINTERFACE"
+			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_MONITOR_SERVICE_INTERFACE"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
