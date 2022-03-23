@@ -29,152 +29,44 @@
 				"type": "string"
 			},
 			{
-				"name": "DNN",
-				"type": "string"
-			},
-			{
 				"name": "SNSSAI",
 				"type": "string"
 			},
 			{
-				"name": "CAUSECODE",
+				"name": "QCI",
+				"type": "long"
+			},
+			{
+				"name": "ARP",
+				"type": "long"
+			},
+			{
+				"name": "CAUSE",
 				"type": "string"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_SESSION_ATTEMPTS",
+				"name": "SMFCC_PGW_BEARER_SETUP_SUCCESS",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS",
+				"name": "SMFCC_PGW_BEARER_SETUP_FAILURE",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_CREATE_SESSION_REJECTS",
+				"name": "SMFCC_PGW_NW_INIT_BEARER_RELEASE",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_SESSION_ATTEMPTS",
+				"name": "SMFCC_PGW_ACCESS_INIT_BEARER_RELEASE",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_SESSION_SUCCESSES",
+				"name": "SMFCC_PGW_ABNORMAL_BEARER_RELEASE",
 				"type": "long"
 			},
 			{
-				"name": "SMFCC_GTPC_DELETE_SESSION_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_CREATE_BEARER_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_CREATE_BEARER_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_CREATE_BEARER_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_UPDATE_BEARER_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ACCEPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_CREATE_SESSION_REJECTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_SESSION_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_SESSION_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_SESSION_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_FAILURES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_ATTEMPTS",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_SUCCESSES",
-				"type": "long"
-			},
-			{
-				"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_FAILURES",
-				"type": "long"
+				"name": "SMFCC_PG",
+				"type": "string"
 			},
 			{
 				"name": "RECEIVED_FILE_NAME",
@@ -186,7 +78,7 @@
 			}
 		],
 		"typeProperties": {
-			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_GTPCINTERFACE"
+			"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_PGW_CALL_PERFORMANCE"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
