@@ -1,0 +1,157 @@
+{
+	"name": "SrcSnowflakeMobilityCoreSMFCC_UDMINTERFACE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "SF_LOAD_TS_EST",
+				"precision": 29,
+				"scale": 9
+			},
+			{
+				"name": "TIME",
+				"precision": 29,
+				"scale": 9
+			},
+			{
+				"name": "FED_UNIQUE_NAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "APPNAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "POD",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DNN",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SNSSAI",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CAUSECODE",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_UDM_REGISTRATION_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_UDM_REGISTRATION_SUCCESSES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_UDM_REGISTRATION_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_SDM_GET_SM_DATA_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_SDM_GET_SM_DATA_SUCCESSES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_SDM_GET_SM_DATA_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_SDM_SUBSCRIPTION_ATTEMPTS",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_SDM_SUBSCRIPTION_SUCCESSES",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_SDM_SUBSCRIPTION_FAILURES",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_CANCEL_SDM_SUBSCRIPTION_ATTEMPTS",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_CANCEL_SDM_SUBSCRIPTION_SUCCESSES",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_CANCEL_SDM_SUBSCRIPTION_FAILURES",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_UDM_DEREGISTRATION_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_UDM_DEREGISTRATION_SUCCESSES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_UDM_DEREGISTRATION_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "RECEIVED_FILE_NAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FILE_ROW_NUMBER",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ACTION",
+				"precision": 1,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ISUPDATE",
+				"precision": 1,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ROW_ID",
+				"precision": 1,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "MSLOGS",
+			"table": "STREAM_SMFCC_UDMINTERFACE"
+		}
+	}
+}
