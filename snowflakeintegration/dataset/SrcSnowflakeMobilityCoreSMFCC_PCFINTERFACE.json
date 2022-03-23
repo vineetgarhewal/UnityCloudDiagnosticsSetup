@@ -29,11 +29,6 @@
 				"scale": 0
 			},
 			{
-				"name": "POD",
-				"precision": 0,
-				"scale": 0
-			},
-			{
 				"name": "DNN",
 				"precision": 0,
 				"scale": 0
@@ -49,83 +44,88 @@
 				"scale": 0
 			},
 			{
+				"name": "POD",
+				"precision": 0,
+				"scale": 0
+			},
+			{
 				"name": "PEERID",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
 				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
+				"precision": 0,
 				"scale": 0
 			},
 			{
@@ -156,7 +156,7 @@
 		],
 		"typeProperties": {
 			"schema": "MSLOGS",
-			"table": " STREAM_SMFCC_PCFINTERFACE"
+			"table": "STREAM_SMFCC_PCFINTERFACE"
 		}
 	}
 }
