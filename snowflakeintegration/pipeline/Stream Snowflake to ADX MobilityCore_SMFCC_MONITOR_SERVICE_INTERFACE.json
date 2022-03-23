@@ -16,10 +16,9 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "SnowflakeSource",
-						"exportSettings": {
-							"type": "SnowflakeExportCopyCommand"
-						}
+						"type": "AzureDataExplorerSource",
+						"query": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_MONITOR_SERVICE_INTERFACE | take 10",
+						"queryTimeout": "00:10:00"
 					},
 					"sink": {
 						"type": "AzureDataExplorerSink"
@@ -37,7 +36,8 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "SF_LOAD_TS_EST"
+									"name": "SF_LOAD_TS_EST",
+									"type": "DateTime"
 								},
 								"sink": {
 									"name": "SF_LOAD_TS_EST",
@@ -46,7 +46,8 @@
 							},
 							{
 								"source": {
-									"name": "TIME"
+									"name": "TIME",
+									"type": "DateTime"
 								},
 								"sink": {
 									"name": "TIME",
@@ -55,7 +56,8 @@
 							},
 							{
 								"source": {
-									"name": "FED_UNIQUE_NAME"
+									"name": "FED_UNIQUE_NAME",
+									"type": "String"
 								},
 								"sink": {
 									"name": "FED_UNIQUE_NAME",
@@ -64,7 +66,8 @@
 							},
 							{
 								"source": {
-									"name": "APPNAME"
+									"name": "APPNAME",
+									"type": "String"
 								},
 								"sink": {
 									"name": "APPNAME",
@@ -73,7 +76,8 @@
 							},
 							{
 								"source": {
-									"name": "POD"
+									"name": "POD",
+									"type": "String"
 								},
 								"sink": {
 									"name": "POD",
@@ -82,178 +86,38 @@
 							},
 							{
 								"source": {
-									"name": "DNN"
+									"name": "GAUGE",
+									"type": "String"
 								},
 								"sink": {
-									"name": "DNN",
+									"name": "GAUGE",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"name": "SNSSAI"
+									"name": "SMFCC_GET_SMFCC_GAUGE_ATTEMPTS",
+									"type": "Int64"
 								},
 								"sink": {
-									"name": "SNSSAI",
+									"name": "SMFCC_GET_SMFCC_GAUGE_ATTEMPTS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "SMFCC_GET_SMFCC_GAUGE_SUCCESS",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "SMFCC_GET_SMFCC_GAUGE_SUCCESS",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"name": "RECEIVED_FILE_NAME",
 									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CAUSECODE"
-								},
-								"sink": {
-									"name": "CAUSECODE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "PEERID"
-								},
-								"sink": {
-									"name": "PEERID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NCHF_NOTIFICATION_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RECEIVED_FILE_NAME"
 								},
 								"sink": {
 									"name": "RECEIVED_FILE_NAME",
@@ -262,7 +126,8 @@
 							},
 							{
 								"source": {
-									"name": "FILE_ROW_NUMBER"
+									"name": "FILE_ROW_NUMBER",
+									"type": "Int64"
 								},
 								"sink": {
 									"name": "FILE_ROW_NUMBER",
@@ -274,13 +139,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SrcSnowflakeMobilityCoreSMFCC_CHFINTERFACE",
+						"referenceName": "SinkADXMobilityCore_SMFCC_MONITOR_SERVICE_INTERFACE",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "SinkADXMobilityCore_SMFCC_CHFINTERFACE",
+						"referenceName": "SinkADXMobilityCore_SMFCC_MONITOR_SERVICE_INTERFACE",
 						"type": "DatasetReference"
 					}
 				]
