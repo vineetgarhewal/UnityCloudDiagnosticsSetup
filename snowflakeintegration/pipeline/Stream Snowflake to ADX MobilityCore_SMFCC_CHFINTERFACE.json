@@ -73,6 +73,15 @@
 							},
 							{
 								"source": {
+									"name": "POD"
+								},
+								"sink": {
+									"name": "POD",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"name": "DNN"
 								},
 								"sink": {
@@ -100,496 +109,145 @@
 							},
 							{
 								"source": {
-									"name": "TIMERTYPE"
+									"name": "PEERID"
 								},
 								"sink": {
-									"name": "TIMERTYPE",
+									"name": "PEERID",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"name": "POD"
+									"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS"
 								},
 								"sink": {
-									"name": "POD",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_ATTEMPTS",
+									"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_SUCCESSES"
+									"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_SUCCESSES",
+									"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_FAILURES"
+									"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_FAILURES",
+									"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_PUNTED"
+									"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_PUNTED",
+									"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_ATTEMPTS"
+									"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_ATTEMPTS",
+									"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_SUCCESSES"
+									"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_SUCCESSES",
+									"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_FAILURES"
+									"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_FAILURES",
+									"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_PUNTED"
+									"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_PUNTED",
+									"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_ATTEMPTS"
+									"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_ATTEMPTS",
+									"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_SUCCESSES"
+									"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_SUCCESSES",
+									"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_FAILURES"
+									"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_FAILURES",
+									"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_PUNTED"
+									"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_PUNTED",
+									"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_ATTEMPTS"
+									"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_ATTEMPTS",
+									"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SUCCESSES"
+									"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SUCCESSES",
+									"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
 									"type": "Int64"
 								}
 							},
 							{
 								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_FAILURES"
+									"name": "SMFCC_NCHF_NOTIFICATION_FAILURES"
 								},
 								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_PUNTED"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_PUNTED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_PUNTED"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_PUNTED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_PUNTED"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_PUNTED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_PUNTED"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_PUNTED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_PUNTED"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_PUNTED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_PUNTED"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_PUNTED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_START_DURABLE_TIMER_REQUESTS"
-								},
-								"sink": {
-									"name": "SMFCC_START_DURABLE_TIMER_REQUESTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_START_DURABLE_TIMER_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_START_DURABLE_TIMER_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_STOP_DURABLE_TIMER_REQUESTS"
-								},
-								"sink": {
-									"name": "SMFCC_STOP_DURABLE_TIMER_REQUESTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_STOP_DURABLE_TIMER_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_STOP_DURABLE_TIMER_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_DURABLE_TIMER_FIRED"
-								},
-								"sink": {
-									"name": "SMFCC_DURABLE_TIMER_FIRED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_FAILURES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_ATTEMPTS"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_ATTEMPTS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_SUCCESSES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_SUCCESSES",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_FAILURES"
-								},
-								"sink": {
-									"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_FAILURES",
+									"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
 									"type": "Int64"
 								}
 							},
@@ -616,13 +274,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SrcSnowflakeMobilityCoreSMFCC_INTERFACE",
+						"referenceName": "SrcSnowflakeMobilityCoreSMFCC_CHFINTERFACE",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "SinkADXMobilityCore_SMFCC_INTERFACE",
+						"referenceName": "SinkADXMobilityCore_SMFCC_CHFINTERFACE",
 						"type": "DatasetReference"
 					}
 				]
