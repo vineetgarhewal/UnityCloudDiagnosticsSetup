@@ -156,7 +156,7 @@
 		],
 		"typeProperties": {
 			"schema": "MSLOGS",
-			"table": "STREAM_SMFCC_PCFINTERFACE"
+			"table": "STREAM_SMFCC_PCFINTERFACE1"
 		}
 	}
 }
