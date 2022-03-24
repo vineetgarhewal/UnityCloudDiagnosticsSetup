@@ -34,58 +34,133 @@
 				"scale": 0
 			},
 			{
+				"name": "DNN",
+				"precision": 0,
+				"scale": 0
+			},
+			{
 				"name": "SNSSAI",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "APPLICATIONID",
+				"name": "IPADDRESS",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "RATINGGROUP",
+				"name": "FIVEQI",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "SERVICEID",
+				"name": "ARP",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "QUOTATYPE",
+				"name": "CAUSE",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_USAGE_REPORT_TOTAL_VOLUME",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_USAGE_REPORT_DOWNLINK_VOLUME",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_USAGE_REPORT_UPLINK_VOLUME",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_USAGE_REPORT_DROP_COUNT",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_USAGE_REPORT_ADC_START_COUNT",
+				"name": "PCCRULE",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "SMFCC_USAGE_REPORT_ADC_STOP_COUNT",
+				"name": "CAUSECODE",
 				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCSCF_SESSIONS_ACTIVATED",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCSCF_SESSIONS_DEACTIVATED",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_QOS_FLOWS_SETUP_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_QOS_FLOWS_SETUP_FAILURE",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NW_INIT_QOS_FLOWS_RELEASED",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_ACCESS_INIT_QOS_FLOWS_RELEASED",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_ABNORMAL_QOS_FLOWS_RELEASED",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_ADD_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_ADD_SUCCESSES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_ADD_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_MODIFY_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_MODIFY_SUCCESSES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_MODIFY_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_DELETE_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_DELETE_SUCCESSES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_PCC_RULE_DELETE_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_DEFAULT_POLICY_USED_PDU_SESSION_COUNT",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_DEFAULT_QUOTA_USED_PDU_SESSION_COUNT",
+				"precision": 38,
 				"scale": 0
 			},
 			{
@@ -100,7 +175,7 @@
 			},
 			{
 				"name": "METADATA$ACTION",
-				"precision": 1,
+				"precision": 6,
 				"scale": 0
 			},
 			{
@@ -110,13 +185,13 @@
 			},
 			{
 				"name": "METADATA$ROW_ID",
-				"precision": 1,
+				"precision": 40,
 				"scale": 0
 			}
 		],
 		"typeProperties": {
 			"schema": "MSLOGS",
-			"table": "STREAM_SMFCC_USAGE_REPORT"
+			"table": "STREAM_SMFCC_CALL_PERFORMANCE"
 		}
 	}
 }
