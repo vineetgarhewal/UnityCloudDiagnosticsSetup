@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_Stats",
+				"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
