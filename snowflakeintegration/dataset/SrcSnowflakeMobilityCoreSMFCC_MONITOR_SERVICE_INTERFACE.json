@@ -76,7 +76,7 @@
 		],
 		"typeProperties": {
 			"schema": "MSLOGS",
-			"table": "STREAM_SMFCC_MONITOR_SERVICE_INTERFACE"
+			"table": "STREAM_SMFCC_MONITOR_SERVICE_INTERFACE1"
 		}
 	}
 }
