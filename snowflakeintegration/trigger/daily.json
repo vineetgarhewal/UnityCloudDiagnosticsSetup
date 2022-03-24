@@ -63,6 +63,12 @@
 					"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_USAGE_REPORT",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "Stream Snowflake to ADX MobilityCoreSMFCC_PCFINTERFACE",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
