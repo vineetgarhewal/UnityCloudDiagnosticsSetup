@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE_Stats",
+				"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
