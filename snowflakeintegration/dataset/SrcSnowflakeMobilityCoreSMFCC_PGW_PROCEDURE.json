@@ -305,7 +305,7 @@
 			},
 			{
 				"name": "METADATA$ACTION",
-				"precision": 1,
+				"precision": 6,
 				"scale": 0
 			},
 			{
@@ -315,13 +315,13 @@
 			},
 			{
 				"name": "METADATA$ROW_ID",
-				"precision": 1,
+				"precision": 40,
 				"scale": 0
 			}
 		],
 		"typeProperties": {
 			"schema": "MSLOGS",
-			"table": "STREAM_SMFCC_PGW_PROCEDURE"
+			"table": "STREAM_SMFCC_PGW_PROCEDURE1"
 		}
 	}
 }
