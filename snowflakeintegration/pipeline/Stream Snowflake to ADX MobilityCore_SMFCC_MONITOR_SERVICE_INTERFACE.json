@@ -16,9 +16,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureDataExplorerSource",
-						"query": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_MONITOR_SERVICE_INTERFACE | take 10",
-						"queryTimeout": "00:10:00"
+						"type": "SnowflakeSource",
+						"exportSettings": {
+							"type": "SnowflakeExportCopyCommand"
+						}
 					},
 					"sink": {
 						"type": "AzureDataExplorerSink"
@@ -36,8 +37,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "SF_LOAD_TS_EST",
-									"type": "DateTime"
+									"name": "SF_LOAD_TS_EST"
 								},
 								"sink": {
 									"name": "SF_LOAD_TS_EST",
@@ -46,8 +46,7 @@
 							},
 							{
 								"source": {
-									"name": "TIME",
-									"type": "DateTime"
+									"name": "TIME"
 								},
 								"sink": {
 									"name": "TIME",
@@ -56,8 +55,7 @@
 							},
 							{
 								"source": {
-									"name": "FED_UNIQUE_NAME",
-									"type": "String"
+									"name": "FED_UNIQUE_NAME"
 								},
 								"sink": {
 									"name": "FED_UNIQUE_NAME",
@@ -66,8 +64,7 @@
 							},
 							{
 								"source": {
-									"name": "APPNAME",
-									"type": "String"
+									"name": "APPNAME"
 								},
 								"sink": {
 									"name": "APPNAME",
@@ -76,8 +73,7 @@
 							},
 							{
 								"source": {
-									"name": "POD",
-									"type": "String"
+									"name": "POD"
 								},
 								"sink": {
 									"name": "POD",
@@ -86,8 +82,7 @@
 							},
 							{
 								"source": {
-									"name": "GAUGE",
-									"type": "String"
+									"name": "GAUGE"
 								},
 								"sink": {
 									"name": "GAUGE",
@@ -96,8 +91,7 @@
 							},
 							{
 								"source": {
-									"name": "SMFCC_GET_SMFCC_GAUGE_ATTEMPTS",
-									"type": "Int64"
+									"name": "SMFCC_GET_SMFCC_GAUGE_ATTEMPTS"
 								},
 								"sink": {
 									"name": "SMFCC_GET_SMFCC_GAUGE_ATTEMPTS",
@@ -106,8 +100,7 @@
 							},
 							{
 								"source": {
-									"name": "SMFCC_GET_SMFCC_GAUGE_SUCCESS",
-									"type": "Int64"
+									"name": "SMFCC_GET_SMFCC_GAUGE_SUCCESS"
 								},
 								"sink": {
 									"name": "SMFCC_GET_SMFCC_GAUGE_SUCCESS",
@@ -116,8 +109,7 @@
 							},
 							{
 								"source": {
-									"name": "RECEIVED_FILE_NAME",
-									"type": "String"
+									"name": "RECEIVED_FILE_NAME"
 								},
 								"sink": {
 									"name": "RECEIVED_FILE_NAME",
@@ -126,8 +118,7 @@
 							},
 							{
 								"source": {
-									"name": "FILE_ROW_NUMBER",
-									"type": "Int64"
+									"name": "FILE_ROW_NUMBER"
 								},
 								"sink": {
 									"name": "FILE_ROW_NUMBER",
@@ -139,7 +130,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SinkADXMobilityCore_SMFCC_MONITOR_SERVICE_INTERFACE",
+						"referenceName": "SrcSnowflakeMobilityCoreSMFCC_MONITOR_SERVICE_INTERFACE",
 						"type": "DatasetReference"
 					}
 				],
