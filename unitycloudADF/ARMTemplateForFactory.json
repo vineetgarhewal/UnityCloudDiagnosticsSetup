@@ -1251,7 +1251,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1556,7 +1556,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1924,7 +1924,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2229,7 +2229,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_Stats",
+						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2696,7 +2696,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -3343,7 +3343,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -3504,7 +3504,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_Stats",
+						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -3728,7 +3728,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -4330,7 +4330,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -5526,7 +5526,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -5822,7 +5822,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -11046,7 +11046,7 @@
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_CALL_PERFORMANCE"
+					"table": "STREAM_SMFCC_CALL_PERFORMANCE1"
 				}
 			},
 			"dependsOn": [
@@ -11213,7 +11213,7 @@
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_CHFINTERFACE"
+					"table": "STREAM_SMFCC_CHFINTERFACE1"
 				}
 			},
 			"dependsOn": [
@@ -11234,758 +11234,243 @@
 				"schema": [
 					{
 						"name": "SF_LOAD_TS_EST",
-						"type": "TIMESTAMP_NTZ",
 						"precision": 29,
 						"scale": 9
 					},
 					{
 						"name": "TIME",
-						"type": "TIMESTAMP_NTZ",
 						"precision": 29,
 						"scale": 9
 					},
 					{
 						"name": "FED_UNIQUE_NAME",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "APPNAME",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "POD",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "DNN",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "SNSSAI",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "CAUSECODE",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "AMFMOBILITY",
-						"type": "BOOLEAN",
-						"precision": 1,
+						"name": "SMFCC_GTPC_CREATE_SESSION_ATTEMPTS",
+						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "IUPFRELOCATION",
-						"type": "BOOLEAN",
-						"precision": 1,
+						"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS",
+						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "PROCEDURETYPE",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_CREATE_SESSION_REJECTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_DELETE_SESSION_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_DELETE_SESSION_SUCCESSES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_DELETE_SESSION_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_DELETE_BEARER_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_DELETE_BEARER_SUCCESSES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_DELETE_BEARER_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_CREATE_BEARER_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_CREATE_BEARER_SUCCESSES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_CREATE_BEARER_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_UPDATE_BEARER_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_SUCCESSES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ATTEMPTS",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "OVERLOADLEVEL",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ACCEPTS",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_CANCELS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_CREATE_SESSION_REJECTS",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_ATTEMPTS",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_DELETE_SESSION_ATTEMPTS",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_SUCCESSES",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_DELETE_SESSION_SUCCESSES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_FAILURES",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_DELETE_SESSION_FAILURES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_ATTEMPTS",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_AMF_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_SUCCESSES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_AMF_MOBILITY_FAILURES",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_FAILURES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_ATTEMPTS",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_SUCCESSES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_CANCELS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_REJECTS_OVERLOAD",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_FAILURES",
-						"type": "VARCHAR",
+						"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_FAILURES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "RECEIVED_FILE_NAME",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "FILE_ROW_NUMBER",
-						"type": "VARCHAR",
 						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_GTPCINTERFACE"
+					"table": "STREAM_SMFCC_GTPCINTERFACE1"
 				}
 			},
 			"dependsOn": [
@@ -12006,758 +11491,343 @@
 				"schema": [
 					{
 						"name": "SF_LOAD_TS_EST",
-						"type": "TIMESTAMP_NTZ",
 						"precision": 29,
 						"scale": 9
 					},
 					{
 						"name": "TIME",
-						"type": "TIMESTAMP_NTZ",
 						"precision": 29,
 						"scale": 9
 					},
 					{
 						"name": "FED_UNIQUE_NAME",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "APPNAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "DNN",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "SNSSAI",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "CAUSECODE",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "AMFMOBILITY",
-						"type": "BOOLEAN",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "IUPFRELOCATION",
-						"type": "BOOLEAN",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "PROCEDURETYPE",
-						"type": "VARCHAR",
+						"name": "TIMERTYPE",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "OVERLOADLEVEL",
-						"type": "VARCHAR",
+						"name": "POD",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_ATTEMPTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_SUCCESSES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_FAILURES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_UE_DEREGISTRATION_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_CANCELS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_PUNTED",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_ATTEMPTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_SUCCESSES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_FAILURES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_ATTEMPTS",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_PUNTED",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_ATTEMPTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_SUCCESSES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_FAILURES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_AMF_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_PUNTED",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_AMF_MOBILITY_FAILURES",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_ATTEMPTS",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SUCCESSES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_FAILURES",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_PUNTED",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_CANCELS",
-						"type": "VARCHAR",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_ATTEMPTS",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_SUCCESSES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_FAILURES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_PUNTED",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_ATTEMPTS",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SUCCESSES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_FAILURES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_PUNTED",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_ATTEMPTS",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_SUCCESSES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_FAILURES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_PUNTED",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_ATTEMPTS",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SUCCESSES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_FAILURES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_PUNTED",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_ATTEMPTS",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_SUCCESSES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_FAILURES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_PUNTED",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_ATTEMPTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_SUCCESSES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
+						"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_FAILURES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_START_DURABLE_TIMER_REQUESTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_START_DURABLE_TIMER_FAILURES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
+						"name": "SMFCC_STOP_DURABLE_TIMER_REQUESTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_STOP_DURABLE_TIMER_FAILURES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_DURABLE_TIMER_FIRED",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_ATTEMPTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_SUCCESSES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_REJECTS_OVERLOAD",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_FAILURES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_ATTEMPTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_SUCCESSES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_FAILURES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_ATTEMPTS",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_ATTEMPTS",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_SUCCESSES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_SUCCESSES",
 						"precision": 38,
 						"scale": 0
 					},
 					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_FAILURES",
-						"type": "NUMBER",
+						"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_FAILURES",
 						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "RECEIVED_FILE_NAME",
-						"type": "VARCHAR",
 						"precision": 0,
 						"scale": 0
 					},
 					{
 						"name": "FILE_ROW_NUMBER",
-						"type": "VARCHAR",
 						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_INTERFACE"
+					"table": "STREAM_SMFCC_INTERFACE1"
 				}
 			},
 			"dependsOn": [
@@ -12844,7 +11914,7 @@
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_MONITOR_SERVICE_INTERFACE"
+					"table": "STREAM_SMFCC_MONITOR_SERVICE_INTERFACE1"
 				}
 			},
 			"dependsOn": [
@@ -13011,7 +12081,7 @@
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_PCFINTERFACE"
+					"table": "STREAM_SMFCC_PCFINTERFACE1"
 				}
 			},
 			"dependsOn": [
@@ -13117,7 +12187,7 @@
 					},
 					{
 						"name": "METADATA$ACTION",
-						"precision": 1,
+						"precision": 6,
 						"scale": 0
 					},
 					{
@@ -13127,13 +12197,13 @@
 					},
 					{
 						"name": "METADATA$ROW_ID",
-						"precision": 1,
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_PGW_CALL_PERFORMANCE"
+					"table": "STREAM_SMFCC_PGW_CALL_PERFORMANCE1"
 				}
 			},
 			"dependsOn": [
@@ -13449,7 +12519,7 @@
 					},
 					{
 						"name": "METADATA$ACTION",
-						"precision": 1,
+						"precision": 6,
 						"scale": 0
 					},
 					{
@@ -13459,13 +12529,13 @@
 					},
 					{
 						"name": "METADATA$ROW_ID",
-						"precision": 1,
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_PGW_PROCEDURE"
+					"table": "STREAM_SMFCC_PGW_PROCEDURE1"
 				}
 			},
 			"dependsOn": [
@@ -14111,7 +13181,7 @@
 					},
 					{
 						"name": "METADATA$ACTION",
-						"precision": 1,
+						"precision": 6,
 						"scale": 0
 					},
 					{
@@ -14121,13 +13191,13 @@
 					},
 					{
 						"name": "METADATA$ROW_ID",
-						"precision": 1,
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_PROCEDURE"
+					"table": "STREAM_SMFCC_PROCEDURE1"
 				}
 			},
 			"dependsOn": [
@@ -14273,7 +13343,7 @@
 					},
 					{
 						"name": "METADATA$ACTION",
-						"precision": 1,
+						"precision": 6,
 						"scale": 0
 					},
 					{
@@ -14283,13 +13353,13 @@
 					},
 					{
 						"name": "METADATA$ROW_ID",
-						"precision": 1,
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_UDMINTERFACE"
+					"table": "STREAM_SMFCC_UDMINTERFACE1"
 				}
 			},
 			"dependsOn": [
@@ -14400,7 +13470,7 @@
 					},
 					{
 						"name": "METADATA$ACTION",
-						"precision": 1,
+						"precision": 6,
 						"scale": 0
 					},
 					{
@@ -14410,13 +13480,13 @@
 					},
 					{
 						"name": "METADATA$ROW_ID",
-						"precision": 1,
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_USAGE_REPORT"
+					"table": "STREAM_SMFCC_USAGE_REPORT1"
 				}
 			},
 			"dependsOn": [

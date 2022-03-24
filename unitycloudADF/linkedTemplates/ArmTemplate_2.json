@@ -151,7 +151,7 @@
 					},
 					{
 						"name": "METADATA$ACTION",
-						"precision": 1,
+						"precision": 6,
 						"scale": 0
 					},
 					{
@@ -161,13 +161,13 @@
 					},
 					{
 						"name": "METADATA$ROW_ID",
-						"precision": 1,
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_UDMINTERFACE"
+					"table": "STREAM_SMFCC_UDMINTERFACE1"
 				}
 			},
 			"dependsOn": []
@@ -276,7 +276,7 @@
 					},
 					{
 						"name": "METADATA$ACTION",
-						"precision": 1,
+						"precision": 6,
 						"scale": 0
 					},
 					{
@@ -286,13 +286,13 @@
 					},
 					{
 						"name": "METADATA$ROW_ID",
-						"precision": 1,
+						"precision": 40,
 						"scale": 0
 					}
 				],
 				"typeProperties": {
 					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_USAGE_REPORT"
+					"table": "STREAM_SMFCC_USAGE_REPORT1"
 				}
 			},
 			"dependsOn": []
@@ -1510,7 +1510,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1811,7 +1811,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2175,7 +2175,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2476,7 +2476,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_Stats",
+						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2939,7 +2939,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -3582,7 +3582,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE_Stats",
+						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -3739,7 +3739,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_Stats",
+						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
