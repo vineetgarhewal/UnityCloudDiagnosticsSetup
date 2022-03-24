@@ -191,7 +191,7 @@
 		],
 		"typeProperties": {
 			"schema": "MSLOGS",
-			"table": "STREAM_SMFCC_CALL_PERFORMANCE"
+			"table": "STREAM_SMFCC_CALL_PERFORMANCE1"
 		}
 	}
 }
