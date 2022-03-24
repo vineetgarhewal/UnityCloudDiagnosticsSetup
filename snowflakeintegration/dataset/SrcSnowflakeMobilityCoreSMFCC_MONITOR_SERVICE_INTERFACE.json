@@ -1,5 +1,5 @@
 {
-	"name": "SrcSnowflakeMobilityCoreSMFCC_MONITOR_SERVICE_INTERFACE1",
+	"name": "SrcSnowflakeMobilityCoreSMFCC_MONITOR_SERVICE_INTERFACE",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
