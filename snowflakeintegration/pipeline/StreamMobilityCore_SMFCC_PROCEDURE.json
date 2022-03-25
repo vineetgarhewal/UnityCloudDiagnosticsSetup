@@ -1,9 +1,9 @@
 {
-	"name": "Stream Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
+	"name": "StreamMobilityCore_SMFCC_PROCEDURE",
 	"properties": {
 		"activities": [
 			{
-				"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
+				"name": "StreamMobilityCore_SMFCC_PROCEDURE",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
