@@ -13755,13 +13755,6 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_CALL_PERFORMANCE",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
 							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_CHFINTERFACE",
 							"type": "PipelineReference"
 						},
@@ -13850,7 +13843,6 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX MobilityCore_SMFCC_CALL_PERFORMANCE')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX MobilityCore_SMFCC_CHFINTERFACE')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_INTERFACE')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX MobilityCore_SMFCC_INTERFACE')]",
