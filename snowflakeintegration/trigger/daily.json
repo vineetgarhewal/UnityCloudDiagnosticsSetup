@@ -6,12 +6,6 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_CALL_PERFORMANCE",
-					"type": "PipelineReference"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_CHFINTERFACE",
 					"type": "PipelineReference"
 				}
