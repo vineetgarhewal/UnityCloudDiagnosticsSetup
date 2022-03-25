@@ -1504,13 +1504,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCoreSMFCC_PCFINTERFACE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCoreSMFCC_PCFINTERFACE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
+						"name": "StreamMobilityCore_SMFCC_PCINTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1805,13 +1805,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_CALL_PERFORMANCE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_CALL_PERFORMANCE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
+						"name": "StreamMobilityCore_SMFCC_CALL_PERFORMANCE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2169,13 +2169,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_CHFINTERFACE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_CHFINTERFACE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
+						"name": "StreamMobilityCore_SMFCC_CHFINTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2470,13 +2470,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_INTERFACE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_GTPC_INTERFACE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC",
+						"name": "StreamMobilityCore_SMFCC_GTPC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2933,13 +2933,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_INTERFACE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_INTERFACE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
+						"name": "StreamMobilityCore_SMFCC_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -3576,13 +3576,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_MONITOR_SERVICE_INTERFACE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_MONITOR_SERVICE_INTERFACE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
+						"name": "StreamMobilityCore_SMFCC_MONITOR_SERVICE_INTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -3733,13 +3733,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_PGW_CALL_PERFORMANCE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_PGW_CALL_PERFORMANCE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC",
+						"name": "StreamMobilityCore_SMFCC_PGW_CALL_PERFORMANCE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {

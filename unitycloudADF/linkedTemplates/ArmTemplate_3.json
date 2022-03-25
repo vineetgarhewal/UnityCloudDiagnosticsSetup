@@ -13,13 +13,13 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_PGW_PROCEDURE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_PGW_PROCEDURE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
+						"name": "StreamMobilityCore_SMFCC_PGW_PROCEDURE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -611,13 +611,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_PROCEDURE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_PROCEDURE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
+						"name": "StreamMobilityCore_SMFCC_PROCEDURE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1803,13 +1803,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_UDMINTERFACE')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_UDMINTERFACE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
+						"name": "StreamMobilityCore_SMFCC_UDMINTERFACE",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2095,13 +2095,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX MobilityCore_SMFCC_USAGE_REPORT')]",
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMFCC_USAGE_REPORT')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
+						"name": "StreamMobilityCore_SMFCC_USAGE_REPORT",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2396,70 +2396,77 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_CHFINTERFACE",
+							"referenceName": "StreamMobilityCore_SMFCC_CHFINTERFACE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_GTPC_INTERFACE",
+							"referenceName": "StreamMobilityCore_SMFCC_GTPC_INTERFACE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_INTERFACE",
+							"referenceName": "StreamMobilityCore_SMFCC_INTERFACE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_MONITOR_SERVICE_INTERFACE",
+							"referenceName": "StreamMobilityCore_SMFCC_MONITOR_SERVICE_INTERFACE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_PGW_CALL_PERFORMANCE",
+							"referenceName": "StreamMobilityCore_SMFCC_PGW_CALL_PERFORMANCE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_PGW_PROCEDURE",
+							"referenceName": "StreamMobilityCore_SMFCC_PGW_PROCEDURE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_PROCEDURE",
+							"referenceName": "StreamMobilityCore_SMFCC_PROCEDURE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_UDMINTERFACE",
+							"referenceName": "StreamMobilityCore_SMFCC_UDMINTERFACE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCore_SMFCC_USAGE_REPORT",
+							"referenceName": "StreamMobilityCore_SMFCC_USAGE_REPORT",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "Stream Snowflake to ADX MobilityCoreSMFCC_PCFINTERFACE",
+							"referenceName": "StreamMobilityCoreSMFCC_PCFINTERFACE",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "StreamMobilityCore_SMFCC_CALL_PERFORMANCE",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -2484,10 +2491,10 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX MobilityCore_SMFCC_PGW_PROCEDURE')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX MobilityCore_SMFCC_PROCEDURE')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX MobilityCore_SMFCC_UDMINTERFACE')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream Snowflake to ADX MobilityCore_SMFCC_USAGE_REPORT')]"
+				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMFCC_PGW_PROCEDURE')]",
+				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMFCC_PROCEDURE')]",
+				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMFCC_UDMINTERFACE')]",
+				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMFCC_USAGE_REPORT')]"
 			]
 		}
 	]
