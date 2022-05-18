@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
+						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORE\".\"IEBUS_MOB_PM_CORE_METRICS_5G_NORTHRIM_STAGE\".\"SMF_FEDERATE_PROD\" where\nRECORD_CONTENT:tags.appName in (select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"SMF_APPNAMES\")",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
@@ -45,12 +46,18 @@
 								}
 							},
 							{
+								"source": {
+									"name": "RECORD_CONTENT"
+								},
 								"sink": {
 									"name": "RECORD_CONTENT",
 									"type": "String"
 								}
 							},
 							{
+								"source": {
+									"name": "RECORD_METADATA"
+								},
 								"sink": {
 									"name": "RECORD_METADATA",
 									"type": "String"
