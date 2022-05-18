@@ -53,15 +53,6 @@
 									"name": "RECORD_CONTENT",
 									"type": "String"
 								}
-							},
-							{
-								"source": {
-									"name": "RECORD_METADATA"
-								},
-								"sink": {
-									"name": "RECORD_METADATA",
-									"type": "String"
-								}
 							}
 						]
 					}
