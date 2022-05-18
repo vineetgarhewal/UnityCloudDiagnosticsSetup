@@ -6049,6 +6049,311 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "StreamMobilityCore_SMFCC_PCINTERFACE",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS_EST"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS_EST",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "TIME"
+										},
+										"sink": {
+											"name": "TIME",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "FED_UNIQUE_NAME"
+										},
+										"sink": {
+											"name": "FED_UNIQUE_NAME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "APPNAME"
+										},
+										"sink": {
+											"name": "APPNAME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DNN"
+										},
+										"sink": {
+											"name": "DNN",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SNSSAI"
+										},
+										"sink": {
+											"name": "SNSSAI",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CAUSECODE"
+										},
+										"sink": {
+											"name": "CAUSECODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "POD"
+										},
+										"sink": {
+											"name": "POD",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PEERID"
+										},
+										"sink": {
+											"name": "PEERID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES"
+										},
+										"sink": {
+											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "RECEIVED_FILE_NAME"
+										},
+										"sink": {
+											"name": "RECEIVED_FILE_NAME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FILE_ROW_NUMBER"
+										},
+										"sink": {
+											"name": "FILE_ROW_NUMBER",
+											"type": "Int64"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SrcSnowflakeMobilityCoreSMFCC_PCFINTERFACE",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SinkADXMobilityCore_SMFCC_PCFINTERFACE",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-07-28T16:08:39Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SrcSnowflakeMobilityCoreSMFCC_PCFINTERFACE')]",
+				"[concat(variables('factoryId'), '/datasets/SinkADXMobilityCore_SMFCC_PCFINTERFACE')]",
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SinkADXMobilityCoreCSMF')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -8121,6 +8426,131 @@
 				],
 				"typeProperties": {
 					"table": "MOB_PM_CORE_METRICS_5G_NORTHRIM_SMFCC_USAGE_REPORT"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataExplorer_adxunitycloud')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SinkADXMobilityCore_SMF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataExplorer_adxunitycloud",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"type": "datetime"
+					},
+					{
+						"name": "TIME",
+						"type": "datetime"
+					},
+					{
+						"name": "FED_UNIQUE_NAME",
+						"type": "string"
+					},
+					{
+						"name": "APPNAME",
+						"type": "string"
+					},
+					{
+						"name": "DNN",
+						"type": "string"
+					},
+					{
+						"name": "SNSSAI",
+						"type": "string"
+					},
+					{
+						"name": "CAUSECODE",
+						"type": "string"
+					},
+					{
+						"name": "POD",
+						"type": "string"
+					},
+					{
+						"name": "PEERID",
+						"type": "string"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "RECEIVED_FILE_NAME",
+						"type": "string"
+					},
+					{
+						"name": "FILE_ROW_NUMBER",
+						"type": "long"
+					}
+				],
+				"typeProperties": {
+					"table": "IEBUS_MOB_PM_CORE_METRICS_5G_NORTHRIM_STAGE_SMF_FEDERATE_PROD"
 				}
 			},
 			"dependsOn": [
@@ -13494,6 +13924,173 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "TIME",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "FED_UNIQUE_NAME",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "APPNAME",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "DNN",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SNSSAI",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "CAUSECODE",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "POD",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PEERID",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "RECEIVED_FILE_NAME",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "FILE_ROW_NUMBER",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "STREAM_SMF_FEDERATE_PROD"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Src_LOGS_FLUENTD_ANY_RAW')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -13724,6 +14321,13 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "StreamMobilityCore_SMF_FEDERATE_PROD",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -13742,7 +14346,8 @@
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]"
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMF_FEDERATE_PROD')]"
 			]
 		},
 		{

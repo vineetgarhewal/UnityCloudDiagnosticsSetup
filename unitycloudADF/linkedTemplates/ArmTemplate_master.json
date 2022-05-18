@@ -84,9 +84,6 @@
 					},
 					"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl')]"
-					},
-					"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
-						"value": "[parameters('AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName')]"
 					}
 				}
 			},
@@ -105,6 +102,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
+						"value": "[parameters('AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName')]"
 					},
 					"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName')]"
