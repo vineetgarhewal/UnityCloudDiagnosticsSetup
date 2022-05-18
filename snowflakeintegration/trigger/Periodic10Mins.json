@@ -39,6 +39,12 @@
 					"referenceName": "Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "StreamMobilityCore_SMF_FEDERATE_PROD",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
