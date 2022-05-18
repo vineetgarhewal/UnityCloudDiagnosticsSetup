@@ -1,0 +1,162 @@
+{
+	"name": "SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "SF_LOAD_TS_EST",
+				"precision": 29,
+				"scale": 9
+			},
+			{
+				"name": "TIME",
+				"precision": 29,
+				"scale": 9
+			},
+			{
+				"name": "FED_UNIQUE_NAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "APPNAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DNN",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SNSSAI",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CAUSECODE",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "POD",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PEERID",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RECEIVED_FILE_NAME",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FILE_ROW_NUMBER",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ACTION",
+				"precision": 6,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ISUPDATE",
+				"precision": 1,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ROW_ID",
+				"precision": 40,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "MSLOGS",
+			"table": "STREAM_SMFCC_PCFINTERFACE1"
+		}
+	}
+}

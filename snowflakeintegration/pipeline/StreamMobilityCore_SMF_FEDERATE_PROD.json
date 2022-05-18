@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "StreamMobilityCore_SMFCC_PCINTERFACE",
+				"name": "StreamMobilityCore_SMF_FEDERATE_PROD",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -274,7 +274,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SrcSnowflakeMobilityCoreSMFCC_PCFINTERFACE",
+						"referenceName": "SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD",
 						"type": "DatasetReference"
 					}
 				],
