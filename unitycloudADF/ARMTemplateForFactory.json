@@ -6055,7 +6055,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "StreamMobilityCore_SMFCC_PCINTERFACE",
+						"name": "StreamMobilityCore_SMF_FEDERATE_PROD",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -6069,6 +6069,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORE\".\"IEBUS_MOB_PM_CORE_METRICS_5G_NORTHRIM_STAGE\".\"SMF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"SMF_APPNAMES\") ",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -6098,227 +6099,11 @@
 									},
 									{
 										"source": {
-											"name": "TIME"
+											"name": "RECORD_CONTENT"
 										},
 										"sink": {
-											"name": "TIME",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "FED_UNIQUE_NAME"
-										},
-										"sink": {
-											"name": "FED_UNIQUE_NAME",
+											"name": "RECORD_CONTENT",
 											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "APPNAME"
-										},
-										"sink": {
-											"name": "APPNAME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DNN"
-										},
-										"sink": {
-											"name": "DNN",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SNSSAI"
-										},
-										"sink": {
-											"name": "SNSSAI",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CAUSECODE"
-										},
-										"sink": {
-											"name": "CAUSECODE",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "POD"
-										},
-										"sink": {
-											"name": "POD",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "PEERID"
-										},
-										"sink": {
-											"name": "PEERID",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES"
-										},
-										"sink": {
-											"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "RECEIVED_FILE_NAME"
-										},
-										"sink": {
-											"name": "RECEIVED_FILE_NAME",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FILE_ROW_NUMBER"
-										},
-										"sink": {
-											"name": "FILE_ROW_NUMBER",
-											"type": "Int64"
 										}
 									}
 								]
@@ -6326,14 +6111,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "SrcSnowflakeMobilityCoreSMFCC_PCFINTERFACE",
+								"referenceName": "SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "SinkADXMobilityCore_SMFCC_PCFINTERFACE",
+								"referenceName": "SinkADXMobilityCore_SMF_FEDERATE_PROD",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -6348,8 +6133,8 @@
 				"lastPublishTime": "2021-07-28T16:08:39Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SrcSnowflakeMobilityCoreSMFCC_PCFINTERFACE')]",
-				"[concat(variables('factoryId'), '/datasets/SinkADXMobilityCore_SMFCC_PCFINTERFACE')]",
+				"[concat(variables('factoryId'), '/datasets/SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD')]",
+				"[concat(variables('factoryId'), '/datasets/SinkADXMobilityCore_SMF_FEDERATE_PROD')]",
 				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
 			]
 		},
