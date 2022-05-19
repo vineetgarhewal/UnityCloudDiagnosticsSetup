@@ -2021,7 +2021,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT",
+						"name": "Copy2 Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
