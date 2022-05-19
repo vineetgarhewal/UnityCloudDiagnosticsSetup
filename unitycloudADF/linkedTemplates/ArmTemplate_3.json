@@ -2835,6 +2835,13 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "StreamMobilityCore_SMF_FEDERATE_PROD",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -2847,7 +2854,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMF_FEDERATE_PROD')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/daily')]",
