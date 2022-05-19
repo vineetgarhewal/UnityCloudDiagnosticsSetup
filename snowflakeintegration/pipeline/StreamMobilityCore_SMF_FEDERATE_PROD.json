@@ -32,6 +32,29 @@
 							"type": "LinkedServiceReference"
 						},
 						"path": "mobilecoresteam"
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "SF_LOAD_TS_EST"
+								},
+								"sink": {
+									"name": "SF_LOAD_TS_EST",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "RECORD_CONTENT"
+								},
+								"sink": {
+									"name": "RECORD_CONTENT",
+									"type": "String"
+								}
+							}
+						]
 					}
 				},
 				"inputs": [
