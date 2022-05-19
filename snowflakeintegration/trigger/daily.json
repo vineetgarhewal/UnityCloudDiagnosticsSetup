@@ -69,12 +69,6 @@
 					"referenceName": "StreamMobilityCore_SMFCC_CALL_PERFORMANCE",
 					"type": "PipelineReference"
 				}
-			},
-			{
-				"pipelineReference": {
-					"referenceName": "StreamMobilityCore_SMF_FEDERATE_PROD",
-					"type": "PipelineReference"
-				}
 			}
 		],
 		"type": "ScheduleTrigger",
