@@ -14252,6 +14252,273 @@
 				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCoreSMFCC_PCFINTERFACE')]",
 				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMFCC_CALL_PERFORMANCE')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_UPF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "StreamMobilityCore_UPF_FEDERATE_PROD",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\") limit 10",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS_EST"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS_EST",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RECORD_CONTENT"
+										},
+										"sink": {
+											"name": "RECORD_CONTENT",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SinkADXMobilityCore_UPF_FEDERATE_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-07-28T16:08:39Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD')]",
+				"[concat(variables('factoryId'), '/datasets/SinkADXMobilityCore_UPF_FEDERATE_PROD')]",
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RECORD_CONTENT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "RECORD_METADATA",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "STREAM_UPF_FEDERATE_PROD"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SinkADXMobilityCore_UPF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataExplorer_adxunitycloud",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"type": "datetime"
+					},
+					{
+						"name": "TIME",
+						"type": "datetime"
+					},
+					{
+						"name": "FED_UNIQUE_NAME",
+						"type": "string"
+					},
+					{
+						"name": "APPNAME",
+						"type": "string"
+					},
+					{
+						"name": "DNN",
+						"type": "string"
+					},
+					{
+						"name": "SNSSAI",
+						"type": "string"
+					},
+					{
+						"name": "CAUSECODE",
+						"type": "string"
+					},
+					{
+						"name": "POD",
+						"type": "string"
+					},
+					{
+						"name": "PEERID",
+						"type": "string"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
+						"type": "long"
+					},
+					{
+						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
+						"type": "long"
+					},
+					{
+						"name": "RECEIVED_FILE_NAME",
+						"type": "string"
+					},
+					{
+						"name": "FILE_ROW_NUMBER",
+						"type": "long"
+					}
+				],
+				"typeProperties": {
+					"table": "IEBUS_MOB_PM_CORE_METRICS_5G_NORTHRIM_STAGE_UPF_FEDERATE_PROD"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataExplorer_adxunitycloud')]"
+			]
 		}
 	]
 }
