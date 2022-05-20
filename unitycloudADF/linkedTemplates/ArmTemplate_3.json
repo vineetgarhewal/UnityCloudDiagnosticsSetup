@@ -3913,7 +3913,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\") limit 10",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\")",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
