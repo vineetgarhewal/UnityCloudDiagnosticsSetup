@@ -2182,6 +2182,35 @@
 						"type": "datetime"
 					},
 					{
+						"name": "RECORD_CONTENT",
+						"type": "string"
+					}
+				],
+				"typeProperties": {
+					"table": "IEBUS_MOB_PM_CORE_METRICS_5G_NORTHRIM_STAGE_SMF_FEDERATE_PROD"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataExplorer_adxunitycloud')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SinkADXMobilityCore_UPF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataExplorer_adxunitycloud",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"type": "datetime"
+					},
+					{
 						"name": "TIME",
 						"type": "datetime"
 					},
@@ -2283,35 +2312,7 @@
 					}
 				],
 				"typeProperties": {
-					"table": "IEBUS_MOB_PM_CORE_METRICS_5G_NORTHRIM_STAGE_SMF_FEDERATE_PROD"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataExplorer_adxunitycloud')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Sink_LOGS_FLUENTD_ANY_RAW')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataExplorer_adxunitycloud",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"TABLENAME": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureDataExplorerTable",
-				"schema": [],
-				"typeProperties": {
-					"table": {
-						"value": "@dataset().TABLENAME",
-						"type": "Expression"
-					}
+					"table": "IEBUS_MOB_PM_CORE_METRICS_5G_NORTHRIM_STAGE_UPF_FEDERATE_PROD"
 				}
 			},
 			"dependsOn": [

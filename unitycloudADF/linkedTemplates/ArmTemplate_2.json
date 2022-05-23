@@ -1305,127 +1305,12 @@
 						"scale": 9
 					},
 					{
-						"name": "TIME",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
+						"name": "RECORD_CONTENT",
 						"precision": 0,
 						"scale": 0
 					},
 					{
-						"name": "APPNAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DNN",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CAUSECODE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "PEERID",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
+						"name": "RECORD_METADATA",
 						"precision": 0,
 						"scale": 0
 					},
@@ -1448,44 +1333,6 @@
 				"typeProperties": {
 					"schema": "MSLOGS",
 					"table": "STREAM_SMF_FEDERATE_PROD"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Src_LOGS_FLUENTD_ANY_RAW')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "RAW_RECORD",
-						"type": "VARIANT",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "LOGS_FLUENTD_SYSLOG_CSMF_RAW"
 				}
 			},
 			"dependsOn": []
@@ -1536,6 +1383,44 @@
 				"typeProperties": {
 					"schema": "MSLOGS",
 					"table": "STREAM_UPF_FEDERATE_PROD"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Src_LOGS_FLUENTD_ANY_RAW')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS",
+						"type": "TIMESTAMP_NTZ",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RAW_RECORD",
+						"type": "VARIANT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "FILE_NAME",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "LOGS_FLUENTD_SYSLOG_CSMF_RAW"
 				}
 			},
 			"dependsOn": []
