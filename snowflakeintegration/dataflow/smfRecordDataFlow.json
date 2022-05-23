@@ -19,21 +19,11 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkToADX"
-				},
-				{
-					"dataset": {
-						"referenceName": "SinkADXMobilityCore_SMF_FEDERATE_PROD",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
 				}
 			],
 			"transformations": [
 				{
-					"name": "checkTransform"
-				},
-				{
-					"name": "parse1"
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -48,77 +38,16 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> streamOfSMFRecords",
-				"streamOfSMFRecords split(!regexMatch(RECORD_CONTENT,'\\\"job\\\": \\\"pfcp\\\",'),",
-				"     disjoint: false) ~> checkTransform@(checkTransform, transformBeforeSink)",
-				"checkTransform@transformBeforeSink parse(RECORD_CONTENT = replace(RECORD_CONTENT,'\\\"tags\\\": {\\\",','\\\"tags\\\": {\\\"appName\\\": \\\"smfcc_interface\\\",' ) ? string,",
-				"     format: 'json',",
-				"     documentForm: 'documentPerLine') ~> parse1",
-				"checkTransform@checkTransform sink(allowSchemaDrift: true,",
+				"streamOfSMFRecords derive(RECORD_CONTENT = replace('\\\"job\\\": \\\"pfcp\\\",' ,'\\\"job\\\": \\\"pfcp\\\",\"appName\": \"smfcc_interface\",')) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          SF_LOAD_TS_EST as timestamp,",
-				"          TIME as timestamp,",
-				"          FED_UNIQUE_NAME as string,",
-				"          APPNAME as string,",
-				"          DNN as string,",
-				"          SNSSAI as string,",
-				"          CAUSECODE as string,",
-				"          POD as string,",
-				"          PEERID as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES as long,",
-				"          RECEIVED_FILE_NAME as string,",
-				"          FILE_ROW_NUMBER as long",
+				"          RECORD_CONTENT as string",
 				"     ),",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sinkToADX",
-				"parse1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          SF_LOAD_TS_EST as timestamp,",
-				"          TIME as timestamp,",
-				"          FED_UNIQUE_NAME as string,",
-				"          APPNAME as string,",
-				"          DNN as string,",
-				"          SNSSAI as string,",
-				"          CAUSECODE as string,",
-				"          POD as string,",
-				"          PEERID as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS as long,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES as long,",
-				"          RECEIVED_FILE_NAME as string,",
-				"          FILE_ROW_NUMBER as long",
-				"     ),",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sinkToADX"
 			]
 		}
 	}
