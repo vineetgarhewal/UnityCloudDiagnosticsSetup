@@ -1,0 +1,55 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD",
+						"type": "DatasetReference"
+					},
+					"name": "streamOfSMFRecords"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          SF_LOAD_TS_EST as string,",
+				"          TIME as string,",
+				"          FED_UNIQUE_NAME as string,",
+				"          APPNAME as string,",
+				"          DNN as string,",
+				"          SNSSAI as string,",
+				"          CAUSECODE as string,",
+				"          POD as string,",
+				"          PEERID as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES as string,",
+				"          RECEIVED_FILE_NAME as string,",
+				"          FILE_ROW_NUMBER as string,",
+				"          {METADATA$ACTION} as string,",
+				"          {METADATA$ISUPDATE} as string,",
+				"          {METADATA$ROW_ID} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> streamOfSMFRecords"
+			]
+		}
+	}
+}
