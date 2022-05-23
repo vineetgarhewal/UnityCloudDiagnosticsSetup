@@ -14,127 +14,12 @@
 				"scale": 9
 			},
 			{
-				"name": "TIME",
-				"precision": 29,
-				"scale": 9
-			},
-			{
-				"name": "FED_UNIQUE_NAME",
+				"name": "RECORD_CONTENT",
 				"precision": 0,
 				"scale": 0
 			},
 			{
-				"name": "APPNAME",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "DNN",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "SNSSAI",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "CAUSECODE",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "POD",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "PEERID",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "RECEIVED_FILE_NAME",
-				"precision": 0,
-				"scale": 0
-			},
-			{
-				"name": "FILE_ROW_NUMBER",
+				"name": "RECORD_METADATA",
 				"precision": 0,
 				"scale": 0
 			},

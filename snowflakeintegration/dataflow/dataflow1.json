@@ -12,12 +12,39 @@
 					"name": "streamOfSMFRecords"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SinkADXMobilityCore_SMF_FEDERATE_PROD",
+						"type": "DatasetReference"
+					},
+					"name": "sinkToADX"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          SF_LOAD_TS_EST as string,",
-				"          TIME as string,",
+				"          RECORD_CONTENT as string,",
+				"          RECORD_METADATA as string,",
+				"          {METADATA$ACTION} as string,",
+				"          {METADATA$ISUPDATE} as string,",
+				"          {METADATA$ROW_ID} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> streamOfSMFRecords",
+				"streamOfSMFRecords split(ERROR_FUNCTION(''),",
+				"     disjoint: false) ~> split1@(sinkToADX, )",
+				"split1@sinkToADX sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SF_LOAD_TS_EST as timestamp,",
+				"          TIME as timestamp,",
 				"          FED_UNIQUE_NAME as string,",
 				"          APPNAME as string,",
 				"          DNN as string,",
@@ -25,30 +52,27 @@
 				"          CAUSECODE as string,",
 				"          POD as string,",
 				"          PEERID as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS as string,",
-				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES as long,",
 				"          RECEIVED_FILE_NAME as string,",
-				"          FILE_ROW_NUMBER as string,",
-				"          {METADATA$ACTION} as string,",
-				"          {METADATA$ISUPDATE} as string,",
-				"          {METADATA$ROW_ID} as string",
+				"          FILE_ROW_NUMBER as long",
 				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     format: 'table') ~> streamOfSMFRecords"
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkToADX"
 			]
 		}
 	}
