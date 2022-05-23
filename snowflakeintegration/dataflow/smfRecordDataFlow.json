@@ -5,9 +5,9 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+						"type": "LinkedServiceReference"
 					},
 					"name": "streamOfSMFRecords"
 				}
@@ -27,17 +27,10 @@
 				}
 			],
 			"scriptLines": [
-				"source(output(",
-				"          SF_LOAD_TS_EST as string,",
-				"          RECORD_CONTENT as string,",
-				"          RECORD_METADATA as string,",
-				"          {METADATA$ACTION} as string,",
-				"          {METADATA$ISUPDATE} as string,",
-				"          {METADATA$ROW_ID} as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> streamOfSMFRecords",
+				"     format: 'table',",
+				"     store: 'snowflake') ~> streamOfSMFRecords",
 				"streamOfSMFRecords derive(RECORD_CONTENT = replace('\\\"job\\\": \\\"pfcp\\\",' ,'\\\"job\\\": \\\"pfcp\\\",\\\"appName\\\": \\\"smfcc_interface\\\",')) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
