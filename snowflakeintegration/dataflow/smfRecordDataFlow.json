@@ -38,7 +38,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> streamOfSMFRecords",
-				"streamOfSMFRecords derive(RECORD_CONTENT = replace('\\\"job\\\": \\\"pfcp\\\",' ,'\\\"job\\\": \\\"pfcp\\\",\"appName\": \"smfcc_interface\",')) ~> derivedColumn1",
+				"streamOfSMFRecords derive(RECORD_CONTENT = replace('\\\"job\\\": \\\"pfcp\\\",' ,'\\\"job\\\": \\\"pfcp\\\",\\\"appName\\\": \\\"smfcc_interface\\\",')) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
