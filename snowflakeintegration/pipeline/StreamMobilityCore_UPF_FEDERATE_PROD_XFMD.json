@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "StreamMobilityCore_UPF_FEDERATE_PROD",
-				"type": "Copy",
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
-					"timeout": "7.00:00:00",
+					"timeout": "1.00:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -15,62 +15,19 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "SnowflakeSource",
-						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\")",
-						"exportSettings": {
-							"type": "SnowflakeExportCopyCommand"
-						}
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
-					"sink": {
-						"type": "AzureDataExplorerSink"
-					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "linkedService1",
-							"type": "LinkedServiceReference"
-						},
-						"path": "mobilecoresteam"
-					},
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "SF_LOAD_TS_EST"
-								},
-								"sink": {
-									"name": "SF_LOAD_TS_EST",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "RECORD_CONTENT"
-								},
-								"sink": {
-									"name": "RECORD_CONTENT",
-									"type": "String"
-								}
-							}
-						]
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "SinkADXMobilityCore_UPF_FEDERATE_PROD_TEST",
-						"type": "DatasetReference"
-					}
-				]
+					"traceLevel": "Fine"
+				}
 			}
 		],
+		"parameters": {
+			"dfs": {
+				"type": "String"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2021-07-28T16:08:39Z"
 	},
