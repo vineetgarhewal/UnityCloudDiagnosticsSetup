@@ -1,0 +1,73 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD",
+						"type": "DatasetReference"
+					},
+					"name": "upfStream"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SinkADXMobilityCore_UPF_FEDERATE_PROD",
+						"type": "DatasetReference"
+					},
+					"name": "adxStream"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          SF_LOAD_TS_EST as string,",
+				"          RECORD_CONTENT as string,",
+				"          RECORD_METADATA as string,",
+				"          {METADATA$ACTION} as string,",
+				"          {METADATA$ISUPDATE} as string,",
+				"          {METADATA$ROW_ID} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> upfStream",
+				"upfStream sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SF_LOAD_TS_EST as timestamp,",
+				"          TIME as timestamp,",
+				"          FED_UNIQUE_NAME as string,",
+				"          APPNAME as string,",
+				"          DNN as string,",
+				"          SNSSAI as string,",
+				"          CAUSECODE as string,",
+				"          POD as string,",
+				"          PEERID as string,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS as long,",
+				"          SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES as long,",
+				"          RECEIVED_FILE_NAME as string,",
+				"          FILE_ROW_NUMBER as long",
+				"     ),",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> adxStream"
+			]
+		}
+	}
+}
