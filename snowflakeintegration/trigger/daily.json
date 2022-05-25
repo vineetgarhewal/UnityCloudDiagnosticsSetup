@@ -24,12 +24,6 @@
 			},
 			{
 				"pipelineReference": {
-					"referenceName": "StreamMobilityCore_SMFCC_PROCEDURE",
-					"type": "PipelineReference"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "StreamMobilityCore_SMFCC_UDMINTERFACE",
 					"type": "PipelineReference"
 				}
