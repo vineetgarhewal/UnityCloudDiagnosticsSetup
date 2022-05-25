@@ -12,12 +12,6 @@
 			},
 			{
 				"pipelineReference": {
-					"referenceName": "StreamMobilityCore_SMFCC_GTPC_INTERFACE",
-					"type": "PipelineReference"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "StreamMobilityCore_SMFCC_INTERFACE",
 					"type": "PipelineReference"
 				}
