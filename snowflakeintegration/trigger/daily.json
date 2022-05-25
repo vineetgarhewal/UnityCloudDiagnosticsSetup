@@ -6,12 +6,6 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "StreamMobilityCore_SMFCC_CHFINTERFACE",
-					"type": "PipelineReference"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "StreamMobilityCore_SMFCC_INTERFACE",
 					"type": "PipelineReference"
 				}
