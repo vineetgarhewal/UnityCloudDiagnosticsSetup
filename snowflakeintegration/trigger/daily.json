@@ -63,12 +63,6 @@
 					"referenceName": "StreamMobilityCoreSMFCC_PCFINTERFACE",
 					"type": "PipelineReference"
 				}
-			},
-			{
-				"pipelineReference": {
-					"referenceName": "StreamMobilityCore_SMFCC_CALL_PERFORMANCE",
-					"type": "PipelineReference"
-				}
 			}
 		],
 		"type": "ScheduleTrigger",
