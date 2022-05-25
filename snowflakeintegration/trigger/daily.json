@@ -12,12 +12,6 @@
 			},
 			{
 				"pipelineReference": {
-					"referenceName": "StreamMobilityCore_SMFCC_PGW_CALL_PERFORMANCE",
-					"type": "PipelineReference"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "StreamMobilityCore_SMFCC_UDMINTERFACE",
 					"type": "PipelineReference"
 				}
