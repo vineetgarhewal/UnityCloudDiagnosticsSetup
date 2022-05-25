@@ -6,22 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "unitycloudADF"
-		},
-		"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
-			"type": "string",
-			"defaultValue": "BlobstunitycloudSas"
-		},
-		"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "SnowflakeMobilityCoreSysAdminConnectionString"
-		},
-		"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
-		},
-		"linkedService1_properties_typeProperties_sasUri_secretName": {
-			"type": "string",
-			"defaultValue": "StagingBlobSas"
 		}
 	},
 	"variables": {
@@ -29,4164 +13,1205 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Sink_LOGS_FLUENTD_ANY_RAW')]",
+			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureDataExplorer_adxunitycloud",
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"TABLENAME": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
-				"type": "AzureDataExplorerTable",
-				"schema": [],
-				"typeProperties": {
-					"table": {
-						"value": "@dataset().TABLENAME",
-						"type": "Expression"
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RECORD_CONTENT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "RECORD_METADATA",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
+						"scale": 0
 					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "STREAM_UPF_FEDERATE_PROD"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_stunitycloud_SAS')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/Src_LOGS_FLUENTD_ANY_RAW')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
 				"annotations": [],
-				"type": "AzureBlobStorage",
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS",
+						"type": "TIMESTAMP_NTZ",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RAW_RECORD",
+						"type": "VARIANT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "FILE_NAME",
+						"type": "VARCHAR",
+						"precision": 0,
+						"scale": 0
+					}
+				],
 				"typeProperties": {
-					"sasUri": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault_kv_unityclouddiag",
-							"type": "LinkedServiceReference"
+					"schema": "MSLOGS",
+					"table": "LOGS_FLUENTD_SYSLOG_CSMF_RAW"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
 						},
-						"secretName": "[parameters('AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Snowflake_UnityCloudFFA_MobilityCore')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "Snowflake",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault_kv_unityclouddiag",
-							"type": "LinkedServiceReference"
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
 						},
-						"secretName": "[parameters('Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName')]"
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_DEBUG_CSMF_RAW"
+								}
+							}
+						]
 					}
-				}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-04T05:31:48Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]"
+			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Snowflake_UnityCloudFFA_MobilityCoreLocal')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "Snowflake",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault1",
-							"type": "LinkedServiceReference"
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
 						},
-						"secretName": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/linkedService1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"sasUri": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault1",
-							"type": "LinkedServiceReference"
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
 						},
-						"secretName": "[parameters('linkedService1_properties_typeProperties_sasUri_secretName')]"
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_DEBUG_CUPF_RAW"
+								}
+							}
+						]
 					}
-				}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-25T00:28:48Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW  where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_EVENT_CSMF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-24T21:00:11Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW  where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES) ",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_EVENT_CUPF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-24T21:00:14Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MSLOGS.STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_SYSLOG_CSMF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-25T00:28:48Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MSLOGS.STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_SYSLOG_CUPF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-25T00:28:48Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_LOGS_FLUENTD_ANY_RAW')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy2 Snowflake to ADX CSMF_FLUENTD_SMF_DEFAULT",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT * FROM MOBILITYCORELOCAL.MSLOGS.STREAM_CSMF_FLUENTD_SMF_DEFAULT",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresmfsteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "TIMESTAMP",
+											"type": "String"
+										},
+										"sink": {
+											"name": "TIMESTAMP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "KUBERNETES_CONTAINER_NAME",
+											"type": "String"
+										},
+										"sink": {
+											"name": "KUBERNETES_CONTAINER_NAME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "KUBERNETES_HOST",
+											"type": "String"
+										},
+										"sink": {
+											"name": "KUBERNETES_HOST",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "KUBERNETES_CONTAINER_IMAGE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "KUBERNETES_CONTAINER_IMAGE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DOCKER_CONTAINER_ID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DOCKER_CONTAINER_ID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DEBUG_STRING",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DEBUG_STRING",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LOG",
+											"type": "String"
+										},
+										"sink": {
+											"name": "LOG",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ORIGINAL_RECORD"
+										},
+										"sink": {
+											"name": "ORIGINAL_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SrcSnowflakeMobilityCoreLocalCSMF",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SinkADXMobilityCoreCSMF",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-07-28T16:08:39Z"
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SnowflakeTable_SMFCC_GTPCINTERFACE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/Stream Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DNN",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CAUSECODE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "AMFMOBILITY",
-						"type": "BOOLEAN",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "IUPFRELOCATION",
-						"type": "BOOLEAN",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "PROCEDURETYPE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "OVERLOADLEVEL",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_CANCELS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_CANCELS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_REJECTS_OVERLOAD",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
+				"activities": [
+					{
+						"name": "Copy Snowflake to ADX CUPF_FLUENTD_UPF_DEFAULT",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT * FROM MSLOGS.STREAM_CUPF_FLUENTD_UPF_DEFAULT",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureBlobStorage_stunitycloud_SAS",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "TIMESTAMP",
+											"type": "String"
+										},
+										"sink": {
+											"name": "TIMESTAMP",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "KUBERNETES_CONTAINER_NAME",
+											"type": "String"
+										},
+										"sink": {
+											"name": "KUBERNETES_CONTAINER_NAME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "KUBERNETES_HOST",
+											"type": "String"
+										},
+										"sink": {
+											"name": "KUBERNETES_HOST",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "KUBERNETES_CONTAINER_IMAGE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "KUBERNETES_CONTAINER_IMAGE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DOCKER_CONTAINER_ID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DOCKER_CONTAINER_ID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DEBUG_STRING",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DEBUG_STRING",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LOG",
+											"type": "String"
+										},
+										"sink": {
+											"name": "LOG",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ORIGINAL_RECORD"
+										},
+										"sink": {
+											"name": "ORIGINAL_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SrcSnowflakeMobilityCoreLocalCSMF",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SinkADXMobilityCoreCSMF",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
-				"typeProperties": {
-					"schema": "MOB_PM_CORE_METRICS_5G_NORTHRIM",
-					"table": "SMFCC_GTPCINTERFACE"
-				}
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-07-28T16:08:39Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "StreamMobilityCore_SMF_FEDERATE_PROD",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"SMF_APPNAMES\") OR RECORD_CONTENT:tags.job = 'pfcp'",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS_EST"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS_EST",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RECORD_CONTENT"
+										},
+										"sink": {
+											"name": "RECORD_CONTENT",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SinkADXMobilityCore_SMF_FEDERATE_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-07-28T16:08:39Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_UPF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "StreamMobilityCore_UPF_FEDERATE_PROD",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\")",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS_EST"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS_EST",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RECORD_CONTENT"
+										},
+										"sink": {
+											"name": "RECORD_CONTENT",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SinkADXMobilityCore_UPF_FEDERATE_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-07-28T16:08:39Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
+				"[concat(variables('factoryId'), '/datasets/SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SnowflakeTable_SMFCC_INTERFACE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/Periodic10Mins')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
 				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
+				"runtimeState": "Started",
+				"pipelines": [
 					{
-						"name": "SF_LOAD_TS_EST",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
+						"pipelineReference": {
+							"referenceName": "Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					},
 					{
-						"name": "TIME",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
+						"pipelineReference": {
+							"referenceName": "Stream - STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					},
 					{
-						"name": "FED_UNIQUE_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
+						"pipelineReference": {
+							"referenceName": "Stream - STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					},
 					{
-						"name": "APPNAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
+						"pipelineReference": {
+							"referenceName": "Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					},
 					{
-						"name": "POD",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
+						"pipelineReference": {
+							"referenceName": "Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					},
 					{
-						"name": "DNN",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
+						"pipelineReference": {
+							"referenceName": "Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					},
 					{
-						"name": "SNSSAI",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
+						"pipelineReference": {
+							"referenceName": "StreamMobilityCore_SMF_FEDERATE_PROD",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					},
 					{
-						"name": "CAUSECODE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "AMFMOBILITY",
-						"type": "BOOLEAN",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "IUPFRELOCATION",
-						"type": "BOOLEAN",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "PROCEDURETYPE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "OVERLOADLEVEL",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_CANCELS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_CANCELS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_REJECTS_OVERLOAD",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
+						"pipelineReference": {
+							"referenceName": "StreamMobilityCore_UPF_FEDERATE_PROD",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
+				"type": "ScheduleTrigger",
 				"typeProperties": {
-					"schema": "MOB_PM_CORE_METRICS_5G_NORTHRIM",
-					"table": "SMFCC_MONITOR_SERVICE_INTERFACE"
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 10,
+						"startTime": "2021-07-24T01:43:00Z",
+						"timeZone": "UTC"
+					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SnowflakeTable_SMFCC_PROCEDURE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DNN",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CAUSECODE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "AMFMOBILITY",
-						"type": "BOOLEAN",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "IUPFRELOCATION",
-						"type": "BOOLEAN",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "PROCEDURETYPE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "OVERLOADLEVEL",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_DEREGISTRATION_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AN_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_INITIATED_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_XN_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_N2_HANDOVER_CANCELS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_MODIFY_QOS_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_INITIATED_PDU_SESSION_RELEASE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NETWORK_INITIATIED_SERVICE_REQUEST_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCF_INITIATED_TERMINATE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UPF_USAGE_REPORT_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_AMF_MOBILITY_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ERROR_INDICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UP_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PROCESS_PCF_UPDATE_POLICY_RULES_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_HANDOVER_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_HANDOVER_CANCELS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPS_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_CHF_SERVER_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_4G_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_5GS_TO_EPDG_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NON3GPP_TO_5GS_IDLE_MOBILITY_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_EPDG_TO_EPS_HANDOVER_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SDM_UPDATE_NOTIFICATION_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_REJECTS_OVERLOAD",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOW_INACTIVITY_PROCEDURE_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SESSION_IDLE_PROCEDURE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_ATTEMPTS",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_SUCCESSES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_UE_INITIATED_MODIFY_FAILURES",
-						"type": "NUMBER",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_ESTABLISHMENT_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE_3_PDU_SESSION_REQUEST_REACTIVATION_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_ATTEMPTS",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_SUCCESSES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_SSC_MODE2_NW_INITIATED_RELEASE_FAILURES",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MOB_PM_CORE_METRICS_5G_NORTHRIM",
-					"table": "SMFCC_PROCEDURE"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreCSMF')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIMESTAMP",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_HOST",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_IMAGE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DOCKER_CONTAINER_ID",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DEBUG_STRING",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "LOG",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ORIGINAL_RECORD",
-						"type": "VARIANT",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "CSMF_FLUENTD_SMF_DEFAULT"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreCUPF')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIMESTAMP",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_HOST",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_IMAGE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DOCKER_CONTAINER_ID",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DEBUG_STRING",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "LOG",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ORIGINAL_RECORD",
-						"type": "VARIANT",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "CUPF_FLUENTD_UPF_DEFAULT"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreDemo')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIMESTAMP",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_HOST",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_IMAGE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DOCKER_CONTAINER_ID",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DEBUG_STRING",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "LOG",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ORIGINAL_RECORD",
-						"type": "VARIANT",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "CSMF_FLUENTD_SMF_DEFAULT"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreLocalCSMF')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIMESTAMP",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_HOST",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_IMAGE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DOCKER_CONTAINER_ID",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DEBUG_STRING",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "LOG",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ORIGINAL_RECORD",
-						"type": "VARIANT",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "UNITYCLOUDLOGSDEMO"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreLocalUPF')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS",
-						"type": "TIMESTAMP_NTZ",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIMESTAMP",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_NAME",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_HOST",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "KUBERNETES_CONTAINER_IMAGE",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DOCKER_CONTAINER_ID",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DEBUG_STRING",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "LOG",
-						"type": "VARCHAR",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ORIGINAL_RECORD",
-						"type": "VARIANT",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "UNITYCLOUDLOGSDEMO"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMFCC_CALL_PERFORMANCE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DNN",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "IPADDRESS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FIVEQI",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "ARP",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "CAUSE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "PCCRULE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CAUSECODE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCSCF_SESSIONS_ACTIVATED",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCSCF_SESSIONS_DEACTIVATED",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOWS_SETUP_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_QOS_FLOWS_SETUP_FAILURE",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NW_INIT_QOS_FLOWS_RELEASED",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ACCESS_INIT_QOS_FLOWS_RELEASED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_ABNORMAL_QOS_FLOWS_RELEASED",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_ADD_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_ADD_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_ADD_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_MODIFY_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_MODIFY_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_MODIFY_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_DELETE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_DELETE_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PCC_RULE_DELETE_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_DEFAULT_POLICY_USED_PDU_SESSION_COUNT",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_DEFAULT_QUOTA_USED_PDU_SESSION_COUNT",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_CALL_PERFORMANCE1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMFCC_CHFINTERFACE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DNN",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CAUSECODE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "PEERID",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_CREATE_SESSION_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_CREATE_SESSION_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_CREATE_SESSION_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_UPDATE_SESSION_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_UPDATE_SESSION_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_UPDATE_SESSION_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_RELEASE_SESSION_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_RELEASE_SESSION_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_RELEASE_SESSION_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_ONE_TIME_REPORT_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_ONE_TIME_REPORT_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_ONE_TIME_REPORT_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_NOTIFICATION_RECEIVED",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_NOTIFICATION_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NCHF_NOTIFICATION_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_CHFINTERFACE1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMFCC_GTPCINTERFACE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DNN",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CAUSECODE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_CREATE_SESSION_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_CREATE_SESSION_ACCEPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_CREATE_SESSION_REJECTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_DELETE_SESSION_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_DELETE_SESSION_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_DELETE_SESSION_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_DELETE_BEARER_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_DELETE_BEARER_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_DELETE_BEARER_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_CREATE_BEARER_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_CREATE_BEARER_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_CREATE_BEARER_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_UPDATE_BEARER_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_UPDATE_BEARER_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_UPDATE_BEARER_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_MODIFY_BEARER_REQUEST_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_MODIFY_BEARER_COMMAND_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_DELETE_BEARER_COMMAND_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_CREATE_SESSION_ACCEPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_CREATE_SESSION_REJECTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_DELETE_SESSION_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_DELETE_SESSION_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_DELETE_SESSION_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_MODIFY_BEARER_REQUEST_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GTPC_SGW_DELETE_BEARER_REQUEST_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_GTPCINTERFACE1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMFCC_INTERFACE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DNN",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CAUSECODE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "TIMERTYPE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SM_CONTEXT_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SM_CONTEXT_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SM_CONTEXT_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_CREATE_CLIENT_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_UPDATE_CLIENT_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_SUCCESSES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RELEASE_CLIENT_PUNTED",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NAMF_COMM_N1N2_MESSAGE_TRANSFER_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_START_DURABLE_TIMER_REQUESTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_START_DURABLE_TIMER_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_STOP_DURABLE_TIMER_REQUESTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_STOP_DURABLE_TIMER_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_DURABLE_TIMER_FIRED",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NAMF_COMM_ASSIGN_EBI_MESSAGE_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_RETRIEVE_SM_CONTEXT_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_SUCCESSES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_PDU_SESSION_SM_CONTEXT_STATUS_NOTIFY_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_INTERFACE1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMFCC_MONITOR_SERVICE_INTERFACE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "GAUGE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GET_SMFCC_GAUGE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_GET_SMFCC_GAUGE_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_MONITOR_SERVICE_INTERFACE1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMFCC_PCFINTERFACE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "DNN",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CAUSECODE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "PEERID",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_CREATE_SERVICE_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_SERVICE_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_DELETE_SERVICE_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_ATTEMPTS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_UPDATE_NOTIFY_FAILURES",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_ATTEMPTS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_SUCCESS",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_NSMF_SMPOLICY_CONTROL_TERMINATE_NOTIFY_FAILURES",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_PCFINTERFACE1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMFCC_PGW_CALL_PERFORMANCE')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "TIME",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "FED_UNIQUE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "APPNAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "POD",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SNSSAI",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "QCI",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "ARP",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "CAUSE",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PGW_BEARER_SETUP_SUCCESS",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PGW_BEARER_SETUP_FAILURE",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PGW_NW_INIT_BEARER_RELEASE",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PGW_ACCESS_INIT_BEARER_RELEASE",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PGW_ABNORMAL_BEARER_RELEASE",
-						"precision": 38,
-						"scale": 0
-					},
-					{
-						"name": "SMFCC_PG",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECEIVED_FILE_NAME",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "FILE_ROW_NUMBER",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_SMFCC_PGW_CALL_PERFORMANCE1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMF_FEDERATE_PROD')]",
+				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_UPF_FEDERATE_PROD')]"
 			]
 		}
 	]

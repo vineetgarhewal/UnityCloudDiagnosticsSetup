@@ -84,6 +84,18 @@
 					},
 					"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl')]"
+					},
+					"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
+						"value": "[parameters('AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName')]"
+					},
+					"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName')]"
+					},
+					"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
+					},
+					"linkedService1_properties_typeProperties_sasUri_secretName": {
+						"value": "[parameters('linkedService1_properties_typeProperties_sasUri_secretName')]"
 					}
 				}
 			},
@@ -102,63 +114,11 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
-						"value": "[parameters('AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName')]"
-					},
-					"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName')]"
-					},
-					"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
-					},
-					"linkedService1_properties_typeProperties_sasUri_secretName": {
-						"value": "[parameters('linkedService1_properties_typeProperties_sasUri_secretName')]"
 					}
 				}
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'unitycloudADF_ArmTemplate_0')]"
-			]
-		},
-		{
-			"name": "unitycloudADF_ArmTemplate_2",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'unitycloudADF_ArmTemplate_1')]"
-			]
-		},
-		{
-			"name": "unitycloudADF_ArmTemplate_3",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'unitycloudADF_ArmTemplate_2')]"
 			]
 		}
 	]
