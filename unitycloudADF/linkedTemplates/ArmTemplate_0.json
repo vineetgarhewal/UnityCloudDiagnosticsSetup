@@ -537,7 +537,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "SELECT dateadd(hour,1,TO_TIMESTAMP(RAW_RECORD['@timestamp'])) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES);",
+								"query": "SELECT dateadd(hour,1,TO_TIMESTAMP(RAW_RECORD['@timestamp'])) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
