@@ -1,5 +1,5 @@
 {
-	"name": "SrcSnowflakeMCC_EDR_SESSION_SESSION",
+	"name": "SrcSnowflakeMCC_EDR_SESSION",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
