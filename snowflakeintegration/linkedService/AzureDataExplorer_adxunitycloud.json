@@ -4,8 +4,8 @@
 		"annotations": [],
 		"type": "AzureDataExplorer",
 		"typeProperties": {
-			"endpoint": "https://unitycloudadx.eastus.kusto.windows.net",
-			"database": "mobilitycore"
+			"endpoint": "https://a4okusto.eastus.kusto.windows.net",
+			"database": "mccedr"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
