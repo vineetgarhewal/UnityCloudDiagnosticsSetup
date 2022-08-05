@@ -12,10 +12,10 @@
 			"value": "BlobstunitycloudSas"
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint": {
-			"value": "https://unitycloudadx.eastus.kusto.windows.net"
+			"value": "https://a4okusto.eastus.kusto.windows.net"
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
-			"value": "mobilitycore"
+			"value": "mccedr"
 		},
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"value": "https://unitycloudkeyvault.vault.azure.net/"
