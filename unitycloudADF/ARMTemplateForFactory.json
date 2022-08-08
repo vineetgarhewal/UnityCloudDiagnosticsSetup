@@ -17,11 +17,11 @@
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_endpoint": {
 			"type": "string",
-			"defaultValue": "https://a4okusto.eastus.kusto.windows.net"
+			"defaultValue": "https://unitycloudadx.eastus.kusto.windows.net"
 		},
 		"AzureDataExplorer_adxunitycloud_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "mccedr"
+			"defaultValue": "mobilitycore"
 		},
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"type": "string",
