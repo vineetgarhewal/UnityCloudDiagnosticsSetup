@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"SMF_APPNAMES\") OR RECORD_CONTENT:tags.job = 'pfcp'",
+						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"SMF_APPNAMES\") OR RECORD_CONTENT:tags.job = 'pfcp' OR RECORD_CONTENT:tags.job = 'smfmonitor'",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
