@@ -13,6 +13,182 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW  where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_EVENT_CSMF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-24T21:00:11Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW  where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES) ",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_EVENT_CUPF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-24T21:00:14Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -209,7 +385,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"SMF_APPNAMES\") OR RECORD_CONTENT:tags.job = 'pfcp' OR RECORD_CONTENT:tags.job = 'smfmonitor'",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"SMF_APPNAMES\") \nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor'",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -251,7 +427,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "SrcSnowflakeMobilityCoreSMF_FEDERATE_PROD",
+								"referenceName": "SrcSnowflakeMobilityCoreSMF_PROD",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -295,7 +471,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_FEDERATE_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\")  OR RECORD_CONTENT:tags.job = 'pfcp'",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-09-29','yyyy-mm-dd') \nAND RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\")\nOR RECORD_CONTENT:tags.job = 'pfcp'",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -337,7 +513,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "SrcSnowflakeMobilityCoreUPF_FEDERATE_PROD",
+								"referenceName": "SrcSnowflakeMobilityCoreUPF_PROD",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -438,6 +614,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMF_FEDERATE_PROD')]",
 				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_UPF_FEDERATE_PROD')]"
 			]
