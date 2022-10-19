@@ -1,0 +1,10 @@
+{
+	"name": "ao5gccustdataingest adls",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://ao5gccustdataingest.dfs.core.windows.net/"
+		}
+	}
+}
