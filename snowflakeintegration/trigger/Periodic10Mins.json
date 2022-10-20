@@ -42,13 +42,13 @@
 			},
 			{
 				"pipelineReference": {
-					"referenceName": "StreamMobilityCore_SMF_FEDERATE_PROD",
+					"referenceName": "Stream - MobilityCore_SMF_FEDERATE_PROD",
 					"type": "PipelineReference"
 				}
 			},
 			{
 				"pipelineReference": {
-					"referenceName": "StreamMobilityCore_UPF_FEDERATE_PROD",
+					"referenceName": "Stream - MobilityCore_UPF_FEDERATE_PROD",
 					"type": "PipelineReference"
 				}
 			}
