@@ -1,0 +1,17 @@
+{
+	"name": "Sink_Metrics_ADLS_JSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ao5gccustdataingest adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation"
+			}
+		},
+		"schema": {}
+	}
+}

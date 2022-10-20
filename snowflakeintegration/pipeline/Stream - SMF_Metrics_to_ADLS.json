@@ -1,5 +1,5 @@
 {
-	"name": "Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW_copy1",
+	"name": "Stream - SMF_Metrics_to_ADLS",
 	"properties": {
 		"activities": [
 			{
@@ -42,13 +42,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+						"referenceName": "SrcSnowflakeMobilityCoreSMF_PROD",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Json1",
+						"referenceName": "Sink_Metrics_ADLS_JSON",
 						"type": "DatasetReference"
 					}
 				]
