@@ -42,7 +42,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SrcSnowflakeMobilityCoreSMF_PROD",
+						"referenceName": "Src_Snowflake_MobilityCore_SMF_PROD_toADLS",
 						"type": "DatasetReference"
 					}
 				],
