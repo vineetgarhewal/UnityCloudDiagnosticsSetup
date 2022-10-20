@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\";",
+						"query": "select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\"",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
