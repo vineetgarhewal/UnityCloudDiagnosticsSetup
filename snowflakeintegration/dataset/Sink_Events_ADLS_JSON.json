@@ -1,5 +1,5 @@
 {
-	"name": "Json1",
+	"name": "Sink_Events_ADLS_JSON",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ao5gccustdataingest adls",
