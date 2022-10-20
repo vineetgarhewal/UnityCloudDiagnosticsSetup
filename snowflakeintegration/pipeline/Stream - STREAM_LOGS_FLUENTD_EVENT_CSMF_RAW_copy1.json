@@ -1,0 +1,61 @@
+{
+	"name": "Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Snowflake to ADLS Sink",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SnowflakeSource",
+						"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW  where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
+						"exportSettings": {
+							"type": "SnowflakeExportCopyCommand"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "mobilecoresteam"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-08-24T21:00:11Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

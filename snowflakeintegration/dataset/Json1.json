@@ -1,0 +1,18 @@
+{
+	"name": "Json1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ao5gccustdataingest adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "a05gccustdataingest-events-bronze"
+			}
+		},
+		"schema": {}
+	}
+}
