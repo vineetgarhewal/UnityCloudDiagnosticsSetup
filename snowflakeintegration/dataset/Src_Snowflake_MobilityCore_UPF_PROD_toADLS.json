@@ -1,5 +1,5 @@
 {
-	"name": "Src_Snowflake_MobilityCore_UPF_PROD_toADLS_copy1",
+	"name": "Src_Snowflake_MobilityCore_UPF_PROD_toADLS",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
