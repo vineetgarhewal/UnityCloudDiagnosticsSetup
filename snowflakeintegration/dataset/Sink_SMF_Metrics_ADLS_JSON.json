@@ -1,5 +1,5 @@
 {
-	"name": "Sink_Metrics_ADLS_JSON",
+	"name": "Sink_SMF_Metrics_ADLS_JSON",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ao5gccustdataingest adls",
@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "smf",
 				"fileSystem": "a05gccustdataingest-metrics-bronze"
 			}
 		},
