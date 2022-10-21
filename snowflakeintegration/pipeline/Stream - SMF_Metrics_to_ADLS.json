@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD_TOADLS\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nOR RECORD_CONTENT:tags.job = 'smfcc_interface'\nOR RECORD_CONTENT:tags.job = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.job = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.job = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.job = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.job = 'smfcc_pfcp_interface'\nlimit 5",
+						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD_TOADLS\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nOR RECORD_CONTENT:tags.job = 'smfcc_interface'\nOR RECORD_CONTENT:tags.job = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.job = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.job = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.job = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.job = 'smfcc_pfcp_interface'",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
