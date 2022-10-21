@@ -48,7 +48,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Sink_Metrics_ADLS_JSON",
+						"referenceName": "Sink_SMF_Metrics_ADLS_JSON",
 						"type": "DatasetReference"
 					}
 				]
