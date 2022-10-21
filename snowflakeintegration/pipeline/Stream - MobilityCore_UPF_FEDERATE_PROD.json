@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-09-29','yyyy-mm-dd') \nAND RECORD_CONTENT:tags.appName IN (select * from MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\")\nOR RECORD_CONTENT:tags.job = 'pfcp'",
+						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD_TOADLS\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-21','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.job = 'pfcp'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_control_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_data_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_intf_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_session_db_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_vpp_threads_cpu_utilization'\nOR RECORD_CONTENT:tags.appName = 'pfcp_procedure'\nOR RECORD_CONTENT:tags.appName = 'pfcp_protocol')",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
