@@ -1,0 +1,61 @@
+{
+	"name": "Stream - UPF_Metrics_to_ADLS",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Snowflake to ADLS Sink",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SnowflakeSource",
+						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD_TOADLS\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nOR RECORD_CONTENT:tags.job = 'smfcc_interface'\nOR RECORD_CONTENT:tags.job = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.job = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.job = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.job = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.job = 'smfcc_pfcp_interface'",
+						"exportSettings": {
+							"type": "SnowflakeExportCopyCommand"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "mobilecoresteam"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Src_Snowflake_MobilityCore_UPF_PROD_toADLS",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Sink_UPF_Metrics_ADLS_JSON",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-08-24T21:00:11Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
