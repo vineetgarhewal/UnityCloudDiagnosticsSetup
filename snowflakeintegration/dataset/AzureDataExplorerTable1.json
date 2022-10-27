@@ -1,0 +1,20 @@
+{
+	"name": "AzureDataExplorerTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataExplorer_adxunitycloud",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [
+			{
+				"name": "RECORD_CONTENT",
+				"type": "string"
+			}
+		],
+		"typeProperties": {
+			"table": "DEMO"
+		}
+	}
+}
