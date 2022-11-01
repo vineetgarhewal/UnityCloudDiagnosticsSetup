@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": "a05gccustdataingest-events-bronze"
+				"fileSystem": "a05gccustdataingest-metrics-bronze"
 			}
 		},
 		"schema": {}
