@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": "UPF",
 				"fileSystem": "a05gccustdataingest-metrics-bronze"
 			}
 		},
