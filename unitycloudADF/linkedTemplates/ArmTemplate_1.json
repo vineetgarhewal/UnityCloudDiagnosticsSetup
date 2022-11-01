@@ -13,6 +13,525 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Src_Snowflake_MobilityCore_SMF_PROD_toADLS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RECORD_CONTENT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "RECORD_METADATA",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "STREAM_SMF_PROD_TOADLS"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Src_Snowflake_MobilityCore_UPF_PROD_toADLS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RECORD_CONTENT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "RECORD_METADATA",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "STREAM_UPF_PROD_TOADLS"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - MobilityCore_SMF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "StreamMobilityCore_SMF_FEDERATE_PROD",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.appName = 'smfcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.appName = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pfcp_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_gtpcinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_udminterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_chfinterface'\nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor')",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS_EST"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS_EST",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RECORD_CONTENT"
+										},
+										"sink": {
+											"name": "RECORD_CONTENT",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SrcSnowflakeMobilityCoreSMF_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SinkADXMobilityCore_SMF_FEDERATE_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-07-28T16:08:39Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - MobilityCore_UPF_FEDERATE_PROD')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "StreamMobilityCore_UPF_FEDERATE_PROD",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.job = 'pfcp'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_control_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_data_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_intf_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_session_db_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_vpp_threads_cpu_utilization'\nOR RECORD_CONTENT:tags.appName = 'pfcp_procedure'\nOR RECORD_CONTENT:tags.appName = 'pfcp_protocol')",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS_EST"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS_EST",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RECORD_CONTENT"
+										},
+										"sink": {
+											"name": "RECORD_CONTENT",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SrcSnowflakeMobilityCoreUPF_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SinkADXMobilityCore_UPF_FEDERATE_PROD",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-07-28T16:08:39Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - SMF_Metrics_to_ADLS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to ADLS Sink",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD_TOADLS\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.appName = 'smfcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.appName = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pfcp_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_gtpcinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_udminterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_chfinterface'\nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor')",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_Snowflake_MobilityCore_SMF_PROD_toADLS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_SMF_Metrics_ADLS_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-24T21:00:11Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_Snowflake_MobilityCore_SMF_PROD_toADLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_DEBUG_CSMF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-04T05:31:48Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SF_LOAD_TS"
+										},
+										"sink": {
+											"name": "SF_LOAD_TS",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "RAW_RECORD"
+										},
+										"sink": {
+											"name": "RAW_RECORD",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_LOGS_FLUENTD_ANY_RAW",
+								"type": "DatasetReference",
+								"parameters": {
+									"TABLENAME": "LOGS_FLUENTD_DEBUG_CUPF_RAW"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-25T00:28:48Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -365,13 +884,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_SMF_FEDERATE_PROD')]",
+			"name": "[concat(parameters('factoryName'), '/Stream - UPF_Metrics_to_ADLS')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "StreamMobilityCore_SMF_FEDERATE_PROD",
+						"name": "Copy Snowflake to ADLS Sink",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -385,13 +904,19 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD\"\nwhere RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"SMF_APPNAMES\") \nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor'",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD_TOADLS\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-21','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.job = 'pfcp'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_control_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_data_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_intf_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_session_db_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_vpp_threads_cpu_utilization'\nOR RECORD_CONTENT:tags.appName = 'pfcp_procedure'\nOR RECORD_CONTENT:tags.appName = 'pfcp_protocol')",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
 							},
 							"sink": {
-								"type": "AzureDataExplorerSink"
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
 							},
 							"enableStaging": true,
 							"stagingSettings": {
@@ -400,41 +925,18 @@
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresteam"
-							},
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "SF_LOAD_TS_EST"
-										},
-										"sink": {
-											"name": "SF_LOAD_TS_EST",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "RECORD_CONTENT"
-										},
-										"sink": {
-											"name": "RECORD_CONTENT",
-											"type": "String"
-										}
-									}
-								]
 							}
 						},
 						"inputs": [
 							{
-								"referenceName": "SrcSnowflakeMobilityCoreSMF_PROD",
+								"referenceName": "Src_Snowflake_MobilityCore_UPF_PROD_toADLS",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "SinkADXMobilityCore_SMF_FEDERATE_PROD",
+								"referenceName": "Sink_UPF_Metrics_ADLS_JSON",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -446,95 +948,11 @@
 					"cancelAfter": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2021-07-28T16:08:39Z"
+				"lastPublishTime": "2021-08-24T21:00:11Z"
 			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/StreamMobilityCore_UPF_FEDERATE_PROD')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "StreamMobilityCore_UPF_FEDERATE_PROD",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-09-29','yyyy-mm-dd') \nAND RECORD_CONTENT:tags.appName IN ( select * from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"UPF_APPNAMES\")\nOR RECORD_CONTENT:tags.job = 'pfcp'",
-								"exportSettings": {
-									"type": "SnowflakeExportCopyCommand"
-								}
-							},
-							"sink": {
-								"type": "AzureDataExplorerSink"
-							},
-							"enableStaging": true,
-							"stagingSettings": {
-								"linkedServiceName": {
-									"referenceName": "linkedService1",
-									"type": "LinkedServiceReference"
-								},
-								"path": "mobilecoresteam"
-							},
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "SF_LOAD_TS_EST"
-										},
-										"sink": {
-											"name": "SF_LOAD_TS_EST",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "RECORD_CONTENT"
-										},
-										"sink": {
-											"name": "RECORD_CONTENT",
-											"type": "String"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SrcSnowflakeMobilityCoreUPF_PROD",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SinkADXMobilityCore_UPF_FEDERATE_PROD",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2021-07-28T16:08:39Z"
-			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_Snowflake_MobilityCore_UPF_PROD_toADLS')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Periodic10Mins')]",
@@ -588,14 +1006,14 @@
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "StreamMobilityCore_SMF_FEDERATE_PROD",
+							"referenceName": "Stream - MobilityCore_SMF_FEDERATE_PROD",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
 					},
 					{
 						"pipelineReference": {
-							"referenceName": "StreamMobilityCore_UPF_FEDERATE_PROD",
+							"referenceName": "Stream - MobilityCore_UPF_FEDERATE_PROD",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -612,12 +1030,14 @@
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_DEBUG_CUPF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CUPF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_SYSLOG_CSMF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]",
-				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_SMF_FEDERATE_PROD')]",
-				"[concat(variables('factoryId'), '/pipelines/StreamMobilityCore_UPF_FEDERATE_PROD')]"
+				"[concat(variables('factoryId'), '/pipelines/Stream - MobilityCore_SMF_FEDERATE_PROD')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - MobilityCore_UPF_FEDERATE_PROD')]"
 			]
 		}
 	]

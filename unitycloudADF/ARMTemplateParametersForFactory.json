@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "unitycloudADF"
 		},
+		"ao5gccustdataingest adls_accountKey": {
+			"value": ""
+		},
 		"AzureBlobStorage_stunitycloud_Identity_properties_typeProperties_serviceEndpoint": {
 			"value": "https://stunitycloud.blob.core.windows.net"
 		},
@@ -28,6 +31,9 @@
 		},
 		"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
 			"value": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
+		},
+		"ao5gccustdataingest adls_properties_typeProperties_url": {
+			"value": "https://ao5gccustdataingest.dfs.core.windows.net/"
 		},
 		"linkedService1_properties_typeProperties_sasUri_secretName": {
 			"value": "StagingBlobSas"
