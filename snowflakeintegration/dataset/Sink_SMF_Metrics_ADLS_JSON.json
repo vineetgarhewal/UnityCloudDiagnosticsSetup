@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": "SMF",
 				"fileSystem": "a05gccustdataingest-metrics-bronze"
 			}
 		},
