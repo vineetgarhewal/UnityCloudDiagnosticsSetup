@@ -38,29 +38,6 @@
 							"type": "LinkedServiceReference"
 						},
 						"path": "mobilecoresteam"
-					},
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "SF_LOAD_TS"
-								},
-								"sink": {
-									"name": "SF_LOAD_TS",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "RAW_RECORD"
-								},
-								"sink": {
-									"name": "RAW_RECORD",
-									"type": "String"
-								}
-							}
-						]
 					}
 				},
 				"inputs": [
