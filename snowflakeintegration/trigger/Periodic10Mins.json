@@ -72,7 +72,7 @@
 			},
 			{
 				"pipelineReference": {
-					"referenceName": "Stream -UPF_Events_to_ADLS",
+					"referenceName": "Stream - UPF_Events_to_ADLS",
 					"type": "PipelineReference"
 				}
 			}

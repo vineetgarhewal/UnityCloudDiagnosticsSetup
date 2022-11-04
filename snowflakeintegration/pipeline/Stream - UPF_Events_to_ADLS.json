@@ -1,5 +1,5 @@
 {
-	"name": "Stream -UPF_Events_to_ADLS",
+	"name": "Stream - UPF_Events_to_ADLS",
 	"properties": {
 		"activities": [
 			{
