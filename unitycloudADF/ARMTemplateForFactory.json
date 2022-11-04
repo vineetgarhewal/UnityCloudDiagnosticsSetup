@@ -77,7 +77,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.appName = 'smfcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.appName = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pfcp_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_gtpcinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_udminterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_chfinterface'\nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor')",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD\"\nwhere (RECORD_CONTENT:tags.appName = 'smfcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.appName = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pfcp_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_gtpcinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_udminterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_chfinterface'\nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor')\nAND TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') ",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -167,7 +167,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.job = 'pfcp'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_control_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_data_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_intf_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_session_db_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_vpp_threads_cpu_utilization'\nOR RECORD_CONTENT:tags.appName = 'pfcp_procedure'\nOR RECORD_CONTENT:tags.appName = 'pfcp_protocol')",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD\"\nwhere (RECORD_CONTENT:tags.job = 'pfcp'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_control_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_data_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_intf_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_session_db_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_vpp_threads_cpu_utilization'\nOR RECORD_CONTENT:tags.appName = 'pfcp_procedure'\nOR RECORD_CONTENT:tags.appName = 'pfcp_protocol')\nAND TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') ",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -257,7 +257,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD_TOADLS\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-20','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.appName = 'smfcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.appName = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pfcp_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_gtpcinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_udminterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_chfinterface'\nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor')",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD_TOADLS\"\nwhere (RECORD_CONTENT:tags.appName = 'smfcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.appName = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pfcp_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_gtpcinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_udminterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_chfinterface'\nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor')\nAND TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-11-03','yyyy-mm-dd') ",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -882,7 +882,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SnowflakeSource",
-								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD_TOADLS\"\nwhere TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-10-21','yyyy-mm-dd') \nAND (RECORD_CONTENT:tags.job = 'pfcp'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_control_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_data_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_intf_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_session_db_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_vpp_threads_cpu_utilization'\nOR RECORD_CONTENT:tags.appName = 'pfcp_procedure'\nOR RECORD_CONTENT:tags.appName = 'pfcp_protocol')",
+								"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_UPF_PROD_TOADLS\"\nwhere (RECORD_CONTENT:tags.job = 'pfcp'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_control_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_data_plane_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_intf_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_session_db_stats'\nOR RECORD_CONTENT:tags.appName = 'sess_mgr_vpp_threads_cpu_utilization'\nOR RECORD_CONTENT:tags.appName = 'pfcp_procedure'\nOR RECORD_CONTENT:tags.appName = 'pfcp_protocol')\nAND TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2022-11-03','yyyy-mm-dd') ",
 								"exportSettings": {
 									"type": "SnowflakeExportCopyCommand"
 								}
@@ -1761,6 +1761,20 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Stream - SMF_Metrics_to_ADLS",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Stream - UPF_Metrics_to_ADLS",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -1781,7 +1795,9 @@
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CSMF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - STREAM_LOGS_FLUENTD_EVENT_CUPF_RAW')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - MobilityCore_SMF_FEDERATE_PROD')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream - MobilityCore_UPF_FEDERATE_PROD')]"
+				"[concat(variables('factoryId'), '/pipelines/Stream - MobilityCore_UPF_FEDERATE_PROD')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - SMF_Metrics_to_ADLS')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - UPF_Metrics_to_ADLS')]"
 			]
 		}
 	]
