@@ -57,6 +57,12 @@
 					"referenceName": "Stream - SMF_Metrics_to_ADLS",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "Stream - UPF_Metrics_to_ADLS",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
