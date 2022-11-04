@@ -1,0 +1,84 @@
+{
+	"name": "Stream - SMF_Events_to_ADLS",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Snowflake to RAW Kusto table",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SnowflakeSource",
+						"query": "select TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD from MOBILITYCORELOCAL.MSLOGS.STREAM_SMF_EVENT_TOADLS  \nwhere substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)\nAND TO_DATE(SF_LOAD_TS) >= TO_DATE('2022-11-04','yyyy-mm-dd') ",
+						"exportSettings": {
+							"type": "SnowflakeExportCopyCommand"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "mobilecoresteam"
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "SF_LOAD_TS"
+								},
+								"sink": {
+									"name": "SF_LOAD_TS",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "RAW_RECORD"
+								},
+								"sink": {
+									"name": "RAW_RECORD",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Src_Snowflake_MobilityCore_SMF_Events_toADLS",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Sink_SMF_Events_ADLS_JSON",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-08-24T21:00:11Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
