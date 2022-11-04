@@ -69,6 +69,12 @@
 					"referenceName": "Stream - SMF_Events_to_ADLS",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "Stream -UPF_Events_to_ADLS",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
