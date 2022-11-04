@@ -1,0 +1,19 @@
+{
+	"name": "Sink_UPF_Events_ADLS_JSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ao5gccustdataingest adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "UPF",
+				"fileSystem": "ao5gccustdataingest-events-bronze"
+			}
+		},
+		"schema": {}
+	}
+}

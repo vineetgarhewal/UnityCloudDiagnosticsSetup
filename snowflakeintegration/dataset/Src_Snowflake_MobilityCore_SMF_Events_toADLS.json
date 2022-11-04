@@ -1,0 +1,47 @@
+{
+	"name": "Src_Snowflake_MobilityCore_SMF_Events_toADLS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "SF_LOAD_TS_EST",
+				"precision": 29,
+				"scale": 9
+			},
+			{
+				"name": "RECORD_CONTENT",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RECORD_METADATA",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ACTION",
+				"precision": 6,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ISUPDATE",
+				"precision": 1,
+				"scale": 0
+			},
+			{
+				"name": "METADATA$ROW_ID",
+				"precision": 40,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "MSLOGS",
+			"table": "STREAM_SMF_EVENT_TOADLS"
+		}
+	}
+}
