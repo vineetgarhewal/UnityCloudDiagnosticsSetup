@@ -1775,6 +1775,20 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Stream - SMF_Events_to_ADLS",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Stream -UPF_Events_to_ADLS",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -1797,7 +1811,307 @@
 				"[concat(variables('factoryId'), '/pipelines/Stream - MobilityCore_SMF_FEDERATE_PROD')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - MobilityCore_UPF_FEDERATE_PROD')]",
 				"[concat(variables('factoryId'), '/pipelines/Stream - SMF_Metrics_to_ADLS')]",
-				"[concat(variables('factoryId'), '/pipelines/Stream - UPF_Metrics_to_ADLS')]"
+				"[concat(variables('factoryId'), '/pipelines/Stream - UPF_Metrics_to_ADLS')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream - SMF_Events_to_ADLS')]",
+				"[concat(variables('factoryId'), '/pipelines/Stream -UPF_Events_to_ADLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sink_UPF_Events_ADLS_JSON')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ao5gccustdataingest adls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "UPF",
+						"fileSystem": "ao5gccustdataingest-events-bronze"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ao5gccustdataingest adls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sink_SMF_Events_ADLS_JSON')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ao5gccustdataingest adls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "SMF",
+						"fileSystem": "ao5gccustdataingest-events-bronze"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ao5gccustdataingest adls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Src_Snowflake_MobilityCore_SMF_Events_toADLS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RECORD_CONTENT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "RECORD_METADATA",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "STREAM_SMF_EVENT_TOADLS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Src_Snowflake_MobilityCore_UPF_Events_toADLS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "SF_LOAD_TS_EST",
+						"precision": 29,
+						"scale": 9
+					},
+					{
+						"name": "RECORD_CONTENT",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "RECORD_METADATA",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ACTION",
+						"precision": 6,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ISUPDATE",
+						"precision": 1,
+						"scale": 0
+					},
+					{
+						"name": "METADATA$ROW_ID",
+						"precision": 40,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "MSLOGS",
+					"table": "STREAM_UPF_EVENT_TOADLS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - SMF_Events_to_ADLS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "select TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD from MOBILITYCORELOCAL.MSLOGS.STREAM_SMF_EVENT_TOADLS  \nwhere substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)\nAND TO_DATE(SF_LOAD_TS) >= TO_DATE('2022-11-04','yyyy-mm-dd') ",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_Snowflake_MobilityCore_SMF_Events_toADLS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_SMF_Events_ADLS_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-24T21:00:11Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_Snowflake_MobilityCore_SMF_Events_toADLS')]",
+				"[concat(variables('factoryId'), '/datasets/Sink_SMF_Events_ADLS_JSON')]",
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream -UPF_Events_to_ADLS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Snowflake to RAW Kusto table",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": "select TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD from MOBILITYCORELOCAL.MSLOGS.STREAM_UPF_EVENT_TOADLS  \nwhere substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)\nAND TO_DATE(SF_LOAD_TS) >= TO_DATE('2022-11-04','yyyy-mm-dd') ",
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Src_Snowflake_MobilityCore_UPF_Events_toADLS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Sink_UPF_Events_ADLS_JSON",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-24T21:00:14Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Src_Snowflake_MobilityCore_UPF_Events_toADLS')]",
+				"[concat(variables('factoryId'), '/datasets/Sink_UPF_Events_ADLS_JSON')]",
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
 			]
 		}
 	]
