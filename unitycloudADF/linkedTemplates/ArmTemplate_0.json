@@ -333,6 +333,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Sink_SMF_Events_ADLS_JSON')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ao5gccustdataingest adls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "SMF",
+						"fileSystem": "ao5gccustdataingest-events-bronze"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ao5gccustdataingest adls')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Sink_SMF_Metrics_ADLS_JSON')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -348,6 +372,30 @@
 						"type": "AzureBlobFSLocation",
 						"folderPath": "SMF",
 						"fileSystem": "a05gccustdataingest-metrics-bronze"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ao5gccustdataingest adls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sink_UPF_Events_ADLS_JSON')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ao5gccustdataingest adls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "UPF",
+						"fileSystem": "ao5gccustdataingest-events-bronze"
 					}
 				},
 				"schema": {}
@@ -466,54 +514,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Sink_UPF_Events_ADLS_JSON')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ao5gccustdataingest adls",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "UPF",
-						"fileSystem": "ao5gccustdataingest-events-bronze"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ao5gccustdataingest adls')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Sink_SMF_Events_ADLS_JSON')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ao5gccustdataingest adls",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "SMF",
-						"fileSystem": "ao5gccustdataingest-events-bronze"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ao5gccustdataingest adls')]"
 			]
 		},
 		{
