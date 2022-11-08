@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW where substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)",
+						"query": "SELECT TO_TIMESTAMP(RAW_RECORD['@timestamp']) AS SF_LOAD_TS, RAW_RECORD FROM MOBILITYCORELOCAL.MSLOGS.STREAM_LOGS_FLUENTD_DEBUG_CSMF_RAW \nwhere substr(RAW_RECORD['kubernetes']['host'], 1, 7) in (select substr(SITE, 1, 7) from MOBILITYCORELOCAL.MSLOGS.SPOTLIGHT_SITES)\nand TO_DATE(SF_LOAD_TS) >= TO_DATE('2022-11-08','yyyy-mm-dd') ",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
