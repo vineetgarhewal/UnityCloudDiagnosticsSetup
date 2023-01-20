@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD\"\nwhere (RECORD_CONTENT:tags.appName = 'smfcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.appName = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pfcp_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_gtpcinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_udminterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_chfinterface'\nOR RECORD_CONTENT:tags.job = ''kube-state-metrics' \nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor')\nAND TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2023-01-01','yyyy-mm-dd')",
+						"query": "select SF_LOAD_TS_EST, RECORD_CONTENT from \"MOBILITYCORELOCAL\".\"MSLOGS\".\"STREAM_SMF_PROD\"\nwhere (RECORD_CONTENT:tags.appName = 'smfcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pcfinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_procedure'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pgw_procedure'\nOR RECORD_CONTENT:tags.appName = 'pgwcc_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_pfcp_interface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_gtpcinterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_udminterface'\nOR RECORD_CONTENT:tags.appName = 'smfcc_chfinterface'\nOR RECORD_CONTENT:tags.job = 'kube-state-metrics' \nOR RECORD_CONTENT:tags.job = 'pfcp' \nOR RECORD_CONTENT:tags.job = 'smfmonitor')\nAND TO_DATE(SF_LOAD_TS_EST) >= TO_DATE('2023-01-01','yyyy-mm-dd')",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
