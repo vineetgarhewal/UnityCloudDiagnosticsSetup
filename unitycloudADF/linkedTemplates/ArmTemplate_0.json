@@ -458,6 +458,7 @@
 				"annotations": [],
 				"type": "Snowflake",
 				"typeProperties": {
+					"authenticationType": "Basic",
 					"connectionString": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
@@ -480,6 +481,7 @@
 				"annotations": [],
 				"type": "Snowflake",
 				"typeProperties": {
+					"authenticationType": "Basic",
 					"connectionString": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
