@@ -56,7 +56,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "SinkADXDEMO",
+						"referenceName": "AzureDataExplorerTable1",
 						"type": "DatasetReference"
 					}
 				]

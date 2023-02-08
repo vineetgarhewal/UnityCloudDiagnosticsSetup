@@ -7,6 +7,10 @@
 		},
 		"annotations": [],
 		"type": "SnowflakeTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "EDR",
+			"table": "SESSION_UP"
+		}
 	}
 }
