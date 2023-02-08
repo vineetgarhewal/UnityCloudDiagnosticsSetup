@@ -26,14 +26,7 @@
 						"type": "AzureDataExplorerSink",
 						"ingestionMappingName": ""
 					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "linkedService1",
-							"type": "LinkedServiceReference"
-						},
-						"path": ""
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
