@@ -1,0 +1,67 @@
+{
+	"name": "Stream - EDR_UP_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "MCC_EDR_T1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SnowflakeSource",
+						"query": "      select *\n      FROM \n\"BLACKBIRD_EDR\".\"EDR\".\"SESSION_UP\"\n      WHERE EVENTTIME BETWEEN '2023-01-20 00:00:00.00000' AND '2023-01-20 00:10:00.00000'\n      //AND SESSIONID=271858374 is the CPLANESESSIONID column in the flow table\n      AND UP='hst5e'",
+						"exportSettings": {
+							"type": "SnowflakeExportCopyCommand"
+						}
+					},
+					"sink": {
+						"type": "AzureDataExplorerSink"
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"path": ""
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "RECORD_CONTENT"
+								},
+								"sink": {
+									"name": "RECORD_CONTENT",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "FLOW_UP",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SinkADXDEMO",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}

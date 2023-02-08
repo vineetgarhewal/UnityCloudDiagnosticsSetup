@@ -1,8 +1,8 @@
 {
-	"name": "Src_SnowflakeBlack_Bird_EDR",
+	"name": "FLOW_UP",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
+			"referenceName": "BLACKBIRD_EDR",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
