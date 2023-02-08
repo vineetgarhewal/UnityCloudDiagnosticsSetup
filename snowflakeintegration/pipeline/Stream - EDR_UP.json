@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "Stream - EDR_UP",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "MCC_EDR_T1",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -50,13 +50,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SnowflakeTable1",
+						"referenceName": "Src_SnowflakeBlack_Bird_EDR",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureDataExplorerTable1",
+						"referenceName": "SinkADXDEMO",
 						"type": "DatasetReference"
 					}
 				]

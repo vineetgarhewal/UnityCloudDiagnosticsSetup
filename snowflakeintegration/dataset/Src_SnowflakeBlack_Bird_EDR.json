@@ -1,5 +1,5 @@
 {
-	"name": "SnowflakeTable1",
+	"name": "Src_SnowflakeBlack_Bird_EDR",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
@@ -7,6 +7,10 @@
 		},
 		"annotations": [],
 		"type": "SnowflakeTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "WORKSPACE",
+			"table": "session_flow_range_9_20_2022_0_0_0_to_1_0_0"
+		}
 	}
 }

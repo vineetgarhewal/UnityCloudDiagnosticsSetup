@@ -1,5 +1,5 @@
 {
-	"name": "AzureDataExplorerTable1",
+	"name": "SinkADXDEMO",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataExplorer_adxunitycloud",
