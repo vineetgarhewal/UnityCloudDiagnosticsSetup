@@ -23,7 +23,8 @@
 						}
 					},
 					"sink": {
-						"type": "AzureDataExplorerSink"
+						"type": "AzureDataExplorerSink",
+						"ingestionMappingName": ""
 					},
 					"enableStaging": true,
 					"stagingSettings": {
@@ -32,20 +33,6 @@
 							"type": "LinkedServiceReference"
 						},
 						"path": ""
-					},
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "RECORD_CONTENT"
-								},
-								"sink": {
-									"name": "RECORD_CONTENT",
-									"type": "String"
-								}
-							}
-						]
 					}
 				},
 				"inputs": [
