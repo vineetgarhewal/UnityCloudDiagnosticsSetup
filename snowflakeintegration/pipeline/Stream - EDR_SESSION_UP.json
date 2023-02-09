@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "MCC_EDR_T1",
+				"name": "MCC_EDR_T2",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select * FROM \"BLACKBIRD_EDR\".\"EDR\".\"HTTP_UP\" WHERE EVENTTIME BETWEEN '2023-02-01 22:00:00' AND '2023-02-01 23:00:00' AND RECORDINGENTITY like '%zlbc1amcuc01%'",
+						"query": "SELECT * FROM \"BLACKBIRD_EDR\".\"EDR\".\"FLOW_UP\" WHERE EVENTTIME BETWEEN '2023-02-01 22:00:00' AND '2023-02-01 22:01:00' AND UP like 'lbc%' AND GWNODEID = 'HST5E_ALL4F_PGWC'",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
