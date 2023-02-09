@@ -1,0 +1,11 @@
+{
+	"name": "NewADXLinkedService",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDataExplorer",
+		"typeProperties": {
+			"endpoint": "https://blackbird.westus2.kusto.windows.net",
+			"database": "blackbird"
+		}
+	}
+}
