@@ -7,9 +7,1030 @@
 		},
 		"annotations": [],
 		"type": "AzureDataExplorerTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "EVENTTIME",
+				"type": "datetime"
+			},
+			{
+				"name": "TRANSACTIONID",
+				"type": "long"
+			},
+			{
+				"name": "FLOWID",
+				"type": "long"
+			},
+			{
+				"name": "BEARERID",
+				"type": "long"
+			},
+			{
+				"name": "SESSIONID",
+				"type": "long"
+			},
+			{
+				"name": "TRANSACTIONTIMESTAMP",
+				"type": "datetime"
+			},
+			{
+				"name": "REQUESTLATENCY",
+				"type": "long"
+			},
+			{
+				"name": "RESPONSELATENCY",
+				"type": "long"
+			},
+			{
+				"name": "TRANSACTIONDURATION",
+				"type": "long"
+			},
+			{
+				"name": "TRANSACTIONTIMESUBSECONDS",
+				"type": "long"
+			},
+			{
+				"name": "IMSI",
+				"type": "string"
+			},
+			{
+				"name": "IMEI",
+				"type": "long"
+			},
+			{
+				"name": "MSISDN",
+				"type": "string"
+			},
+			{
+				"name": "SERVINGMCC",
+				"type": "long"
+			},
+			{
+				"name": "SERVINGMNC",
+				"type": "long"
+			},
+			{
+				"name": "PLMNIDLENGTH",
+				"type": "long"
+			},
+			{
+				"name": "RATTYPE",
+				"type": "long"
+			},
+			{
+				"name": "ROAMINGSTATUS",
+				"type": "bool"
+			},
+			{
+				"name": "SGWIP",
+				"type": "string"
+			},
+			{
+				"name": "REALAPN",
+				"type": "string"
+			},
+			{
+				"name": "ORIGINALAPN",
+				"type": "string"
+			},
+			{
+				"name": "GINC",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEIP",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEPORT",
+				"type": "long"
+			},
+			{
+				"name": "DESTINATIONIP",
+				"type": "string"
+			},
+			{
+				"name": "DESTINATIONPORT",
+				"type": "long"
+			},
+			{
+				"name": "IPTRANSPARENCY",
+				"type": "bool"
+			},
+			{
+				"name": "REQUESTMETHOD",
+				"type": "string"
+			},
+			{
+				"name": "CLIENTURL",
+				"type": "string"
+			},
+			{
+				"name": "SERVERURL",
+				"type": "string"
+			},
+			{
+				"name": "CLIENTPROTOCOL",
+				"type": "string"
+			},
+			{
+				"name": "SERVERPROTOCOL",
+				"type": "string"
+			},
+			{
+				"name": "USERAGENT",
+				"type": "string"
+			},
+			{
+				"name": "REQCONTENTTYPE",
+				"type": "string"
+			},
+			{
+				"name": "REQCONTENTLENGTH",
+				"type": "string"
+			},
+			{
+				"name": "REQCLIENTHEADERSIZE",
+				"type": "long"
+			},
+			{
+				"name": "REQCLIENTBODYSIZE",
+				"type": "long"
+			},
+			{
+				"name": "REQSERVERHEADERSIZE",
+				"type": "long"
+			},
+			{
+				"name": "REQSERVERBODYSIZE",
+				"type": "long"
+			},
+			{
+				"name": "RANGEREQUEST",
+				"type": "bool"
+			},
+			{
+				"name": "REQUESTSUCCESSFUL",
+				"type": "bool"
+			},
+			{
+				"name": "REQCHUNKED",
+				"type": "bool"
+			},
+			{
+				"name": "EXPLICITPROXYREQUEST",
+				"type": "bool"
+			},
+			{
+				"name": "DNSRESOLUTIONAPPLIED",
+				"type": "bool"
+			},
+			{
+				"name": "LOCALIP",
+				"type": "string"
+			},
+			{
+				"name": "LOCALPORT",
+				"type": "string"
+			},
+			{
+				"name": "SERVERIP",
+				"type": "string"
+			},
+			{
+				"name": "SERVERPORT",
+				"type": "string"
+			},
+			{
+				"name": "BEFAPPLIED",
+				"type": "bool"
+			},
+			{
+				"name": "PROXYNC",
+				"type": "string"
+			},
+			{
+				"name": "RESPONSESTATUS",
+				"type": "long"
+			},
+			{
+				"name": "RSPSERVERCONTENTTYPE",
+				"type": "string"
+			},
+			{
+				"name": "RSPCLIENTCONTENTTYPE",
+				"type": "string"
+			},
+			{
+				"name": "RSPSERVERCONTENTLENGTH",
+				"type": "long"
+			},
+			{
+				"name": "RSPCLIENTCONTENTLENGTH",
+				"type": "long"
+			},
+			{
+				"name": "RSPSERVERHEADERSIZE",
+				"type": "long"
+			},
+			{
+				"name": "RSPSERVERBODYSIZE",
+				"type": "long"
+			},
+			{
+				"name": "RSPCLIENTHEADERSIZE",
+				"type": "long"
+			},
+			{
+				"name": "RSPCLIENTBODYSIZE",
+				"type": "long"
+			},
+			{
+				"name": "RSPCHUNKED",
+				"type": "bool"
+			},
+			{
+				"name": "RSPSERVEDFROMCACHE",
+				"type": "bool"
+			},
+			{
+				"name": "RSPCACHED",
+				"type": "bool"
+			},
+			{
+				"name": "COMPRESSIONMETHOD",
+				"type": "string"
+			},
+			{
+				"name": "SERVERCOMPRESS",
+				"type": "string"
+			},
+			{
+				"name": "PROXYCOMPRESS",
+				"type": "string"
+			},
+			{
+				"name": "COMPRESSIONRATIO",
+				"type": "string"
+			},
+			{
+				"name": "COMPBYTESSAVED",
+				"type": "string"
+			},
+			{
+				"name": "SERVERIMAGETYPE",
+				"type": "string"
+			},
+			{
+				"name": "CLIENTIMAGETYPE",
+				"type": "string"
+			},
+			{
+				"name": "SERVERRESOLUTION",
+				"type": "string"
+			},
+			{
+				"name": "CLIENTRESOLUTION",
+				"type": "string"
+			},
+			{
+				"name": "WEBIMGOPTIMIZATIONRATIO",
+				"type": "string"
+			},
+			{
+				"name": "WEBIMGBYTESSAVED",
+				"type": "string"
+			},
+			{
+				"name": "SERVEDCONTAINERTYPE",
+				"type": "string"
+			},
+			{
+				"name": "ONLINETRANSCODINGAPPLIED",
+				"type": "bool"
+			},
+			{
+				"name": "SERVEDADAPTEDVIDEO",
+				"type": "bool"
+			},
+			{
+				"name": "VIDEOPACED",
+				"type": "string"
+			},
+			{
+				"name": "SERVEDQOE",
+				"type": "string"
+			},
+			{
+				"name": "PACINGBITRATE",
+				"type": "string"
+			},
+			{
+				"name": "VIDBYTESSAVED",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEWIDTH",
+				"type": "string"
+			},
+			{
+				"name": "TARGETWIDTH",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEHEIGHT",
+				"type": "string"
+			},
+			{
+				"name": "TARGETHEIGHT",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEBITRATE",
+				"type": "string"
+			},
+			{
+				"name": "TARGETBITRATE",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEFRAMERATE",
+				"type": "string"
+			},
+			{
+				"name": "TARGETFRAMERATE",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEAUDIOSAMPLINGRATE",
+				"type": "string"
+			},
+			{
+				"name": "TARGETAUDIOSAMPLINGRATE",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEVIDEOCODEC",
+				"type": "string"
+			},
+			{
+				"name": "TARGETVIDEOCODEC",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEAUDIOCODEC",
+				"type": "string"
+			},
+			{
+				"name": "TARGETAUDIOCODEC",
+				"type": "string"
+			},
+			{
+				"name": "SOURCEAUDIOCHANNELS",
+				"type": "string"
+			},
+			{
+				"name": "TARGETAUDIOCHANNELS",
+				"type": "string"
+			},
+			{
+				"name": "CONTENTTYPE",
+				"type": "string"
+			},
+			{
+				"name": "MINIFYBYTESSAVED",
+				"type": "string"
+			},
+			{
+				"name": "ISAPPLIEDRESPONSE",
+				"type": "string"
+			},
+			{
+				"name": "NUMUPDATEDURLS",
+				"type": "string"
+			},
+			{
+				"name": "CACHEDAGE",
+				"type": "string"
+			},
+			{
+				"name": "REQUESTCACHEMAXAGE",
+				"type": "string"
+			},
+			{
+				"name": "RESPONSECACHEMAXAGE",
+				"type": "long"
+			},
+			{
+				"name": "REQUESTCACHECONTROLFLAGS",
+				"type": "string"
+			},
+			{
+				"name": "RESPONSECACHECONTROLFLAGS",
+				"type": "long"
+			},
+			{
+				"name": "STOREBYPASSCAUSE",
+				"type": "string"
+			},
+			{
+				"name": "RETRIEVEBYPASSCAUSE",
+				"type": "string"
+			},
+			{
+				"name": "CACHEENTRYSTALE",
+				"type": "bool"
+			},
+			{
+				"name": "TCPSPLICINGSTATUS",
+				"type": "string"
+			},
+			{
+				"name": "TCPLOCALPORT",
+				"type": "long"
+			},
+			{
+				"name": "TCPPROTOCOL",
+				"type": "string"
+			},
+			{
+				"name": "RATELIMITINGBITRATE",
+				"type": "string"
+			},
+			{
+				"name": "RATELIMITINGBYPASSCANCELREASON",
+				"type": "string"
+			},
+			{
+				"name": "RATELIMITINGAPPLIED",
+				"type": "bool"
+			},
+			{
+				"name": "UPSTREAMBYTESRECEIVED",
+				"type": "long"
+			},
+			{
+				"name": "TLSSNI",
+				"type": "string"
+			},
+			{
+				"name": "TCPSERVERPORT",
+				"type": "long"
+			},
+			{
+				"name": "DOWNSTREAMBYTESRECEIVED",
+				"type": "long"
+			},
+			{
+				"name": "UPSTREAMBYTESSENT",
+				"type": "long"
+			},
+			{
+				"name": "TCPPROXYNC",
+				"type": "string"
+			},
+			{
+				"name": "DOWNSTREAMBYTESSENT",
+				"type": "long"
+			},
+			{
+				"name": "TCPLOCALIP",
+				"type": "string"
+			},
+			{
+				"name": "TCPSERVERIP",
+				"type": "string"
+			},
+			{
+				"name": "RATELIMITINGBURSTSIZE",
+				"type": "string"
+			},
+			{
+				"name": "TLSSERVERCOMMONNAME",
+				"type": "string"
+			},
+			{
+				"name": "MANIFESTMATCHED",
+				"type": "string"
+			},
+			{
+				"name": "MANIFESTMAXRATE",
+				"type": "string"
+			},
+			{
+				"name": "MAXRTT",
+				"type": "long"
+			},
+			{
+				"name": "MAXDOWNSTREAMMSS",
+				"type": "long"
+			},
+			{
+				"name": "MINDOWNSTREAMMSS",
+				"type": "long"
+			},
+			{
+				"name": "AVGDOWNSTREAMTPUT",
+				"type": "long"
+			},
+			{
+				"name": "AVGRTT",
+				"type": "long"
+			},
+			{
+				"name": "MAXDOWNSTREAMCWND",
+				"type": "long"
+			},
+			{
+				"name": "MINDOWNSTREAMTPUT",
+				"type": "long"
+			},
+			{
+				"name": "AVGDOWNSTREAMCWND",
+				"type": "long"
+			},
+			{
+				"name": "MINRTT",
+				"type": "long"
+			},
+			{
+				"name": "AVGDOWNSTREAMMSS",
+				"type": "long"
+			},
+			{
+				"name": "MINDOWNSTREAMCWND",
+				"type": "long"
+			},
+			{
+				"name": "MAXDOWNSTREAMTPUT",
+				"type": "long"
+			},
+			{
+				"name": "ABRBYTESSAVED",
+				"type": "string"
+			},
+			{
+				"name": "ABRRATELIMITINGBITRATE",
+				"type": "string"
+			},
+			{
+				"name": "ABRSESSIONID",
+				"type": "string"
+			},
+			{
+				"name": "VIDEOPACINGBYTESSAVED",
+				"type": "string"
+			},
+			{
+				"name": "ABRRATELIMITINGAPPLIED",
+				"type": "string"
+			},
+			{
+				"name": "ABRBYPASSREASON",
+				"type": "string"
+			},
+			{
+				"name": "VIDEOBYPASSREASON",
+				"type": "string"
+			},
+			{
+				"name": "REFERERURL",
+				"type": "string"
+			},
+			{
+				"name": "REQAPPLIEDPOLICYNAME",
+				"type": "string"
+			},
+			{
+				"name": "TCPNEGOTIATEDALPN",
+				"type": "string"
+			},
+			{
+				"name": "TCPRLSESSIONDURATION",
+				"type": "string"
+			},
+			{
+				"name": "TCPRLSESSIONBITRATE",
+				"type": "string"
+			},
+			{
+				"name": "TCPRLSESSIONID",
+				"type": "string"
+			},
+			{
+				"name": "TCPAPPLIEDPOLICYNAME",
+				"type": "string"
+			},
+			{
+				"name": "RSPDETECTEDCONTENTTYPE",
+				"type": "string"
+			},
+			{
+				"name": "RSPAPPLIEDPOLICYNAME",
+				"type": "string"
+			},
+			{
+				"name": "NUMDOWNSTREAMSEGRETRANS",
+				"type": "long"
+			},
+			{
+				"name": "NUMDOWNSTREAMSEGEST",
+				"type": "long"
+			},
+			{
+				"name": "TCPCONNMEASBYPASSREASON",
+				"type": "string"
+			},
+			{
+				"name": "ACTIONAPPLIED",
+				"type": "string"
+			},
+			{
+				"name": "FILTERINSTNAME",
+				"type": "string"
+			},
+			{
+				"name": "ONLINECATEGORY",
+				"type": "string"
+			},
+			{
+				"name": "FILTERNAME",
+				"type": "string"
+			},
+			{
+				"name": "FILTERTYPE",
+				"type": "string"
+			},
+			{
+				"name": "VIDEOAPPLIEDPOLICYNAME",
+				"type": "string"
+			},
+			{
+				"name": "DEVICETYPE",
+				"type": "string"
+			},
+			{
+				"name": "DEVICESCREENHEIGHT",
+				"type": "string"
+			},
+			{
+				"name": "DEVICEMODEL",
+				"type": "string"
+			},
+			{
+				"name": "DEVICESCREENWIDTH",
+				"type": "string"
+			},
+			{
+				"name": "DEVICEMAKE",
+				"type": "string"
+			},
+			{
+				"name": "RTT",
+				"type": "long"
+			},
+			{
+				"name": "NUMSEGSOOOIN",
+				"type": "long"
+			},
+			{
+				"name": "NUMSEGSRETRANSIN",
+				"type": "long"
+			},
+			{
+				"name": "CLIENTRANGESTART",
+				"type": "long"
+			},
+			{
+				"name": "CLIENTRANGEEND",
+				"type": "long"
+			},
+			{
+				"name": "SERVERRANGESTART",
+				"type": "long"
+			},
+			{
+				"name": "SERVERRANGEEND",
+				"type": "long"
+			},
+			{
+				"name": "TRANSCODINGSESSIONID",
+				"type": "string"
+			},
+			{
+				"name": "TCPRLBYTESSAVED",
+				"type": "string"
+			},
+			{
+				"name": "ENTITLEMENTVALUES",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYUPSTREAMBYTESRECD",
+				"type": "long"
+			},
+			{
+				"name": "UDPPROXYUPSTREAMBYTESSENT",
+				"type": "long"
+			},
+			{
+				"name": "UDPPROXYDOWNSTREAMBYTESRECD",
+				"type": "long"
+			},
+			{
+				"name": "UDPPROXYDOWNSTREAMBYTESSENT",
+				"type": "long"
+			},
+			{
+				"name": "UDPPROXYLOCALIPADDR",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYLOCALPORT",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYSERVERIPADDR",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYSERVERPORT",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYPROXYNETWORKCONTEXT",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYQUICSNI",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYQUICVERSION",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYQUICCONNID",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYQUICRATELIMITINGAPPLIED",
+				"type": "bool"
+			},
+			{
+				"name": "UDPPROXYQUICRATELIMITINGBITRATE",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYQUICRLBYPASSREASON",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYQUICRATELIMITINGBURSTSIZE",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYAPPLIEDUDPPOLICYNAME",
+				"type": "string"
+			},
+			{
+				"name": "CPLANESESSIONID",
+				"type": "long"
+			},
+			{
+				"name": "QUICRATELIMITINGBYTESSAVED",
+				"type": "string"
+			},
+			{
+				"name": "UDPRLSESSIONID",
+				"type": "string"
+			},
+			{
+				"name": "UDPRLSESSIONDURATION",
+				"type": "string"
+			},
+			{
+				"name": "UDPRLSESSIONBITRATE",
+				"type": "string"
+			},
+			{
+				"name": "DPIAPPLICATION",
+				"type": "string"
+			},
+			{
+				"name": "TIMEINFOTRANSACTIONID",
+				"type": "long"
+			},
+			{
+				"name": "RECORDINGENTITY",
+				"type": "string"
+			},
+			{
+				"name": "PROXYINSTANCENAME",
+				"type": "string"
+			},
+			{
+				"name": "SESSOPERATORSPECIFIC1",
+				"type": "string"
+			},
+			{
+				"name": "REQFAILUREREASON",
+				"type": "string"
+			},
+			{
+				"name": "CLIENTCONGESTIONALGORITHM",
+				"type": "string"
+			},
+			{
+				"name": "SERVERCONGESTIONALGORITHM",
+				"type": "string"
+			},
+			{
+				"name": "BYTESDROPPEDDUETOBUFFERLIMITING",
+				"type": "string"
+			},
+			{
+				"name": "UDPPROXYFAILUREREASON",
+				"type": "string"
+			},
+			{
+				"name": "CGIMCC",
+				"type": "string"
+			},
+			{
+				"name": "CGIMNC",
+				"type": "string"
+			},
+			{
+				"name": "CGILAC",
+				"type": "string"
+			},
+			{
+				"name": "CGICI",
+				"type": "string"
+			},
+			{
+				"name": "SAIMCC",
+				"type": "long"
+			},
+			{
+				"name": "SAIMNC",
+				"type": "long"
+			},
+			{
+				"name": "SAILAC",
+				"type": "long"
+			},
+			{
+				"name": "SAISAC",
+				"type": "long"
+			},
+			{
+				"name": "RAIMCC",
+				"type": "string"
+			},
+			{
+				"name": "RAIMNC",
+				"type": "string"
+			},
+			{
+				"name": "RAIRAC",
+				"type": "string"
+			},
+			{
+				"name": "RAILAC",
+				"type": "string"
+			},
+			{
+				"name": "TAIMCC",
+				"type": "long"
+			},
+			{
+				"name": "TAIMNC",
+				"type": "long"
+			},
+			{
+				"name": "TAITAC",
+				"type": "long"
+			},
+			{
+				"name": "ECGIMCC",
+				"type": "long"
+			},
+			{
+				"name": "ECGIMNC",
+				"type": "long"
+			},
+			{
+				"name": "ECGIECI",
+				"type": "long"
+			},
+			{
+				"name": "LAIMCC",
+				"type": "string"
+			},
+			{
+				"name": "LAIMNC",
+				"type": "string"
+			},
+			{
+				"name": "LAILAC",
+				"type": "string"
+			},
+			{
+				"name": "VIDEORATELIMITFLOWAGGRSTATE",
+				"type": "string"
+			},
+			{
+				"name": "TCPRATELIMITFLAGGRSTATE",
+				"type": "long"
+			},
+			{
+				"name": "CONGESTIONLEVELNONETIME",
+				"type": "long"
+			},
+			{
+				"name": "CONGESTIONLEVELMILDTIME",
+				"type": "long"
+			},
+			{
+				"name": "CONGESTIONLEVELMODERATETIME",
+				"type": "long"
+			},
+			{
+				"name": "CONGESTIONLEVELSEVERETIME",
+				"type": "long"
+			},
+			{
+				"name": "UDPRATELIMITFLAGGRSTATE",
+				"type": "string"
+			},
+			{
+				"name": "CONTENTPROVIDER",
+				"type": "string"
+			},
+			{
+				"name": "APPID",
+				"type": "string"
+			},
+			{
+				"name": "CONSENTSTATUS",
+				"type": "string"
+			},
+			{
+				"name": "SHIPSTATUS",
+				"type": "string"
+			},
+			{
+				"name": "GWNODEID",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD1",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD2",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD3",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD4",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD5",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD6",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD7",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD8",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD9",
+				"type": "string"
+			},
+			{
+				"name": "RESERVEFIELD10",
+				"type": "string"
+			},
+			{
+				"name": "UP",
+				"type": "string"
+			}
+		],
 		"typeProperties": {
-			"table": "BLACKBIRD_FLOW_UP"
+			"table": "BLACKBIRD_HTTP_UP"
 		}
 	}
 }
