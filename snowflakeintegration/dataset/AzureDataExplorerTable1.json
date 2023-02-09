@@ -2,7 +2,7 @@
 	"name": "AzureDataExplorerTable1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataExplorer_adxunitycloud",
+			"referenceName": "NewADXLinkedService",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
