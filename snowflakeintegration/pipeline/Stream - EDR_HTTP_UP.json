@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SnowflakeSource",
-						"query": "select * FROM \"BLACKBIRD_EDR\".\"EDR\".\"HTTP_UP\" WHERE EVENTTIME BETWEEN '2023-02-01 20:00:00' AND '2023-02-01 21:00:00' AND RECORDINGENTITY like '%zlbc1amcuc01%'",
+						"query": "select * FROM \"BLACKBIRD_EDR\".\"EDR\".\"HTTP_UP\" WHERE EVENTTIME BETWEEN '2023-02-01 19:00:00' AND '2023-02-01 20:00:00' AND RECORDINGENTITY like '%zlbc1amcuc01%'",
 						"exportSettings": {
 							"type": "SnowflakeExportCopyCommand"
 						}
