@@ -81,6 +81,7 @@
 									},
 									"path": "mobilecoresteam"
 								},
+								"parallelCopies": 21,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
