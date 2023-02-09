@@ -44,7 +44,7 @@
 						"value": "@activity('Lookup1').output.value",
 						"type": "Expression"
 					},
-					"batchCount": 10,
+					"batchCount": 20,
 					"activities": [
 						{
 							"name": "MCC_EDR_T1_copy1",
