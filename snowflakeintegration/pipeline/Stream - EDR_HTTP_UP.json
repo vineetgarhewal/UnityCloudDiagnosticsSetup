@@ -23,7 +23,8 @@
 					"dataset": {
 						"referenceName": "AzureDataExplorerTable1",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
