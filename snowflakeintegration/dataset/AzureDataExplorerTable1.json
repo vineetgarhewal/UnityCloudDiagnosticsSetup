@@ -5,6 +5,12 @@
 			"referenceName": "NewADXLinkedService",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"TableName": {
+				"type": "string",
+				"defaultValue": "BLACKBIRD_HTTP_UP"
+			}
+		},
 		"annotations": [],
 		"type": "AzureDataExplorerTable",
 		"schema": [
