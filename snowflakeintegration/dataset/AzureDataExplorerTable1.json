@@ -1036,7 +1036,10 @@
 			}
 		],
 		"typeProperties": {
-			"table": "BLACKBIRD_HTTP_UP"
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
 		}
 	}
 }
