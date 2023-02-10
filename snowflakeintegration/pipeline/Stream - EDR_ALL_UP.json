@@ -17,12 +17,19 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureDataExplorerSource",
-						"query": "// simplified (golden) script\nlet startdate = \"2023-02-01 00:00:00.000\";\nlet endtime = \"2023-02-02 00:00:00.000\";\nlet src_table = 'FLOW_UP';\nlet dest_table = 'BLACKBIRD_FLOW_UP';\nlet up = \"lbc%\";\nlet counter=(TableName:string) {table(TableName)};\n//counter(dest_table)\nlet RECORDINGENTITY = \"%zlbc1amcuc01%\";\nlet Query  = \"select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND RECORDINGENTITY like \\'@ri\\'\";\nrange Dummy from todatetime(startdate) to todatetime(endtime) step 1h\n| sort by Dummy asc\n| extend _starttime = tostring(Dummy), _endtime = tostring(next(Dummy)) //, _endtime = tostring(iff(isempty(next(Dummy)),df,next(Dummy)))\n| join kind=leftouter (counter(tostring(dest_table))\n| summarize min(EVENTTIME),max(EVENTTIME) by bin(EVENTTIME,1h)) on $left.Dummy == $right.min_EVENTTIME\n| extend _st=format_datetime(todatetime(_starttime), \"yyyy-MM-dd HH:mm:ss\"),    _et=format_datetime(todatetime(_endtime), \"yyyy-MM-dd HH:mm:ss\")\n| where isnotempty(_et) and isempty(max_EVENTTIME) \n| project _starttime, _endtime, Cmd=replace_string(replace_string(replace_string(replace_string(Query, '@sp', _st), '@ep', _et), '@ri', RECORDINGENTITY), '@src_table', src_table),max_EVENTTIME, dest_table\n",
-						"queryTimeout": "00:10:00"
+						"query": {
+							"value": "@concat('querytranformer(',pipeline().parameters.starttime,',',pipeline().parameters.endtime,',',pipeline().parameters.src_tablename,',',pipeline().parameters.dest_tablename,',',pipeline().parameters.userplane,',',pipeline().parameters.query,')')",
+							"type": "Expression"
+						},
+						"queryTimeout": "00:10:00",
+						"noTruncation": false
 					},
 					"dataset": {
 						"referenceName": "AzureDataExplorerTable1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_HTTP_UP"
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -2445,6 +2452,36 @@
 				}
 			}
 		],
+		"parameters": {
+			"starttime": {
+				"type": "string",
+				"defaultValue": "2023-02-01 00:00:00.000"
+			},
+			"endtime": {
+				"type": "string",
+				"defaultValue": "2023-02-02 00:00:00.000"
+			},
+			"src_tablename": {
+				"type": "string",
+				"defaultValue": "FLOW_UP"
+			},
+			"dest_tablename": {
+				"type": "string",
+				"defaultValue": "BLACKBIRD_FLOW_UP"
+			},
+			"userplane": {
+				"type": "string",
+				"defaultValue": "lbc%"
+			},
+			"recordingentity": {
+				"type": "string",
+				"defaultValue": "%zlbc1amcuc01%"
+			},
+			"query": {
+				"type": "string",
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND RECORDINGENTITY like '%zlbc1amcuc01%'"
+			}
+		},
 		"annotations": []
 	}
 }
