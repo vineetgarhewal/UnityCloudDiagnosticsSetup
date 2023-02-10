@@ -1,5 +1,5 @@
 {
-	"name": "Stream - EDR_SESSION_UP",
+	"name": "Stream - EDR_FLOW_UP",
 	"properties": {
 		"activities": [
 			{
