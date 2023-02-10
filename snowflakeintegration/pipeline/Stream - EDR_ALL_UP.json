@@ -2479,7 +2479,7 @@
 			},
 			"query": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND RECORDINGENTITY like '%zlbc1amcuc01%'"
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' "
 			}
 		},
 		"annotations": []
