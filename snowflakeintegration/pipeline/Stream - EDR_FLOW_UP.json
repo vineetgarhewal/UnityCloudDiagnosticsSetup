@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "MCC_EDR_T2",
-				"type": "Copy",
+				"name": "Lookup1",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -16,2376 +16,2427 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "SnowflakeSource",
-						"query": "SELECT * FROM \"BLACKBIRD_EDR\".\"EDR\".\"FLOW_UP\" WHERE EVENTTIME BETWEEN '2023-02-01 22:00:00' AND '2023-02-01 22:01:00' AND UP like 'lbc%' AND GWNODEID = 'HST5E_ALL4F_PGWC'",
-						"exportSettings": {
-							"type": "SnowflakeExportCopyCommand"
-						}
+						"type": "AzureDataExplorerSource",
+						"query": "// simplified (golden) script\nlet startdate = \"2023-02-01 00:00:00.000\";\nlet endtime = \"2023-02-02 00:00:00.000\";\nlet up = \"lbc%\";\nlet RECORDINGENTITY = \"%zlbc1amcuc01%\";\nlet QueryHttp  = \"select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"HTTP_UP\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND RECORDINGENTITY like \\'@ri\\'\";\nrange Dummy from todatetime(startdate) to todatetime(endtime) step 1h\n| sort by Dummy asc\n| extend _starttime = tostring(Dummy), _endtime = tostring(next(Dummy)) //, _endtime = tostring(iff(isempty(next(Dummy)),df,next(Dummy)))\n| join kind=leftouter (BLACKBIRD_HTTP_UP\n| summarize min(EVENTTIME),max(EVENTTIME) by bin(EVENTTIME,1h)) on $left.Dummy == $right.min_EVENTTIME\n| extend _st=format_datetime(todatetime(_starttime), \"yyyy-MM-dd HH:mm:ss\"),    _et=format_datetime(todatetime(_endtime), \"yyyy-MM-dd HH:mm:ss\")\n| where isnotempty(_et) and isempty(max_EVENTTIME) \n| project _starttime, _endtime, Cmd=replace_string(replace_string(replace_string(QueryHttp, '@sp', _st), '@ep', _et), '@ri', RECORDINGENTITY),max_EVENTTIME\n",
+						"queryTimeout": "00:10:00"
 					},
-					"sink": {
-						"type": "AzureDataExplorerSink",
-						"ingestionMappingName": ""
-					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "linkedService1",
-							"type": "LinkedServiceReference"
-						},
-						"path": "mobilecoresteam"
-					},
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "EVENTTIME",
-									"type": "String"
-								},
-								"sink": {
-									"name": "EVENTTIME",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "TRANSACTIONID"
-								},
-								"sink": {
-									"name": "TRANSACTIONID",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "FLOWID"
-								},
-								"sink": {
-									"name": "FLOWID",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "BEARERID"
-								},
-								"sink": {
-									"name": "BEARERID",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SESSIONID",
-									"type": "String"
-								},
-								"sink": {
-									"name": "SESSIONID",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TRANSACTIONTIMESTAMP"
-								},
-								"sink": {
-									"name": "TRANSACTIONTIMESTAMP",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "REQUESTLATENCY"
-								},
-								"sink": {
-									"name": "REQUESTLATENCY",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RESPONSELATENCY"
-								},
-								"sink": {
-									"name": "RESPONSELATENCY",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TRANSACTIONDURATION"
-								},
-								"sink": {
-									"name": "TRANSACTIONDURATION",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TRANSACTIONTIMESUBSECONDS"
-								},
-								"sink": {
-									"name": "TRANSACTIONTIMESUBSECONDS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "IMSI",
-									"type": "String"
-								},
-								"sink": {
-									"name": "IMSI",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "IMEI"
-								},
-								"sink": {
-									"name": "IMEI",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "MSISDN",
-									"type": "String"
-								},
-								"sink": {
-									"name": "MSISDN",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVINGMCC"
-								},
-								"sink": {
-									"name": "SERVINGMCC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVINGMNC"
-								},
-								"sink": {
-									"name": "SERVINGMNC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "PLMNIDLENGTH"
-								},
-								"sink": {
-									"name": "PLMNIDLENGTH",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RATTYPE",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RATTYPE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "ROAMINGSTATUS"
-								},
-								"sink": {
-									"name": "ROAMINGSTATUS",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "SGWIP"
-								},
-								"sink": {
-									"name": "SGWIP",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "REALAPN",
-									"type": "String"
-								},
-								"sink": {
-									"name": "REALAPN",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ORIGINALAPN"
-								},
-								"sink": {
-									"name": "ORIGINALAPN",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "GINC"
-								},
-								"sink": {
-									"name": "GINC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEIP"
-								},
-								"sink": {
-									"name": "SOURCEIP",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEPORT"
-								},
-								"sink": {
-									"name": "SOURCEPORT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "DESTINATIONIP"
-								},
-								"sink": {
-									"name": "DESTINATIONIP",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DESTINATIONPORT"
-								},
-								"sink": {
-									"name": "DESTINATIONPORT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "IPTRANSPARENCY"
-								},
-								"sink": {
-									"name": "IPTRANSPARENCY",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "REQUESTMETHOD"
-								},
-								"sink": {
-									"name": "REQUESTMETHOD",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CLIENTURL"
-								},
-								"sink": {
-									"name": "CLIENTURL",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERURL"
-								},
-								"sink": {
-									"name": "SERVERURL",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CLIENTPROTOCOL"
-								},
-								"sink": {
-									"name": "CLIENTPROTOCOL",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERPROTOCOL"
-								},
-								"sink": {
-									"name": "SERVERPROTOCOL",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "USERAGENT"
-								},
-								"sink": {
-									"name": "USERAGENT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "REQCONTENTTYPE"
-								},
-								"sink": {
-									"name": "REQCONTENTTYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "REQCONTENTLENGTH"
-								},
-								"sink": {
-									"name": "REQCONTENTLENGTH",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "REQCLIENTHEADERSIZE"
-								},
-								"sink": {
-									"name": "REQCLIENTHEADERSIZE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "REQCLIENTBODYSIZE"
-								},
-								"sink": {
-									"name": "REQCLIENTBODYSIZE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "REQSERVERHEADERSIZE"
-								},
-								"sink": {
-									"name": "REQSERVERHEADERSIZE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "REQSERVERBODYSIZE"
-								},
-								"sink": {
-									"name": "REQSERVERBODYSIZE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RANGEREQUEST"
-								},
-								"sink": {
-									"name": "RANGEREQUEST",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "REQUESTSUCCESSFUL"
-								},
-								"sink": {
-									"name": "REQUESTSUCCESSFUL",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "REQCHUNKED"
-								},
-								"sink": {
-									"name": "REQCHUNKED",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "EXPLICITPROXYREQUEST"
-								},
-								"sink": {
-									"name": "EXPLICITPROXYREQUEST",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "DNSRESOLUTIONAPPLIED"
-								},
-								"sink": {
-									"name": "DNSRESOLUTIONAPPLIED",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "LOCALIP"
-								},
-								"sink": {
-									"name": "LOCALIP",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "LOCALPORT"
-								},
-								"sink": {
-									"name": "LOCALPORT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERIP"
-								},
-								"sink": {
-									"name": "SERVERIP",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERPORT"
-								},
-								"sink": {
-									"name": "SERVERPORT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "BEFAPPLIED"
-								},
-								"sink": {
-									"name": "BEFAPPLIED",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "PROXYNC"
-								},
-								"sink": {
-									"name": "PROXYNC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESPONSESTATUS"
-								},
-								"sink": {
-									"name": "RESPONSESTATUS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPSERVERCONTENTTYPE"
-								},
-								"sink": {
-									"name": "RSPSERVERCONTENTTYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPCLIENTCONTENTTYPE"
-								},
-								"sink": {
-									"name": "RSPCLIENTCONTENTTYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPSERVERCONTENTLENGTH"
-								},
-								"sink": {
-									"name": "RSPSERVERCONTENTLENGTH",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPCLIENTCONTENTLENGTH"
-								},
-								"sink": {
-									"name": "RSPCLIENTCONTENTLENGTH",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPSERVERHEADERSIZE"
-								},
-								"sink": {
-									"name": "RSPSERVERHEADERSIZE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPSERVERBODYSIZE"
-								},
-								"sink": {
-									"name": "RSPSERVERBODYSIZE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPCLIENTHEADERSIZE"
-								},
-								"sink": {
-									"name": "RSPCLIENTHEADERSIZE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPCLIENTBODYSIZE"
-								},
-								"sink": {
-									"name": "RSPCLIENTBODYSIZE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPCHUNKED"
-								},
-								"sink": {
-									"name": "RSPCHUNKED",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPSERVEDFROMCACHE"
-								},
-								"sink": {
-									"name": "RSPSERVEDFROMCACHE",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPCACHED"
-								},
-								"sink": {
-									"name": "RSPCACHED",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "COMPRESSIONMETHOD"
-								},
-								"sink": {
-									"name": "COMPRESSIONMETHOD",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERCOMPRESS"
-								},
-								"sink": {
-									"name": "SERVERCOMPRESS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "PROXYCOMPRESS"
-								},
-								"sink": {
-									"name": "PROXYCOMPRESS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "COMPRESSIONRATIO"
-								},
-								"sink": {
-									"name": "COMPRESSIONRATIO",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "COMPBYTESSAVED"
-								},
-								"sink": {
-									"name": "COMPBYTESSAVED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERIMAGETYPE"
-								},
-								"sink": {
-									"name": "SERVERIMAGETYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CLIENTIMAGETYPE"
-								},
-								"sink": {
-									"name": "CLIENTIMAGETYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERRESOLUTION"
-								},
-								"sink": {
-									"name": "SERVERRESOLUTION",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CLIENTRESOLUTION"
-								},
-								"sink": {
-									"name": "CLIENTRESOLUTION",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "WEBIMGOPTIMIZATIONRATIO"
-								},
-								"sink": {
-									"name": "WEBIMGOPTIMIZATIONRATIO",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "WEBIMGBYTESSAVED"
-								},
-								"sink": {
-									"name": "WEBIMGBYTESSAVED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVEDCONTAINERTYPE"
-								},
-								"sink": {
-									"name": "SERVEDCONTAINERTYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ONLINETRANSCODINGAPPLIED"
-								},
-								"sink": {
-									"name": "ONLINETRANSCODINGAPPLIED",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVEDADAPTEDVIDEO"
-								},
-								"sink": {
-									"name": "SERVEDADAPTEDVIDEO",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "VIDEOPACED"
-								},
-								"sink": {
-									"name": "VIDEOPACED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVEDQOE"
-								},
-								"sink": {
-									"name": "SERVEDQOE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "PACINGBITRATE"
-								},
-								"sink": {
-									"name": "PACINGBITRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "VIDBYTESSAVED"
-								},
-								"sink": {
-									"name": "VIDBYTESSAVED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEWIDTH"
-								},
-								"sink": {
-									"name": "SOURCEWIDTH",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TARGETWIDTH"
-								},
-								"sink": {
-									"name": "TARGETWIDTH",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEHEIGHT"
-								},
-								"sink": {
-									"name": "SOURCEHEIGHT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TARGETHEIGHT"
-								},
-								"sink": {
-									"name": "TARGETHEIGHT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEBITRATE"
-								},
-								"sink": {
-									"name": "SOURCEBITRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TARGETBITRATE"
-								},
-								"sink": {
-									"name": "TARGETBITRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEFRAMERATE"
-								},
-								"sink": {
-									"name": "SOURCEFRAMERATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TARGETFRAMERATE"
-								},
-								"sink": {
-									"name": "TARGETFRAMERATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEAUDIOSAMPLINGRATE"
-								},
-								"sink": {
-									"name": "SOURCEAUDIOSAMPLINGRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TARGETAUDIOSAMPLINGRATE"
-								},
-								"sink": {
-									"name": "TARGETAUDIOSAMPLINGRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEVIDEOCODEC"
-								},
-								"sink": {
-									"name": "SOURCEVIDEOCODEC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TARGETVIDEOCODEC"
-								},
-								"sink": {
-									"name": "TARGETVIDEOCODEC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEAUDIOCODEC"
-								},
-								"sink": {
-									"name": "SOURCEAUDIOCODEC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TARGETAUDIOCODEC"
-								},
-								"sink": {
-									"name": "TARGETAUDIOCODEC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SOURCEAUDIOCHANNELS"
-								},
-								"sink": {
-									"name": "SOURCEAUDIOCHANNELS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TARGETAUDIOCHANNELS"
-								},
-								"sink": {
-									"name": "TARGETAUDIOCHANNELS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CONTENTTYPE"
-								},
-								"sink": {
-									"name": "CONTENTTYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "MINIFYBYTESSAVED"
-								},
-								"sink": {
-									"name": "MINIFYBYTESSAVED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ISAPPLIEDRESPONSE"
-								},
-								"sink": {
-									"name": "ISAPPLIEDRESPONSE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "NUMUPDATEDURLS"
-								},
-								"sink": {
-									"name": "NUMUPDATEDURLS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CACHEDAGE"
-								},
-								"sink": {
-									"name": "CACHEDAGE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "REQUESTCACHEMAXAGE"
-								},
-								"sink": {
-									"name": "REQUESTCACHEMAXAGE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESPONSECACHEMAXAGE"
-								},
-								"sink": {
-									"name": "RESPONSECACHEMAXAGE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "REQUESTCACHECONTROLFLAGS"
-								},
-								"sink": {
-									"name": "REQUESTCACHECONTROLFLAGS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESPONSECACHECONTROLFLAGS"
-								},
-								"sink": {
-									"name": "RESPONSECACHECONTROLFLAGS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "STOREBYPASSCAUSE"
-								},
-								"sink": {
-									"name": "STOREBYPASSCAUSE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RETRIEVEBYPASSCAUSE"
-								},
-								"sink": {
-									"name": "RETRIEVEBYPASSCAUSE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CACHEENTRYSTALE"
-								},
-								"sink": {
-									"name": "CACHEENTRYSTALE",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPSPLICINGSTATUS"
-								},
-								"sink": {
-									"name": "TCPSPLICINGSTATUS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPLOCALPORT"
-								},
-								"sink": {
-									"name": "TCPLOCALPORT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPPROTOCOL"
-								},
-								"sink": {
-									"name": "TCPPROTOCOL",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RATELIMITINGBITRATE"
-								},
-								"sink": {
-									"name": "RATELIMITINGBITRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RATELIMITINGBYPASSCANCELREASON"
-								},
-								"sink": {
-									"name": "RATELIMITINGBYPASSCANCELREASON",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RATELIMITINGAPPLIED"
-								},
-								"sink": {
-									"name": "RATELIMITINGAPPLIED",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "UPSTREAMBYTESRECEIVED"
-								},
-								"sink": {
-									"name": "UPSTREAMBYTESRECEIVED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TLSSNI"
-								},
-								"sink": {
-									"name": "TLSSNI",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPSERVERPORT"
-								},
-								"sink": {
-									"name": "TCPSERVERPORT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "DOWNSTREAMBYTESRECEIVED"
-								},
-								"sink": {
-									"name": "DOWNSTREAMBYTESRECEIVED",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "UPSTREAMBYTESSENT"
-								},
-								"sink": {
-									"name": "UPSTREAMBYTESSENT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPPROXYNC"
-								},
-								"sink": {
-									"name": "TCPPROXYNC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DOWNSTREAMBYTESSENT"
-								},
-								"sink": {
-									"name": "DOWNSTREAMBYTESSENT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPLOCALIP"
-								},
-								"sink": {
-									"name": "TCPLOCALIP",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPSERVERIP"
-								},
-								"sink": {
-									"name": "TCPSERVERIP",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RATELIMITINGBURSTSIZE"
-								},
-								"sink": {
-									"name": "RATELIMITINGBURSTSIZE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TLSSERVERCOMMONNAME"
-								},
-								"sink": {
-									"name": "TLSSERVERCOMMONNAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "MANIFESTMATCHED"
-								},
-								"sink": {
-									"name": "MANIFESTMATCHED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "MANIFESTMAXRATE"
-								},
-								"sink": {
-									"name": "MANIFESTMAXRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "MAXRTT"
-								},
-								"sink": {
-									"name": "MAXRTT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "MAXDOWNSTREAMMSS"
-								},
-								"sink": {
-									"name": "MAXDOWNSTREAMMSS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "MINDOWNSTREAMMSS"
-								},
-								"sink": {
-									"name": "MINDOWNSTREAMMSS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "AVGDOWNSTREAMTPUT"
-								},
-								"sink": {
-									"name": "AVGDOWNSTREAMTPUT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "AVGRTT"
-								},
-								"sink": {
-									"name": "AVGRTT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "MAXDOWNSTREAMCWND"
-								},
-								"sink": {
-									"name": "MAXDOWNSTREAMCWND",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "MINDOWNSTREAMTPUT"
-								},
-								"sink": {
-									"name": "MINDOWNSTREAMTPUT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "AVGDOWNSTREAMCWND"
-								},
-								"sink": {
-									"name": "AVGDOWNSTREAMCWND",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "MINRTT"
-								},
-								"sink": {
-									"name": "MINRTT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "AVGDOWNSTREAMMSS"
-								},
-								"sink": {
-									"name": "AVGDOWNSTREAMMSS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "MINDOWNSTREAMCWND"
-								},
-								"sink": {
-									"name": "MINDOWNSTREAMCWND",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "MAXDOWNSTREAMTPUT"
-								},
-								"sink": {
-									"name": "MAXDOWNSTREAMTPUT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "ABRBYTESSAVED"
-								},
-								"sink": {
-									"name": "ABRBYTESSAVED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ABRRATELIMITINGBITRATE"
-								},
-								"sink": {
-									"name": "ABRRATELIMITINGBITRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ABRSESSIONID"
-								},
-								"sink": {
-									"name": "ABRSESSIONID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "VIDEOPACINGBYTESSAVED"
-								},
-								"sink": {
-									"name": "VIDEOPACINGBYTESSAVED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ABRRATELIMITINGAPPLIED"
-								},
-								"sink": {
-									"name": "ABRRATELIMITINGAPPLIED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ABRBYPASSREASON"
-								},
-								"sink": {
-									"name": "ABRBYPASSREASON",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "VIDEOBYPASSREASON"
-								},
-								"sink": {
-									"name": "VIDEOBYPASSREASON",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "REFERERURL"
-								},
-								"sink": {
-									"name": "REFERERURL",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "REQAPPLIEDPOLICYNAME"
-								},
-								"sink": {
-									"name": "REQAPPLIEDPOLICYNAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPNEGOTIATEDALPN"
-								},
-								"sink": {
-									"name": "TCPNEGOTIATEDALPN",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPRLSESSIONDURATION"
-								},
-								"sink": {
-									"name": "TCPRLSESSIONDURATION",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPRLSESSIONBITRATE"
-								},
-								"sink": {
-									"name": "TCPRLSESSIONBITRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPRLSESSIONID"
-								},
-								"sink": {
-									"name": "TCPRLSESSIONID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPAPPLIEDPOLICYNAME"
-								},
-								"sink": {
-									"name": "TCPAPPLIEDPOLICYNAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPDETECTEDCONTENTTYPE"
-								},
-								"sink": {
-									"name": "RSPDETECTEDCONTENTTYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RSPAPPLIEDPOLICYNAME"
-								},
-								"sink": {
-									"name": "RSPAPPLIEDPOLICYNAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "NUMDOWNSTREAMSEGRETRANS"
-								},
-								"sink": {
-									"name": "NUMDOWNSTREAMSEGRETRANS",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "NUMDOWNSTREAMSEGEST"
-								},
-								"sink": {
-									"name": "NUMDOWNSTREAMSEGEST",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPCONNMEASBYPASSREASON"
-								},
-								"sink": {
-									"name": "TCPCONNMEASBYPASSREASON",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ACTIONAPPLIED"
-								},
-								"sink": {
-									"name": "ACTIONAPPLIED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "FILTERINSTNAME"
-								},
-								"sink": {
-									"name": "FILTERINSTNAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ONLINECATEGORY"
-								},
-								"sink": {
-									"name": "ONLINECATEGORY",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "FILTERNAME"
-								},
-								"sink": {
-									"name": "FILTERNAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "FILTERTYPE"
-								},
-								"sink": {
-									"name": "FILTERTYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "VIDEOAPPLIEDPOLICYNAME"
-								},
-								"sink": {
-									"name": "VIDEOAPPLIEDPOLICYNAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DEVICETYPE"
-								},
-								"sink": {
-									"name": "DEVICETYPE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DEVICESCREENHEIGHT"
-								},
-								"sink": {
-									"name": "DEVICESCREENHEIGHT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DEVICEMODEL"
-								},
-								"sink": {
-									"name": "DEVICEMODEL",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DEVICESCREENWIDTH"
-								},
-								"sink": {
-									"name": "DEVICESCREENWIDTH",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DEVICEMAKE"
-								},
-								"sink": {
-									"name": "DEVICEMAKE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RTT"
-								},
-								"sink": {
-									"name": "RTT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "NUMSEGSOOOIN"
-								},
-								"sink": {
-									"name": "NUMSEGSOOOIN",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "NUMSEGSRETRANSIN"
-								},
-								"sink": {
-									"name": "NUMSEGSRETRANSIN",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "CLIENTRANGESTART"
-								},
-								"sink": {
-									"name": "CLIENTRANGESTART",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "CLIENTRANGEEND"
-								},
-								"sink": {
-									"name": "CLIENTRANGEEND",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERRANGESTART"
-								},
-								"sink": {
-									"name": "SERVERRANGESTART",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERRANGEEND"
-								},
-								"sink": {
-									"name": "SERVERRANGEEND",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TRANSCODINGSESSIONID"
-								},
-								"sink": {
-									"name": "TRANSCODINGSESSIONID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPRLBYTESSAVED"
-								},
-								"sink": {
-									"name": "TCPRLBYTESSAVED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ENTITLEMENTVALUES"
-								},
-								"sink": {
-									"name": "ENTITLEMENTVALUES",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYUPSTREAMBYTESRECD"
-								},
-								"sink": {
-									"name": "UDPPROXYUPSTREAMBYTESRECD",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYUPSTREAMBYTESSENT"
-								},
-								"sink": {
-									"name": "UDPPROXYUPSTREAMBYTESSENT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYDOWNSTREAMBYTESRECD"
-								},
-								"sink": {
-									"name": "UDPPROXYDOWNSTREAMBYTESRECD",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYDOWNSTREAMBYTESSENT"
-								},
-								"sink": {
-									"name": "UDPPROXYDOWNSTREAMBYTESSENT",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYLOCALIPADDR"
-								},
-								"sink": {
-									"name": "UDPPROXYLOCALIPADDR",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYLOCALPORT"
-								},
-								"sink": {
-									"name": "UDPPROXYLOCALPORT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYSERVERIPADDR"
-								},
-								"sink": {
-									"name": "UDPPROXYSERVERIPADDR",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYSERVERPORT"
-								},
-								"sink": {
-									"name": "UDPPROXYSERVERPORT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYPROXYNETWORKCONTEXT"
-								},
-								"sink": {
-									"name": "UDPPROXYPROXYNETWORKCONTEXT",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYQUICSNI"
-								},
-								"sink": {
-									"name": "UDPPROXYQUICSNI",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYQUICVERSION"
-								},
-								"sink": {
-									"name": "UDPPROXYQUICVERSION",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYQUICCONNID"
-								},
-								"sink": {
-									"name": "UDPPROXYQUICCONNID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYQUICRATELIMITINGAPPLIED"
-								},
-								"sink": {
-									"name": "UDPPROXYQUICRATELIMITINGAPPLIED",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYQUICRATELIMITINGBITRATE"
-								},
-								"sink": {
-									"name": "UDPPROXYQUICRATELIMITINGBITRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYQUICRLBYPASSREASON"
-								},
-								"sink": {
-									"name": "UDPPROXYQUICRLBYPASSREASON",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYQUICRATELIMITINGBURSTSIZE"
-								},
-								"sink": {
-									"name": "UDPPROXYQUICRATELIMITINGBURSTSIZE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYAPPLIEDUDPPOLICYNAME"
-								},
-								"sink": {
-									"name": "UDPPROXYAPPLIEDUDPPOLICYNAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CPLANESESSIONID"
-								},
-								"sink": {
-									"name": "CPLANESESSIONID",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "QUICRATELIMITINGBYTESSAVED"
-								},
-								"sink": {
-									"name": "QUICRATELIMITINGBYTESSAVED",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPRLSESSIONID"
-								},
-								"sink": {
-									"name": "UDPRLSESSIONID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPRLSESSIONDURATION"
-								},
-								"sink": {
-									"name": "UDPRLSESSIONDURATION",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPRLSESSIONBITRATE"
-								},
-								"sink": {
-									"name": "UDPRLSESSIONBITRATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "DPIAPPLICATION"
-								},
-								"sink": {
-									"name": "DPIAPPLICATION",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TIMEINFOTRANSACTIONID"
-								},
-								"sink": {
-									"name": "TIMEINFOTRANSACTIONID",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RECORDINGENTITY"
-								},
-								"sink": {
-									"name": "RECORDINGENTITY",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "PROXYINSTANCENAME"
-								},
-								"sink": {
-									"name": "PROXYINSTANCENAME",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SESSOPERATORSPECIFIC1"
-								},
-								"sink": {
-									"name": "SESSOPERATORSPECIFIC1",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "REQFAILUREREASON"
-								},
-								"sink": {
-									"name": "REQFAILUREREASON",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CLIENTCONGESTIONALGORITHM"
-								},
-								"sink": {
-									"name": "CLIENTCONGESTIONALGORITHM",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SERVERCONGESTIONALGORITHM"
-								},
-								"sink": {
-									"name": "SERVERCONGESTIONALGORITHM",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "BYTESDROPPEDDUETOBUFFERLIMITING"
-								},
-								"sink": {
-									"name": "BYTESDROPPEDDUETOBUFFERLIMITING",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPPROXYFAILUREREASON"
-								},
-								"sink": {
-									"name": "UDPPROXYFAILUREREASON",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CGIMCC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "CGIMCC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CGIMNC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "CGIMNC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CGILAC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "CGILAC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CGICI",
-									"type": "String"
-								},
-								"sink": {
-									"name": "CGICI",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SAIMCC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "SAIMCC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SAIMNC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "SAIMNC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SAILAC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "SAILAC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "SAISAC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "SAISAC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "RAIMCC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RAIMCC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RAIMNC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RAIMNC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RAIRAC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RAIRAC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RAILAC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RAILAC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TAIMCC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "TAIMCC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TAIMNC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "TAIMNC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "TAITAC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "TAITAC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "ECGIMCC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "ECGIMCC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "ECGIMNC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "ECGIMNC",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "ECGIECI",
-									"type": "String"
-								},
-								"sink": {
-									"name": "ECGIECI",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "LAIMCC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "LAIMCC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "LAIMNC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "LAIMNC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "LAILAC",
-									"type": "String"
-								},
-								"sink": {
-									"name": "LAILAC",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "VIDEORATELIMITFLOWAGGRSTATE"
-								},
-								"sink": {
-									"name": "VIDEORATELIMITFLOWAGGRSTATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "TCPRATELIMITFLAGGRSTATE"
-								},
-								"sink": {
-									"name": "TCPRATELIMITFLAGGRSTATE",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "CONGESTIONLEVELNONETIME"
-								},
-								"sink": {
-									"name": "CONGESTIONLEVELNONETIME",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "CONGESTIONLEVELMILDTIME"
-								},
-								"sink": {
-									"name": "CONGESTIONLEVELMILDTIME",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "CONGESTIONLEVELMODERATETIME"
-								},
-								"sink": {
-									"name": "CONGESTIONLEVELMODERATETIME",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "CONGESTIONLEVELSEVERETIME"
-								},
-								"sink": {
-									"name": "CONGESTIONLEVELSEVERETIME",
-									"type": "Int64"
-								}
-							},
-							{
-								"source": {
-									"name": "UDPRATELIMITFLAGGRSTATE"
-								},
-								"sink": {
-									"name": "UDPRATELIMITFLAGGRSTATE",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CONTENTPROVIDER"
-								},
-								"sink": {
-									"name": "CONTENTPROVIDER",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "APPID"
-								},
-								"sink": {
-									"name": "APPID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CONSENTSTATUS"
-								},
-								"sink": {
-									"name": "CONSENTSTATUS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SHIPSTATUS"
-								},
-								"sink": {
-									"name": "SHIPSTATUS",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "GWNODEID",
-									"type": "String"
-								},
-								"sink": {
-									"name": "GWNODEID",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD1",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD1",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD2",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD2",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD3",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD3",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD4",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD4",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD5",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD5",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD6",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD6",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD7",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD7",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD8",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD8",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD9",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD9",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "RESERVEFIELD10",
-									"type": "String"
-								},
-								"sink": {
-									"name": "RESERVEFIELD10",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "UP",
-									"type": "String"
-								},
-								"sink": {
-									"name": "UP",
-									"type": "String"
-								}
-							}
-						]
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "FLOW_UP",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
+					"dataset": {
 						"referenceName": "AzureDataExplorerTable1",
 						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
-				]
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 20,
+					"activities": [
+						{
+							"name": "MCC_EDR_T1_copy1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SnowflakeSource",
+									"query": {
+										"value": "@item().Cmd",
+										"type": "Expression"
+									},
+									"exportSettings": {
+										"type": "SnowflakeExportCopyCommand"
+									}
+								},
+								"sink": {
+									"type": "AzureDataExplorerSink",
+									"ingestionMappingName": ""
+								},
+								"enableStaging": true,
+								"stagingSettings": {
+									"linkedServiceName": {
+										"referenceName": "linkedService1",
+										"type": "LinkedServiceReference"
+									},
+									"path": "mobilecoresteam"
+								},
+								"parallelCopies": 21,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "EVENTTIME",
+												"type": "String"
+											},
+											"sink": {
+												"name": "EVENTTIME",
+												"type": "DateTime"
+											}
+										},
+										{
+											"source": {
+												"name": "TRANSACTIONID"
+											},
+											"sink": {
+												"name": "TRANSACTIONID",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "FLOWID"
+											},
+											"sink": {
+												"name": "FLOWID",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "BEARERID"
+											},
+											"sink": {
+												"name": "BEARERID",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "SESSIONID",
+												"type": "String"
+											},
+											"sink": {
+												"name": "SESSIONID",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TRANSACTIONTIMESTAMP"
+											},
+											"sink": {
+												"name": "TRANSACTIONTIMESTAMP",
+												"type": "DateTime"
+											}
+										},
+										{
+											"source": {
+												"name": "REQUESTLATENCY"
+											},
+											"sink": {
+												"name": "REQUESTLATENCY",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RESPONSELATENCY"
+											},
+											"sink": {
+												"name": "RESPONSELATENCY",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TRANSACTIONDURATION"
+											},
+											"sink": {
+												"name": "TRANSACTIONDURATION",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TRANSACTIONTIMESUBSECONDS"
+											},
+											"sink": {
+												"name": "TRANSACTIONTIMESUBSECONDS",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "IMSI",
+												"type": "String"
+											},
+											"sink": {
+												"name": "IMSI",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "IMEI"
+											},
+											"sink": {
+												"name": "IMEI",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "MSISDN",
+												"type": "String"
+											},
+											"sink": {
+												"name": "MSISDN",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVINGMCC"
+											},
+											"sink": {
+												"name": "SERVINGMCC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVINGMNC"
+											},
+											"sink": {
+												"name": "SERVINGMNC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "PLMNIDLENGTH"
+											},
+											"sink": {
+												"name": "PLMNIDLENGTH",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RATTYPE",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RATTYPE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "ROAMINGSTATUS"
+											},
+											"sink": {
+												"name": "ROAMINGSTATUS",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "SGWIP"
+											},
+											"sink": {
+												"name": "SGWIP",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "REALAPN",
+												"type": "String"
+											},
+											"sink": {
+												"name": "REALAPN",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ORIGINALAPN"
+											},
+											"sink": {
+												"name": "ORIGINALAPN",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "GINC"
+											},
+											"sink": {
+												"name": "GINC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEIP"
+											},
+											"sink": {
+												"name": "SOURCEIP",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEPORT"
+											},
+											"sink": {
+												"name": "SOURCEPORT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "DESTINATIONIP"
+											},
+											"sink": {
+												"name": "DESTINATIONIP",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DESTINATIONPORT"
+											},
+											"sink": {
+												"name": "DESTINATIONPORT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "IPTRANSPARENCY"
+											},
+											"sink": {
+												"name": "IPTRANSPARENCY",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "REQUESTMETHOD"
+											},
+											"sink": {
+												"name": "REQUESTMETHOD",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CLIENTURL"
+											},
+											"sink": {
+												"name": "CLIENTURL",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERURL"
+											},
+											"sink": {
+												"name": "SERVERURL",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CLIENTPROTOCOL"
+											},
+											"sink": {
+												"name": "CLIENTPROTOCOL",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERPROTOCOL"
+											},
+											"sink": {
+												"name": "SERVERPROTOCOL",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "USERAGENT"
+											},
+											"sink": {
+												"name": "USERAGENT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "REQCONTENTTYPE"
+											},
+											"sink": {
+												"name": "REQCONTENTTYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "REQCONTENTLENGTH"
+											},
+											"sink": {
+												"name": "REQCONTENTLENGTH",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "REQCLIENTHEADERSIZE"
+											},
+											"sink": {
+												"name": "REQCLIENTHEADERSIZE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "REQCLIENTBODYSIZE"
+											},
+											"sink": {
+												"name": "REQCLIENTBODYSIZE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "REQSERVERHEADERSIZE"
+											},
+											"sink": {
+												"name": "REQSERVERHEADERSIZE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "REQSERVERBODYSIZE"
+											},
+											"sink": {
+												"name": "REQSERVERBODYSIZE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RANGEREQUEST"
+											},
+											"sink": {
+												"name": "RANGEREQUEST",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "REQUESTSUCCESSFUL"
+											},
+											"sink": {
+												"name": "REQUESTSUCCESSFUL",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "REQCHUNKED"
+											},
+											"sink": {
+												"name": "REQCHUNKED",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "EXPLICITPROXYREQUEST"
+											},
+											"sink": {
+												"name": "EXPLICITPROXYREQUEST",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "DNSRESOLUTIONAPPLIED"
+											},
+											"sink": {
+												"name": "DNSRESOLUTIONAPPLIED",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "LOCALIP"
+											},
+											"sink": {
+												"name": "LOCALIP",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "LOCALPORT"
+											},
+											"sink": {
+												"name": "LOCALPORT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERIP"
+											},
+											"sink": {
+												"name": "SERVERIP",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERPORT"
+											},
+											"sink": {
+												"name": "SERVERPORT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "BEFAPPLIED"
+											},
+											"sink": {
+												"name": "BEFAPPLIED",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "PROXYNC"
+											},
+											"sink": {
+												"name": "PROXYNC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESPONSESTATUS"
+											},
+											"sink": {
+												"name": "RESPONSESTATUS",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPSERVERCONTENTTYPE"
+											},
+											"sink": {
+												"name": "RSPSERVERCONTENTTYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPCLIENTCONTENTTYPE"
+											},
+											"sink": {
+												"name": "RSPCLIENTCONTENTTYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPSERVERCONTENTLENGTH"
+											},
+											"sink": {
+												"name": "RSPSERVERCONTENTLENGTH",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPCLIENTCONTENTLENGTH"
+											},
+											"sink": {
+												"name": "RSPCLIENTCONTENTLENGTH",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPSERVERHEADERSIZE"
+											},
+											"sink": {
+												"name": "RSPSERVERHEADERSIZE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPSERVERBODYSIZE"
+											},
+											"sink": {
+												"name": "RSPSERVERBODYSIZE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPCLIENTHEADERSIZE"
+											},
+											"sink": {
+												"name": "RSPCLIENTHEADERSIZE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPCLIENTBODYSIZE"
+											},
+											"sink": {
+												"name": "RSPCLIENTBODYSIZE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPCHUNKED"
+											},
+											"sink": {
+												"name": "RSPCHUNKED",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPSERVEDFROMCACHE"
+											},
+											"sink": {
+												"name": "RSPSERVEDFROMCACHE",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPCACHED"
+											},
+											"sink": {
+												"name": "RSPCACHED",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "COMPRESSIONMETHOD"
+											},
+											"sink": {
+												"name": "COMPRESSIONMETHOD",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERCOMPRESS"
+											},
+											"sink": {
+												"name": "SERVERCOMPRESS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "PROXYCOMPRESS"
+											},
+											"sink": {
+												"name": "PROXYCOMPRESS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "COMPRESSIONRATIO"
+											},
+											"sink": {
+												"name": "COMPRESSIONRATIO",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "COMPBYTESSAVED"
+											},
+											"sink": {
+												"name": "COMPBYTESSAVED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERIMAGETYPE"
+											},
+											"sink": {
+												"name": "SERVERIMAGETYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CLIENTIMAGETYPE"
+											},
+											"sink": {
+												"name": "CLIENTIMAGETYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERRESOLUTION"
+											},
+											"sink": {
+												"name": "SERVERRESOLUTION",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CLIENTRESOLUTION"
+											},
+											"sink": {
+												"name": "CLIENTRESOLUTION",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "WEBIMGOPTIMIZATIONRATIO"
+											},
+											"sink": {
+												"name": "WEBIMGOPTIMIZATIONRATIO",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "WEBIMGBYTESSAVED"
+											},
+											"sink": {
+												"name": "WEBIMGBYTESSAVED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVEDCONTAINERTYPE"
+											},
+											"sink": {
+												"name": "SERVEDCONTAINERTYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ONLINETRANSCODINGAPPLIED"
+											},
+											"sink": {
+												"name": "ONLINETRANSCODINGAPPLIED",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVEDADAPTEDVIDEO"
+											},
+											"sink": {
+												"name": "SERVEDADAPTEDVIDEO",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "VIDEOPACED"
+											},
+											"sink": {
+												"name": "VIDEOPACED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVEDQOE"
+											},
+											"sink": {
+												"name": "SERVEDQOE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "PACINGBITRATE"
+											},
+											"sink": {
+												"name": "PACINGBITRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "VIDBYTESSAVED"
+											},
+											"sink": {
+												"name": "VIDBYTESSAVED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEWIDTH"
+											},
+											"sink": {
+												"name": "SOURCEWIDTH",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TARGETWIDTH"
+											},
+											"sink": {
+												"name": "TARGETWIDTH",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEHEIGHT"
+											},
+											"sink": {
+												"name": "SOURCEHEIGHT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TARGETHEIGHT"
+											},
+											"sink": {
+												"name": "TARGETHEIGHT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEBITRATE"
+											},
+											"sink": {
+												"name": "SOURCEBITRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TARGETBITRATE"
+											},
+											"sink": {
+												"name": "TARGETBITRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEFRAMERATE"
+											},
+											"sink": {
+												"name": "SOURCEFRAMERATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TARGETFRAMERATE"
+											},
+											"sink": {
+												"name": "TARGETFRAMERATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEAUDIOSAMPLINGRATE"
+											},
+											"sink": {
+												"name": "SOURCEAUDIOSAMPLINGRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TARGETAUDIOSAMPLINGRATE"
+											},
+											"sink": {
+												"name": "TARGETAUDIOSAMPLINGRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEVIDEOCODEC"
+											},
+											"sink": {
+												"name": "SOURCEVIDEOCODEC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TARGETVIDEOCODEC"
+											},
+											"sink": {
+												"name": "TARGETVIDEOCODEC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEAUDIOCODEC"
+											},
+											"sink": {
+												"name": "SOURCEAUDIOCODEC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TARGETAUDIOCODEC"
+											},
+											"sink": {
+												"name": "TARGETAUDIOCODEC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SOURCEAUDIOCHANNELS"
+											},
+											"sink": {
+												"name": "SOURCEAUDIOCHANNELS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TARGETAUDIOCHANNELS"
+											},
+											"sink": {
+												"name": "TARGETAUDIOCHANNELS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CONTENTTYPE"
+											},
+											"sink": {
+												"name": "CONTENTTYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "MINIFYBYTESSAVED"
+											},
+											"sink": {
+												"name": "MINIFYBYTESSAVED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ISAPPLIEDRESPONSE"
+											},
+											"sink": {
+												"name": "ISAPPLIEDRESPONSE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "NUMUPDATEDURLS"
+											},
+											"sink": {
+												"name": "NUMUPDATEDURLS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CACHEDAGE"
+											},
+											"sink": {
+												"name": "CACHEDAGE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "REQUESTCACHEMAXAGE"
+											},
+											"sink": {
+												"name": "REQUESTCACHEMAXAGE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESPONSECACHEMAXAGE"
+											},
+											"sink": {
+												"name": "RESPONSECACHEMAXAGE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "REQUESTCACHECONTROLFLAGS"
+											},
+											"sink": {
+												"name": "REQUESTCACHECONTROLFLAGS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESPONSECACHECONTROLFLAGS"
+											},
+											"sink": {
+												"name": "RESPONSECACHECONTROLFLAGS",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "STOREBYPASSCAUSE"
+											},
+											"sink": {
+												"name": "STOREBYPASSCAUSE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RETRIEVEBYPASSCAUSE"
+											},
+											"sink": {
+												"name": "RETRIEVEBYPASSCAUSE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CACHEENTRYSTALE"
+											},
+											"sink": {
+												"name": "CACHEENTRYSTALE",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPSPLICINGSTATUS"
+											},
+											"sink": {
+												"name": "TCPSPLICINGSTATUS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPLOCALPORT"
+											},
+											"sink": {
+												"name": "TCPLOCALPORT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPPROTOCOL"
+											},
+											"sink": {
+												"name": "TCPPROTOCOL",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RATELIMITINGBITRATE"
+											},
+											"sink": {
+												"name": "RATELIMITINGBITRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RATELIMITINGBYPASSCANCELREASON"
+											},
+											"sink": {
+												"name": "RATELIMITINGBYPASSCANCELREASON",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RATELIMITINGAPPLIED"
+											},
+											"sink": {
+												"name": "RATELIMITINGAPPLIED",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "UPSTREAMBYTESRECEIVED"
+											},
+											"sink": {
+												"name": "UPSTREAMBYTESRECEIVED",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TLSSNI"
+											},
+											"sink": {
+												"name": "TLSSNI",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPSERVERPORT"
+											},
+											"sink": {
+												"name": "TCPSERVERPORT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "DOWNSTREAMBYTESRECEIVED"
+											},
+											"sink": {
+												"name": "DOWNSTREAMBYTESRECEIVED",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "UPSTREAMBYTESSENT"
+											},
+											"sink": {
+												"name": "UPSTREAMBYTESSENT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPPROXYNC"
+											},
+											"sink": {
+												"name": "TCPPROXYNC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DOWNSTREAMBYTESSENT"
+											},
+											"sink": {
+												"name": "DOWNSTREAMBYTESSENT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPLOCALIP"
+											},
+											"sink": {
+												"name": "TCPLOCALIP",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPSERVERIP"
+											},
+											"sink": {
+												"name": "TCPSERVERIP",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RATELIMITINGBURSTSIZE"
+											},
+											"sink": {
+												"name": "RATELIMITINGBURSTSIZE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TLSSERVERCOMMONNAME"
+											},
+											"sink": {
+												"name": "TLSSERVERCOMMONNAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "MANIFESTMATCHED"
+											},
+											"sink": {
+												"name": "MANIFESTMATCHED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "MANIFESTMAXRATE"
+											},
+											"sink": {
+												"name": "MANIFESTMAXRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "MAXRTT"
+											},
+											"sink": {
+												"name": "MAXRTT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "MAXDOWNSTREAMMSS"
+											},
+											"sink": {
+												"name": "MAXDOWNSTREAMMSS",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "MINDOWNSTREAMMSS"
+											},
+											"sink": {
+												"name": "MINDOWNSTREAMMSS",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "AVGDOWNSTREAMTPUT"
+											},
+											"sink": {
+												"name": "AVGDOWNSTREAMTPUT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "AVGRTT"
+											},
+											"sink": {
+												"name": "AVGRTT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "MAXDOWNSTREAMCWND"
+											},
+											"sink": {
+												"name": "MAXDOWNSTREAMCWND",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "MINDOWNSTREAMTPUT"
+											},
+											"sink": {
+												"name": "MINDOWNSTREAMTPUT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "AVGDOWNSTREAMCWND"
+											},
+											"sink": {
+												"name": "AVGDOWNSTREAMCWND",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "MINRTT"
+											},
+											"sink": {
+												"name": "MINRTT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "AVGDOWNSTREAMMSS"
+											},
+											"sink": {
+												"name": "AVGDOWNSTREAMMSS",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "MINDOWNSTREAMCWND"
+											},
+											"sink": {
+												"name": "MINDOWNSTREAMCWND",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "MAXDOWNSTREAMTPUT"
+											},
+											"sink": {
+												"name": "MAXDOWNSTREAMTPUT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "ABRBYTESSAVED"
+											},
+											"sink": {
+												"name": "ABRBYTESSAVED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ABRRATELIMITINGBITRATE"
+											},
+											"sink": {
+												"name": "ABRRATELIMITINGBITRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ABRSESSIONID"
+											},
+											"sink": {
+												"name": "ABRSESSIONID",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "VIDEOPACINGBYTESSAVED"
+											},
+											"sink": {
+												"name": "VIDEOPACINGBYTESSAVED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ABRRATELIMITINGAPPLIED"
+											},
+											"sink": {
+												"name": "ABRRATELIMITINGAPPLIED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ABRBYPASSREASON"
+											},
+											"sink": {
+												"name": "ABRBYPASSREASON",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "VIDEOBYPASSREASON"
+											},
+											"sink": {
+												"name": "VIDEOBYPASSREASON",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "REFERERURL"
+											},
+											"sink": {
+												"name": "REFERERURL",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "REQAPPLIEDPOLICYNAME"
+											},
+											"sink": {
+												"name": "REQAPPLIEDPOLICYNAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPNEGOTIATEDALPN"
+											},
+											"sink": {
+												"name": "TCPNEGOTIATEDALPN",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPRLSESSIONDURATION"
+											},
+											"sink": {
+												"name": "TCPRLSESSIONDURATION",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPRLSESSIONBITRATE"
+											},
+											"sink": {
+												"name": "TCPRLSESSIONBITRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPRLSESSIONID"
+											},
+											"sink": {
+												"name": "TCPRLSESSIONID",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPAPPLIEDPOLICYNAME"
+											},
+											"sink": {
+												"name": "TCPAPPLIEDPOLICYNAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPDETECTEDCONTENTTYPE"
+											},
+											"sink": {
+												"name": "RSPDETECTEDCONTENTTYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RSPAPPLIEDPOLICYNAME"
+											},
+											"sink": {
+												"name": "RSPAPPLIEDPOLICYNAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "NUMDOWNSTREAMSEGRETRANS"
+											},
+											"sink": {
+												"name": "NUMDOWNSTREAMSEGRETRANS",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "NUMDOWNSTREAMSEGEST"
+											},
+											"sink": {
+												"name": "NUMDOWNSTREAMSEGEST",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPCONNMEASBYPASSREASON"
+											},
+											"sink": {
+												"name": "TCPCONNMEASBYPASSREASON",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ACTIONAPPLIED"
+											},
+											"sink": {
+												"name": "ACTIONAPPLIED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "FILTERINSTNAME"
+											},
+											"sink": {
+												"name": "FILTERINSTNAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ONLINECATEGORY"
+											},
+											"sink": {
+												"name": "ONLINECATEGORY",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "FILTERNAME"
+											},
+											"sink": {
+												"name": "FILTERNAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "FILTERTYPE"
+											},
+											"sink": {
+												"name": "FILTERTYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "VIDEOAPPLIEDPOLICYNAME"
+											},
+											"sink": {
+												"name": "VIDEOAPPLIEDPOLICYNAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DEVICETYPE"
+											},
+											"sink": {
+												"name": "DEVICETYPE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DEVICESCREENHEIGHT"
+											},
+											"sink": {
+												"name": "DEVICESCREENHEIGHT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DEVICEMODEL"
+											},
+											"sink": {
+												"name": "DEVICEMODEL",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DEVICESCREENWIDTH"
+											},
+											"sink": {
+												"name": "DEVICESCREENWIDTH",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DEVICEMAKE"
+											},
+											"sink": {
+												"name": "DEVICEMAKE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RTT"
+											},
+											"sink": {
+												"name": "RTT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "NUMSEGSOOOIN"
+											},
+											"sink": {
+												"name": "NUMSEGSOOOIN",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "NUMSEGSRETRANSIN"
+											},
+											"sink": {
+												"name": "NUMSEGSRETRANSIN",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "CLIENTRANGESTART"
+											},
+											"sink": {
+												"name": "CLIENTRANGESTART",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "CLIENTRANGEEND"
+											},
+											"sink": {
+												"name": "CLIENTRANGEEND",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERRANGESTART"
+											},
+											"sink": {
+												"name": "SERVERRANGESTART",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERRANGEEND"
+											},
+											"sink": {
+												"name": "SERVERRANGEEND",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TRANSCODINGSESSIONID"
+											},
+											"sink": {
+												"name": "TRANSCODINGSESSIONID",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPRLBYTESSAVED"
+											},
+											"sink": {
+												"name": "TCPRLBYTESSAVED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ENTITLEMENTVALUES"
+											},
+											"sink": {
+												"name": "ENTITLEMENTVALUES",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYUPSTREAMBYTESRECD"
+											},
+											"sink": {
+												"name": "UDPPROXYUPSTREAMBYTESRECD",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYUPSTREAMBYTESSENT"
+											},
+											"sink": {
+												"name": "UDPPROXYUPSTREAMBYTESSENT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYDOWNSTREAMBYTESRECD"
+											},
+											"sink": {
+												"name": "UDPPROXYDOWNSTREAMBYTESRECD",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYDOWNSTREAMBYTESSENT"
+											},
+											"sink": {
+												"name": "UDPPROXYDOWNSTREAMBYTESSENT",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYLOCALIPADDR"
+											},
+											"sink": {
+												"name": "UDPPROXYLOCALIPADDR",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYLOCALPORT"
+											},
+											"sink": {
+												"name": "UDPPROXYLOCALPORT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYSERVERIPADDR"
+											},
+											"sink": {
+												"name": "UDPPROXYSERVERIPADDR",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYSERVERPORT"
+											},
+											"sink": {
+												"name": "UDPPROXYSERVERPORT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYPROXYNETWORKCONTEXT"
+											},
+											"sink": {
+												"name": "UDPPROXYPROXYNETWORKCONTEXT",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYQUICSNI"
+											},
+											"sink": {
+												"name": "UDPPROXYQUICSNI",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYQUICVERSION"
+											},
+											"sink": {
+												"name": "UDPPROXYQUICVERSION",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYQUICCONNID"
+											},
+											"sink": {
+												"name": "UDPPROXYQUICCONNID",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYQUICRATELIMITINGAPPLIED"
+											},
+											"sink": {
+												"name": "UDPPROXYQUICRATELIMITINGAPPLIED",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYQUICRATELIMITINGBITRATE"
+											},
+											"sink": {
+												"name": "UDPPROXYQUICRATELIMITINGBITRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYQUICRLBYPASSREASON"
+											},
+											"sink": {
+												"name": "UDPPROXYQUICRLBYPASSREASON",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYQUICRATELIMITINGBURSTSIZE"
+											},
+											"sink": {
+												"name": "UDPPROXYQUICRATELIMITINGBURSTSIZE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYAPPLIEDUDPPOLICYNAME"
+											},
+											"sink": {
+												"name": "UDPPROXYAPPLIEDUDPPOLICYNAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CPLANESESSIONID"
+											},
+											"sink": {
+												"name": "CPLANESESSIONID",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "QUICRATELIMITINGBYTESSAVED"
+											},
+											"sink": {
+												"name": "QUICRATELIMITINGBYTESSAVED",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPRLSESSIONID"
+											},
+											"sink": {
+												"name": "UDPRLSESSIONID",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPRLSESSIONDURATION"
+											},
+											"sink": {
+												"name": "UDPRLSESSIONDURATION",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPRLSESSIONBITRATE"
+											},
+											"sink": {
+												"name": "UDPRLSESSIONBITRATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DPIAPPLICATION"
+											},
+											"sink": {
+												"name": "DPIAPPLICATION",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TIMEINFOTRANSACTIONID"
+											},
+											"sink": {
+												"name": "TIMEINFOTRANSACTIONID",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RECORDINGENTITY"
+											},
+											"sink": {
+												"name": "RECORDINGENTITY",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "PROXYINSTANCENAME"
+											},
+											"sink": {
+												"name": "PROXYINSTANCENAME",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SESSOPERATORSPECIFIC1"
+											},
+											"sink": {
+												"name": "SESSOPERATORSPECIFIC1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "REQFAILUREREASON"
+											},
+											"sink": {
+												"name": "REQFAILUREREASON",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CLIENTCONGESTIONALGORITHM"
+											},
+											"sink": {
+												"name": "CLIENTCONGESTIONALGORITHM",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SERVERCONGESTIONALGORITHM"
+											},
+											"sink": {
+												"name": "SERVERCONGESTIONALGORITHM",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "BYTESDROPPEDDUETOBUFFERLIMITING"
+											},
+											"sink": {
+												"name": "BYTESDROPPEDDUETOBUFFERLIMITING",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPPROXYFAILUREREASON"
+											},
+											"sink": {
+												"name": "UDPPROXYFAILUREREASON",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CGIMCC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "CGIMCC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CGIMNC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "CGIMNC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CGILAC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "CGILAC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CGICI",
+												"type": "String"
+											},
+											"sink": {
+												"name": "CGICI",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SAIMCC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "SAIMCC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "SAIMNC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "SAIMNC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "SAILAC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "SAILAC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "SAISAC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "SAISAC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "RAIMCC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RAIMCC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RAIMNC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RAIMNC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RAIRAC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RAIRAC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RAILAC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RAILAC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TAIMCC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "TAIMCC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TAIMNC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "TAIMNC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "TAITAC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "TAITAC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "ECGIMCC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "ECGIMCC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "ECGIMNC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "ECGIMNC",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "ECGIECI",
+												"type": "String"
+											},
+											"sink": {
+												"name": "ECGIECI",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "LAIMCC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "LAIMCC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "LAIMNC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "LAIMNC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "LAILAC",
+												"type": "String"
+											},
+											"sink": {
+												"name": "LAILAC",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "VIDEORATELIMITFLOWAGGRSTATE"
+											},
+											"sink": {
+												"name": "VIDEORATELIMITFLOWAGGRSTATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "TCPRATELIMITFLAGGRSTATE"
+											},
+											"sink": {
+												"name": "TCPRATELIMITFLAGGRSTATE",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "CONGESTIONLEVELNONETIME"
+											},
+											"sink": {
+												"name": "CONGESTIONLEVELNONETIME",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "CONGESTIONLEVELMILDTIME"
+											},
+											"sink": {
+												"name": "CONGESTIONLEVELMILDTIME",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "CONGESTIONLEVELMODERATETIME"
+											},
+											"sink": {
+												"name": "CONGESTIONLEVELMODERATETIME",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "CONGESTIONLEVELSEVERETIME"
+											},
+											"sink": {
+												"name": "CONGESTIONLEVELSEVERETIME",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "UDPRATELIMITFLAGGRSTATE"
+											},
+											"sink": {
+												"name": "UDPRATELIMITFLAGGRSTATE",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CONTENTPROVIDER"
+											},
+											"sink": {
+												"name": "CONTENTPROVIDER",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "APPID"
+											},
+											"sink": {
+												"name": "APPID",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CONSENTSTATUS"
+											},
+											"sink": {
+												"name": "CONSENTSTATUS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SHIPSTATUS"
+											},
+											"sink": {
+												"name": "SHIPSTATUS",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "GWNODEID",
+												"type": "String"
+											},
+											"sink": {
+												"name": "GWNODEID",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD1",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD2",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD2",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD3",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD3",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD4",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD4",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD5",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD5",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD6",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD6",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD7",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD7",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD8",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD8",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD9",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD9",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RESERVEFIELD10",
+												"type": "String"
+											},
+											"sink": {
+												"name": "RESERVEFIELD10",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "UP",
+												"type": "String"
+											},
+											"sink": {
+												"name": "UP",
+												"type": "String"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "FLOW_UP",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AzureDataExplorerTable1",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
 			}
 		],
 		"annotations": []
