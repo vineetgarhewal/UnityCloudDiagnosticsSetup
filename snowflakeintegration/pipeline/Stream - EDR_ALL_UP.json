@@ -2479,7 +2479,7 @@
 			},
 			"query": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' "
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP like 'lbc%' AND GWNODEID = 'HST5E_ALL4F_PGWC'"
 			}
 		},
 		"annotations": []
