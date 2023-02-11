@@ -124,11 +124,11 @@
 			},
 			"src_tablename": {
 				"type": "string",
-				"defaultValue": "SESSION_UP"
+				"defaultValue": "BEARER_UP"
 			},
 			"dest_tablename": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_SESSION_UP"
+				"defaultValue": "BLACKBIRD_BEARER_UP"
 			},
 			"userplane": {
 				"type": "string",
@@ -136,11 +136,11 @@
 			},
 			"recordingentity": {
 				"type": "string",
-				"defaultValue": "%zlbc1amcuc01%"
+				"defaultValue": "%"
 			},
 			"query": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' "
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\'"
 			}
 		},
 		"annotations": []
