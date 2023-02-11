@@ -124,15 +124,15 @@
 			},
 			"src_tablename": {
 				"type": "string",
-				"defaultValue": "FLOW_UP"
+				"defaultValue": "SESSION_UP"
 			},
 			"dest_tablename": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_FLOW_UP"
+				"defaultValue": "BLACKBIRD_SESSION_UP"
 			},
 			"userplane": {
 				"type": "string",
-				"defaultValue": "lbc%"
+				"defaultValue": "%"
 			},
 			"recordingentity": {
 				"type": "string",
@@ -140,7 +140,7 @@
 			},
 			"query": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP like 'lbc%' AND GWNODEID = 'HST5E_ALL4F_PGWC'"
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' "
 			}
 		},
 		"annotations": []
