@@ -124,15 +124,15 @@
 			},
 			"src_tablename": {
 				"type": "string",
-				"defaultValue": "BEARER_UP"
+				"defaultValue": "FLOW_UP"
 			},
 			"dest_tablename": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_BEARER_UP"
+				"defaultValue": "BLACKBIRD_FLOW_UP"
 			},
 			"userplane": {
 				"type": "string",
-				"defaultValue": "%"
+				"defaultValue": "lsa4a%"
 			},
 			"recordingentity": {
 				"type": "string",
