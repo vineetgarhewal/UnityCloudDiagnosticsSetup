@@ -1,0 +1,11 @@
+{
+	"name": "EDR_Parent",
+	"properties": {
+		"variables": {
+			"SnowflakeStreams": {
+				"type": "Array"
+			}
+		},
+		"annotations": []
+	}
+}
