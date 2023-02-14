@@ -5,14 +5,7 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Set variable1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -36,24 +29,15 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "SnowflakeStreams",
-					"value": [
-						"uhiuwehr",
-						"SFSDFSD"
-					]
-				}
 			}
 		],
 		"variables": {
 			"SnowflakeStreams": {
-				"type": "Array"
+				"type": "Array",
+				"defaultValue": [
+					"uhiuwehr",
+					"SFSDFSD"
+				]
 			},
 			"Test": {
 				"type": "String"
