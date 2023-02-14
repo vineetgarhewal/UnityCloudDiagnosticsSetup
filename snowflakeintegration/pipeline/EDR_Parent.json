@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@variables('SnowflakeStreams').value",
+						"value": "@variables('SnowflakeStreams')",
 						"type": "Expression"
 					},
 					"isSequential": false,
