@@ -24,7 +24,14 @@
 						{
 							"name": "Execute Pipeline1",
 							"type": "ExecutePipeline",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set variable2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
@@ -37,6 +44,19 @@
 										"value": "@item().value",
 										"type": "Expression"
 									}
+								}
+							}
+						},
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Test",
+								"value": {
+									"value": "@item().value",
+									"type": "Expression"
 								}
 							}
 						}
@@ -64,6 +84,9 @@
 					"uhiuwehr",
 					"SFSDFSD"
 				]
+			},
+			"Test": {
+				"type": "String"
 			}
 		},
 		"annotations": []
