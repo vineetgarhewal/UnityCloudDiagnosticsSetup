@@ -15,15 +15,21 @@
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Set variable2",
-							"type": "SetVariable",
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "Test",
-								"value": {
-									"value": "@item()",
-									"type": "Expression"
+								"pipeline": {
+									"referenceName": "Stream - EDR_ALL_UP_copy1",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"query": {
+										"value": "@item()",
+										"type": "Expression"
+									}
 								}
 							}
 						}
