@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('querytranformer(\"',pipeline().parameters.starttime,'\",\"',pipeline().parameters.endtime,'\",\"',pipeline().parameters.src_tablename,'\",\"',pipeline().parameters.dest_tablename,'\",\"',pipeline().parameters.userplane,'\",\"',pipeline().parameters.query,'\")')",
+							"value": "@replace(pipeline().parameters.query,'*','count(*)')",
 							"type": "Expression"
 						},
 						"queryTimeout": "00:10:00",
