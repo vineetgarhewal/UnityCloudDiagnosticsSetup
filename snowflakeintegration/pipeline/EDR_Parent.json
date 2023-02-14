@@ -5,13 +5,21 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
 						"value": "@variables('SnowflakeStreams')",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "Execute Pipeline1",
@@ -32,6 +40,19 @@
 								}
 							}
 						}
+					]
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "SnowflakeStreams",
+					"value": [
+						"uhiuwehr",
+						"SFSDFSD"
 					]
 				}
 			}
