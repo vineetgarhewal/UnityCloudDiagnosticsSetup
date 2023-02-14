@@ -29,7 +29,7 @@
 							"typeProperties": {
 								"variableName": "Test",
 								"value": {
-									"value": "@item().value",
+									"value": "@item()",
 									"type": "Expression"
 								}
 							}
