@@ -40,7 +40,8 @@
 			"SnowflakeStreams": {
 				"type": "Array",
 				"defaultValue": [
-					"[\"{select * FROM 'BLACKBIRD_EDR'.'EDR'.'@src_table' WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\'}\"]"
+					"uhiuwehr",
+					"SFSDFSD"
 				]
 			}
 		},
