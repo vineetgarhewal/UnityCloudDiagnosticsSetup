@@ -1,9 +1,47 @@
 {
 	"name": "EDR_Parent",
 	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('SnowflakeStreams')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Stream - EDR_ALL_UP_copy1",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"query": {
+										"value": "@item().value",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
 		"variables": {
 			"SnowflakeStreams": {
-				"type": "Array"
+				"type": "Array",
+				"defaultValue": [
+					"[\"{select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\'}\"]"
+				]
 			}
 		},
 		"annotations": []
