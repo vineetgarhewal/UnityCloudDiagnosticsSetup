@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SnowflakeSource",
 						"query": {
-							"value": "@replace(replace(pipeline().parameters.query,'*','count(*)'),'<','\"')",
+							"value": "@replace(pipeline().parameters.query,'*','count(*)')",
 							"type": "Expression"
 						},
 						"exportSettings": {
