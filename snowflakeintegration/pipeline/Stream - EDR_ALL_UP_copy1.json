@@ -16,20 +16,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureDataExplorerSource",
+						"type": "SnowflakeSource",
 						"query": {
 							"value": "@replace(pipeline().parameters.query,'*','count(*)')",
 							"type": "Expression"
 						},
-						"queryTimeout": "00:10:00",
-						"noTruncation": false
+						"exportSettings": {
+							"type": "SnowflakeExportCopyCommand"
+						}
 					},
 					"dataset": {
-						"referenceName": "AzureDataExplorerTable1",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_HTTP_UP"
-						}
+						"referenceName": "FLOW_UP",
+						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
 				}
