@@ -5,7 +5,14 @@
 			{
 				"name": "Lookup1",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -31,11 +38,26 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Test",
+					"value": "@replace(replace(pipeline().parameters.query,'*','count(*)'),'<','\"')"
+				}
 			}
 		],
 		"parameters": {
 			"query": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"Test": {
+				"type": "String"
 			}
 		},
 		"annotations": []
