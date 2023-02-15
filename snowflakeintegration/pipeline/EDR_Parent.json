@@ -47,6 +47,9 @@
 			},
 			"Test": {
 				"type": "String"
+			},
+			"Test33": {
+				"type": "String"
 			}
 		},
 		"annotations": []
