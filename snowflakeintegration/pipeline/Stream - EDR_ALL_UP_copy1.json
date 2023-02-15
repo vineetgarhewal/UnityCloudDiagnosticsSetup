@@ -45,7 +45,7 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "Test",
+					"variableName": "Test33",
 					"value": "@replace(replace(pipeline().parameters.query,'*','count(*)'),'<','\"')"
 				}
 			}
@@ -56,7 +56,7 @@
 			}
 		},
 		"variables": {
-			"Test": {
+			"Test33": {
 				"type": "String"
 			}
 		},
