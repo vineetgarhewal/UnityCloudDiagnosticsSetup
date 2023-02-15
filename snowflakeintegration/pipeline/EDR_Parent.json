@@ -41,7 +41,7 @@
 			"SnowflakeStreams": {
 				"type": "Array",
 				"defaultValue": [
-					"select * FROM 'BLACKBIRD_EDR'.'EDR'.'@src_table' WHERE EVENTTIME >= '@sp' AND EVENTTIME < '@ep'",
+					"select * FROM 'BLACKBIRD_EDR'.'EDR'.'@src_table' WHERE EVENTTIME >= '2022-11-30 10:00:00.00000' AND EVENTTIME < 2022-11-30 11:00:00.00000'",
 					"select * FROM 'BLACKBIRD_EDR'.'EDR'.'@src_table' WHERE EVENTTIME >= '@sp' AND EVENTTIME < '@ep'"
 				]
 			},
