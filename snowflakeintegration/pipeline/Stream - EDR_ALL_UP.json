@@ -124,15 +124,15 @@
 			},
 			"src_tablename": {
 				"type": "string",
-				"defaultValue": "FLOW_UP"
+				"defaultValue": "HTTP_UP"
 			},
 			"dest_tablename": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_FLOW_UP"
+				"defaultValue": "BLACKBIRD_HTTP_UP"
 			},
 			"userplane": {
 				"type": "string",
-				"defaultValue": "lsa4a%"
+				"defaultValue": "%"
 			},
 			"recordingentity": {
 				"type": "string",
@@ -141,6 +141,11 @@
 			"query": {
 				"type": "string",
 				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\'"
+			}
+		},
+		"variables": {
+			"Test33": {
+				"type": "String"
 			}
 		},
 		"annotations": []
