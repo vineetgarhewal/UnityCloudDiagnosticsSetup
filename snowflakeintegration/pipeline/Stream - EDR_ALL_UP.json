@@ -124,15 +124,15 @@
 			},
 			"src_tablename": {
 				"type": "string",
-				"defaultValue": "FLOW_UP"
+				"defaultValue": "HTTP_UP"
 			},
 			"dest_tablename": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_FLOW_UP"
+				"defaultValue": "BLACKBIRD_HTTP_UP"
 			},
 			"userplane": {
 				"type": "string",
-				"defaultValue": "snd3a%"
+				"defaultValue": "%"
 			},
 			"recordingentity": {
 				"type": "string",
@@ -140,7 +140,7 @@
 			},
 			"query": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND (UP ='snd3a' ) AND GWNODEID = 'GRD2D_SNT3D_PGWC'"
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND GWNODEID = 'GRD2D_SNT3D_PGWC'"
 			}
 		},
 		"variables": {
