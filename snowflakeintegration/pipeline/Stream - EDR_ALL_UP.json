@@ -124,11 +124,11 @@
 			},
 			"src_tablename": {
 				"type": "string",
-				"defaultValue": "HTTP_UP"
+				"defaultValue": "BEARER_UP"
 			},
 			"dest_tablename": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_HTTP_UP"
+				"defaultValue": "BLACKBIRD_BEARER_UP"
 			},
 			"userplane": {
 				"type": "string",
