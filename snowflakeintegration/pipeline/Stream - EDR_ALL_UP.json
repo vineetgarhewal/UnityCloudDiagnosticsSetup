@@ -116,23 +116,23 @@
 		"parameters": {
 			"starttime": {
 				"type": "string",
-				"defaultValue": "2023-02-01 00:00:00.000"
+				"defaultValue": "2023-02-12 00:00:00.000"
 			},
 			"endtime": {
 				"type": "string",
-				"defaultValue": "2023-02-02 00:00:00.000"
+				"defaultValue": "2023-02-13 00:00:00.000"
 			},
 			"src_tablename": {
 				"type": "string",
-				"defaultValue": "HTTP_UP"
+				"defaultValue": "SESSION_UP"
 			},
 			"dest_tablename": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_HTTP_UP"
+				"defaultValue": "BLACKBIRD_SESSION_UP"
 			},
 			"userplane": {
 				"type": "string",
-				"defaultValue": "%"
+				"defaultValue": "grd2d%"
 			},
 			"recordingentity": {
 				"type": "string",
@@ -140,7 +140,7 @@
 			},
 			"query": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\'"
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP like 'grd2d%' AND GWNODEID = 'GRD2D_SNT3D_PGWC'"
 			}
 		},
 		"variables": {
