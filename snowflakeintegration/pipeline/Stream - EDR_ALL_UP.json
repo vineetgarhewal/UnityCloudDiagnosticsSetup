@@ -140,7 +140,7 @@
 			},
 			"query": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND (UP ='snd3a%' or UP = 'tcs1a') AND GWNODEID = 'GRD2D_SNT3D_PGWC'"
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND (UP ='snd3a' ) AND GWNODEID = 'GRD2D_SNT3D_PGWC'"
 			}
 		},
 		"variables": {
