@@ -1,0 +1,153 @@
+{
+	"name": "Stream-EDR SESSION START-STOP RECORD",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": {
+							"value": "@concat('querytranformer(\"',pipeline().parameters.starttime,'\",\"',pipeline().parameters.endtime,'\",\"',pipeline().parameters.src_tablename,'\",\"',pipeline().parameters.dest_tablename,'\",\"',pipeline().parameters.userplane,'\",\"',pipeline().parameters.query,'\")')",
+							"type": "Expression"
+						},
+						"queryTimeout": "00:10:00",
+						"noTruncation": false
+					},
+					"dataset": {
+						"referenceName": "AzureDataExplorerTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_HTTP_UP"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 20,
+					"activities": [
+						{
+							"name": "MCC_EDR_T1_copy1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SnowflakeSource",
+									"query": {
+										"value": "@item().Cmd",
+										"type": "Expression"
+									},
+									"exportSettings": {
+										"type": "SnowflakeExportCopyCommand"
+									}
+								},
+								"sink": {
+									"type": "AzureDataExplorerSink",
+									"ingestionMappingName": ""
+								},
+								"enableStaging": true,
+								"stagingSettings": {
+									"linkedServiceName": {
+										"referenceName": "linkedService1",
+										"type": "LinkedServiceReference"
+									},
+									"path": "mobilecoresteam"
+								},
+								"parallelCopies": 21
+							},
+							"inputs": [
+								{
+									"referenceName": "FLOW_UP",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AzureDataExplorerTable1",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": {
+											"value": "@item().dest_table",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"starttime": {
+				"type": "string",
+				"defaultValue": "2023-02-12 00:00:00.000"
+			},
+			"endtime": {
+				"type": "string",
+				"defaultValue": "2023-02-13 00:00:00.000"
+			},
+			"src_tablename": {
+				"type": "string",
+				"defaultValue": "SESSION_UP"
+			},
+			"dest_tablename": {
+				"type": "string",
+				"defaultValue": "BLACKBIRD_SESSION_UP_ST_ST"
+			},
+			"userplane": {
+				"type": "string",
+				"defaultValue": "%"
+			},
+			"recordingentity": {
+				"type": "string",
+				"defaultValue": "%"
+			},
+			"query": {
+				"type": "string",
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND (RECORDTYPE='EDR_STOP_RECORD' OR RECORDTYPE='EDR_START_RECORD')"
+			}
+		},
+		"variables": {
+			"Test33": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
