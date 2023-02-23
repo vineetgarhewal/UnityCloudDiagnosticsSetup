@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureDataExplorerSource",
-						"query": "range x from 0 to 23 step 1\n| extend y=x+1",
+						"query": "range x from 1 to 23 step 1\n| extend y=x+1",
 						"queryTimeout": "00:10:00"
 					},
 					"dataset": {
@@ -47,6 +47,7 @@
 						"value": "@activity('Lookup1').output.value",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"batchCount": 6,
 					"activities": [
 						{
