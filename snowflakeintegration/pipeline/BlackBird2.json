@@ -61,7 +61,7 @@
 				]
 			},
 			{
-				"name": "BLACKBIRD_TO_BLACKBIRD2_copy1",
+				"name": "BLACKBIRD_TO_BLACKBIRD2_bearer",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -75,7 +75,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureDataExplorerSource",
-						"query": "BLACKBIRD_FLOW_UP",
+						"query": "BLACKBIRD_BEARER_UP",
 						"queryTimeout": "00:10:00"
 					},
 					"sink": {
@@ -90,6 +90,7 @@
 						},
 						"path": "mobilecoresteam"
 					},
+					"parallelCopies": 10,
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
@@ -104,7 +105,7 @@
 						"referenceName": "AzureDataExplorerTable1",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "BLACKBIRD_FLOW_UP"
+							"TableName": "BLACKBIRD_BEARER_UP"
 						}
 					}
 				],
@@ -113,7 +114,7 @@
 						"referenceName": "blackbird2",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "BLACKBIRD_FLOW_UP"
+							"TableName": "BLACKBIRD_BEARER_UP"
 						}
 					}
 				]
