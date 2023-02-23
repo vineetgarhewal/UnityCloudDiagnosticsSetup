@@ -47,6 +47,7 @@
 						"value": "@activity('Lookup1').output.value",
 						"type": "Expression"
 					},
+					"batchCount": 6,
 					"activities": [
 						{
 							"name": "Execute Pipeline1",
