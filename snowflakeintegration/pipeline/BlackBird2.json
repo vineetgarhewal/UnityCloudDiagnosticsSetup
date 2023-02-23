@@ -25,14 +25,7 @@
 						"type": "AzureDataExplorerSink",
 						"ingestionMappingName": ""
 					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "linkedService1",
-							"type": "LinkedServiceReference"
-						},
-						"path": "mobilecoresteam"
-					},
+					"enableStaging": false,
 					"parallelCopies": 10,
 					"translator": {
 						"type": "TabularTranslator",
@@ -85,14 +78,7 @@
 						"type": "AzureDataExplorerSink",
 						"ingestionMappingName": ""
 					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "linkedService1",
-							"type": "LinkedServiceReference"
-						},
-						"path": "mobilecoresteam"
-					},
+					"enableStaging": false,
 					"parallelCopies": 10,
 					"translator": {
 						"type": "TabularTranslator",
@@ -145,14 +131,7 @@
 						"type": "AzureDataExplorerSink",
 						"ingestionMappingName": ""
 					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "linkedService1",
-							"type": "LinkedServiceReference"
-						},
-						"path": "mobilecoresteam"
-					},
+					"enableStaging": false,
 					"parallelCopies": 10,
 					"translator": {
 						"type": "TabularTranslator",
@@ -205,14 +184,7 @@
 						"type": "AzureDataExplorerSink",
 						"ingestionMappingName": ""
 					},
-					"enableStaging": true,
-					"stagingSettings": {
-						"linkedServiceName": {
-							"referenceName": "linkedService1",
-							"type": "LinkedServiceReference"
-						},
-						"path": "mobilecoresteam"
-					},
+					"enableStaging": false,
 					"parallelCopies": 10,
 					"translator": {
 						"type": "TabularTranslator",
