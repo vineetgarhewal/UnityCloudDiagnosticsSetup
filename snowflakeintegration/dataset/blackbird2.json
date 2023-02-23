@@ -5,8 +5,19 @@
 			"referenceName": "Blackbird2",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"TableName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureDataExplorerTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
 	}
 }
