@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('BLACKBIRD_FLOW_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+							"value": "@concat('BLACKBIRD_FLOW_UP | where datetime_part(\"hour\",EVENTTIME) > ',pipeline().parameters.start,' and datetime_part(\"hour\",EVENTTIME) <= ',pipeline().parameters.end\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "22:10:00",
@@ -74,7 +74,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('BLACKBIRD_BEARER_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+							"value": "@concat('BLACKBIRD_BEARER_UP | where datetime_part(\"hour\",EVENTTIME) > ',pipeline().parameters.start,' and datetime_part(\"hour\",EVENTTIME) <= ',pipeline().parameters.end\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "22:10:00",
@@ -130,7 +130,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('BLACKBIRD_HTTP_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+							"value": "@concat('BLACKBIRD_HTTP_UP | where datetime_part(\"hour\",EVENTTIME) > ',pipeline().parameters.start,' and datetime_part(\"hour\",EVENTTIME) <= ',pipeline().parameters.end\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "22:10:00",
@@ -186,7 +186,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('BLACKBIRD_SESSION_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+							"value": "@concat('BLACKBIRD_SESSION_UP | where datetime_part(\"hour\",EVENTTIME) > ',pipeline().parameters.start,' and datetime_part(\"hour\",EVENTTIME) <= ',pipeline().parameters.end\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "22:10:00",
