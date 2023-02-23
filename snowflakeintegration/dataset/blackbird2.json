@@ -7,7 +7,8 @@
 		},
 		"parameters": {
 			"TableName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "BLACKBIRD_HTTP_UP"
 			}
 		},
 		"annotations": [],
