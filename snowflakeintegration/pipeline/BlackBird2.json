@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "BLACKBIRD_TO_BLACKBIRD2",
+				"name": "BLACKBIRD_TO_BLACKBIRD2_flow",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
