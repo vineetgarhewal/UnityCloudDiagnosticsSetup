@@ -3,228 +3,238 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "BLACKBIRD_TO_BLACKBIRD2_flow",
-				"type": "Copy",
+				"name": "ForEach1",
+				"type": "ForEach",
 				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "AzureDataExplorerSource",
-						"query": {
-							"value": "@concat('BLACKBIRD_FLOW_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
-							"type": "Expression"
+					"activities": [
+						{
+							"name": "BLACKBIRD_TO_BLACKBIRD2_flow",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureDataExplorerSource",
+									"query": {
+										"value": "@concat('BLACKBIRD_FLOW_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "22:10:00",
+									"noTruncation": true
+								},
+								"sink": {
+									"type": "AzureDataExplorerSink",
+									"ingestionMappingName": ""
+								},
+								"enableStaging": false,
+								"parallelCopies": 10,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureDataExplorerTable1",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_FLOW_UP"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "blackbird2",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_FLOW_UP"
+									}
+								}
+							]
 						},
-						"queryTimeout": "22:10:00",
-						"noTruncation": true
-					},
-					"sink": {
-						"type": "AzureDataExplorerSink",
-						"ingestionMappingName": ""
-					},
-					"enableStaging": false,
-					"parallelCopies": 10,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "AzureDataExplorerTable1",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_FLOW_UP"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blackbird2",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_FLOW_UP"
-						}
-					}
-				]
-			},
-			{
-				"name": "BLACKBIRD_TO_BLACKBIRD2_bearer",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureDataExplorerSource",
-						"query": {
-							"value": "@concat('BLACKBIRD_BEARER_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
-							"type": "Expression"
+						{
+							"name": "BLACKBIRD_TO_BLACKBIRD2_bearer",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureDataExplorerSource",
+									"query": {
+										"value": "@concat('BLACKBIRD_BEARER_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "22:10:00",
+									"noTruncation": true
+								},
+								"sink": {
+									"type": "AzureDataExplorerSink",
+									"ingestionMappingName": ""
+								},
+								"enableStaging": false,
+								"parallelCopies": 10,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureDataExplorerTable1",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_BEARER_UP"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "blackbird2",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_BEARER_UP"
+									}
+								}
+							]
 						},
-						"queryTimeout": "22:10:00",
-						"noTruncation": true
-					},
-					"sink": {
-						"type": "AzureDataExplorerSink",
-						"ingestionMappingName": ""
-					},
-					"enableStaging": false,
-					"parallelCopies": 10,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "AzureDataExplorerTable1",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_BEARER_UP"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blackbird2",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_BEARER_UP"
-						}
-					}
-				]
-			},
-			{
-				"name": "BLACKBIRD_TO_BLACKBIRD2_http",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureDataExplorerSource",
-						"query": {
-							"value": "@concat('BLACKBIRD_HTTP_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
-							"type": "Expression"
+						{
+							"name": "BLACKBIRD_TO_BLACKBIRD2_http",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureDataExplorerSource",
+									"query": {
+										"value": "@concat('BLACKBIRD_HTTP_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "22:10:00",
+									"noTruncation": true
+								},
+								"sink": {
+									"type": "AzureDataExplorerSink",
+									"ingestionMappingName": ""
+								},
+								"enableStaging": false,
+								"parallelCopies": 10,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureDataExplorerTable1",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_HTTP_UP"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "blackbird2",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_HTTP_UP"
+									}
+								}
+							]
 						},
-						"queryTimeout": "22:10:00",
-						"noTruncation": true
-					},
-					"sink": {
-						"type": "AzureDataExplorerSink",
-						"ingestionMappingName": ""
-					},
-					"enableStaging": false,
-					"parallelCopies": 10,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
+						{
+							"name": "BLACKBIRD_TO_BLACKBIRD2_session",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureDataExplorerSource",
+									"query": {
+										"value": "@concat('BLACKBIRD_SESSION_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "22:10:00",
+									"noTruncation": true
+								},
+								"sink": {
+									"type": "AzureDataExplorerSink",
+									"ingestionMappingName": ""
+								},
+								"enableStaging": false,
+								"parallelCopies": 10,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureDataExplorerTable1",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_SESSION_UP"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "blackbird2",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_SESSION_UP"
+									}
+								}
+							]
 						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "AzureDataExplorerTable1",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_HTTP_UP"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blackbird2",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_HTTP_UP"
-						}
-					}
-				]
-			},
-			{
-				"name": "BLACKBIRD_TO_BLACKBIRD2_session",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureDataExplorerSource",
-						"query": {
-							"value": "@concat('BLACKBIRD_SESSION_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
-							"type": "Expression"
-						},
-						"queryTimeout": "22:10:00",
-						"noTruncation": true
-					},
-					"sink": {
-						"type": "AzureDataExplorerSink",
-						"ingestionMappingName": ""
-					},
-					"enableStaging": false,
-					"parallelCopies": 10,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "AzureDataExplorerTable1",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_SESSION_UP"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blackbird2",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BLACKBIRD_SESSION_UP"
-						}
-					}
-				]
+					]
+				}
 			}
 		],
 		"parameters": {
