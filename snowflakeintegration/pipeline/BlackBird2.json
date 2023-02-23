@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureDataExplorerSource",
-						"query": "BLACKBIRD_FLOW_UP",
+						"query": {
+							"value": "@concat('BLACKBIRD_FLOW_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "22:10:00",
 						"noTruncation": true
 					},
@@ -70,7 +73,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureDataExplorerSource",
-						"query": "BLACKBIRD_BEARER_UP",
+						"query": {
+							"value": "@concat('BLACKBIRD_BEARER_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "22:10:00",
 						"noTruncation": true
 					},
@@ -123,7 +129,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureDataExplorerSource",
-						"query": "BLACKBIRD_HTTP_UP",
+						"query": {
+							"value": "@concat('BLACKBIRD_HTTP_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "22:10:00",
 						"noTruncation": true
 					},
@@ -176,7 +185,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureDataExplorerSource",
-						"query": "BLACKBIRD_SESSION_UP",
+						"query": {
+							"value": "@concat('BLACKBIRD_SESSION_UP | where datetime_part(\"hour\",EVENTTIME) between (',pipeline().parameters.start,' .. ',pipeline().parameters.end,')'\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "22:10:00",
 						"noTruncation": true
 					},
@@ -215,6 +227,14 @@
 				]
 			}
 		],
+		"parameters": {
+			"start": {
+				"type": "string"
+			},
+			"end": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
