@@ -1,5 +1,5 @@
 {
-	"name": "AzureDataExplorerTable2",
+	"name": "blackbird2",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Blackbird2",
