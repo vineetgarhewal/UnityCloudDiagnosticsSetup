@@ -1,5 +1,5 @@
 {
-	"name": "Stream - EDR_FLOW_UP_OLD",
+	"name": "BlackBird2",
 	"properties": {
 		"activities": [
 			{
@@ -2383,7 +2383,10 @@
 				"outputs": [
 					{
 						"referenceName": "AzureDataExplorerTable1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_HTTP_UP"
+						}
 					}
 				]
 			}
