@@ -98,14 +98,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "AzureDataExplorerTable1",
-									"type": "DatasetReference",
-									"parameters": {
-										"TableName": {
-											"value": "@item().dest_table",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "blackbird2",
+									"type": "DatasetReference"
 								}
 							]
 						}
