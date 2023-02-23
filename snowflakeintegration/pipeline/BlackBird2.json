@@ -59,6 +59,180 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "BLACKBIRD_TO_BLACKBIRD2_copy1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": "BLACKBIRD_FLOW_UP",
+						"queryTimeout": "00:10:00"
+					},
+					"sink": {
+						"type": "AzureDataExplorerSink",
+						"ingestionMappingName": ""
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "mobilecoresteam"
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureDataExplorerTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_FLOW_UP"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blackbird2",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_FLOW_UP"
+						}
+					}
+				]
+			},
+			{
+				"name": "BLACKBIRD_TO_BLACKBIRD2_copy2",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": "BLACKBIRD_FLOW_UP",
+						"queryTimeout": "00:10:00"
+					},
+					"sink": {
+						"type": "AzureDataExplorerSink",
+						"ingestionMappingName": ""
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "mobilecoresteam"
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureDataExplorerTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_FLOW_UP"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blackbird2",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_FLOW_UP"
+						}
+					}
+				]
+			},
+			{
+				"name": "BLACKBIRD_TO_BLACKBIRD2_session",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": "BLACKBIRD_SESSION_UP",
+						"queryTimeout": "00:10:00"
+					},
+					"sink": {
+						"type": "AzureDataExplorerSink",
+						"ingestionMappingName": ""
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "mobilecoresteam"
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureDataExplorerTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_SESSION_UP"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blackbird2",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_SESSION_UP"
+						}
+					}
+				]
 			}
 		],
 		"annotations": []
