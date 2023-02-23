@@ -99,7 +99,10 @@
 							"outputs": [
 								{
 									"referenceName": "blackbird2",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "BLACKBIRD_SESSION_UP"
+									}
 								}
 							]
 						}
