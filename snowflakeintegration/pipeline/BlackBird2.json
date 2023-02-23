@@ -119,7 +119,7 @@
 				]
 			},
 			{
-				"name": "BLACKBIRD_TO_BLACKBIRD2_copy2",
+				"name": "BLACKBIRD_TO_BLACKBIRD2_http",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -133,7 +133,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureDataExplorerSource",
-						"query": "BLACKBIRD_FLOW_UP",
+						"query": "BLACKBIRD_HTTP_UP",
 						"queryTimeout": "00:10:00"
 					},
 					"sink": {
@@ -162,7 +162,7 @@
 						"referenceName": "AzureDataExplorerTable1",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "BLACKBIRD_FLOW_UP"
+							"TableName": "BLACKBIRD_HTTP_UP"
 						}
 					}
 				],
@@ -171,7 +171,7 @@
 						"referenceName": "blackbird2",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "BLACKBIRD_FLOW_UP"
+							"TableName": "BLACKBIRD_HTTP_UP"
 						}
 					}
 				]
