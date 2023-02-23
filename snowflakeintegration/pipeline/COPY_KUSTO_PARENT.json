@@ -58,7 +58,17 @@
 									"referenceName": "BlackBird2",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"start": {
+										"value": "@item().x",
+										"type": "Expression"
+									},
+									"end": {
+										"value": "@item().y",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
