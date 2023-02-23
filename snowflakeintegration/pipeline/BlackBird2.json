@@ -53,7 +53,10 @@
 				"outputs": [
 					{
 						"referenceName": "blackbird2",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_FLOW_UP"
+						}
 					}
 				]
 			}
