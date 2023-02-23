@@ -1,0 +1,12 @@
+{
+	"name": "AzureDataExplorerTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blackbird2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": []
+	}
+}
