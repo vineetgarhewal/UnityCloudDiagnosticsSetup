@@ -52,7 +52,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureDataExplorerTable2",
+						"referenceName": "blackbird2",
 						"type": "DatasetReference"
 					}
 				]
