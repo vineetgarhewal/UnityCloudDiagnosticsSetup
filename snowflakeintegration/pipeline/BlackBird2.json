@@ -32,6 +32,7 @@
 						},
 						"path": "mobilecoresteam"
 					},
+					"parallelCopies": 10,
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
@@ -208,6 +209,7 @@
 						},
 						"path": "mobilecoresteam"
 					},
+					"parallelCopies": 10,
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
