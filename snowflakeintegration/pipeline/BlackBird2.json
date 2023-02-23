@@ -18,7 +18,8 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": "BLACKBIRD_FLOW_UP",
-						"queryTimeout": "00:10:00"
+						"queryTimeout": "22:10:00",
+						"noTruncation": true
 					},
 					"sink": {
 						"type": "AzureDataExplorerSink",
