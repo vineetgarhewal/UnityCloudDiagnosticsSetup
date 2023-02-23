@@ -7,9 +7,6 @@
 		},
 		"annotations": [],
 		"type": "AzureDataExplorerTable",
-		"schema": [],
-		"typeProperties": {
-			"table": "BLACKBIRD_FLOW_UP"
-		}
+		"schema": []
 	}
 }
