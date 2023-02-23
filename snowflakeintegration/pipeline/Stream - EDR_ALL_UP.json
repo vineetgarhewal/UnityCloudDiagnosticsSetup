@@ -118,11 +118,11 @@
 			},
 			"src_tablename": {
 				"type": "string",
-				"defaultValue": "BEARER_UP"
+				"defaultValue": "SESSION_UP"
 			},
 			"dest_tablename": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_BEARER_UP"
+				"defaultValue": "BLACKBIRD_SESSION_UP"
 			},
 			"userplane": {
 				"type": "string",
@@ -134,7 +134,7 @@
 			},
 			"query": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND GWNODEID = 'GRD2D_SNT3D_PGWC'"
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP like 'grd2d%' AND GWNODEID = 'GRD2D_SNT3D_PGWC'"
 			}
 		},
 		"variables": {
