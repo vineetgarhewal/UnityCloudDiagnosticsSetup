@@ -89,7 +89,7 @@
 				}
 			},
 			{
-				"name": "CaptureSnowflakeAuditDataInKusto",
+				"name": "CaptureSnowflakeAuditInKusto",
 				"type": "AzureDataExplorerCommand",
 				"dependsOn": [],
 				"policy": {
@@ -102,10 +102,6 @@
 				"userProperties": [],
 				"typeProperties": {
 					"commandTimeout": "00:20:00"
-				},
-				"linkedServiceName": {
-					"referenceName": "Blackbird2",
-					"type": "LinkedServiceReference"
 				}
 			}
 		],
