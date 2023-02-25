@@ -138,7 +138,8 @@
 				"defaultValue": "BLACKBIRD_FLOW_UP"
 			},
 			"SnowFlakeQuery": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP = \\'@up\\'"
 			}
 		},
 		"variables": {
