@@ -96,6 +96,10 @@
 			"enddate": {
 				"type": "string",
 				"defaultValue": "2023-02-13 00:00:00.0000000"
+			},
+			"destinationTable": {
+				"type": "string",
+				"defaultValue": "BLACKBIRD_FLOW_UP"
 			}
 		},
 		"variables": {

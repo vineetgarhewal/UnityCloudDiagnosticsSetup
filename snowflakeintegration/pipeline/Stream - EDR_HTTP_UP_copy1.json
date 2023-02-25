@@ -2407,7 +2407,10 @@
 					},
 					"dataset": {
 						"referenceName": "AzureDataExplorerTable1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_HTTP_UP"
+						}
 					}
 				}
 			},
