@@ -47,7 +47,7 @@
 				"typeProperties": {
 					"variableName": "Test33",
 					"value": {
-						"value": "@replace(replace(replace(replace(join(activity('Get Count Of Records by Hour and Up from Snowflake').output.value,','),'}',''),'{\"START OF SLICE\":',''),'\"Number of records\":',''),'{\"UP:\"}','')",
+						"value": "@replace(replace(replace(replace(join(activity('Get Count Of Records by Hour and Up from Snowflake').output.value,','),'}',''),'{\"START OF SLICE\":',''),'\"Number of records\":',''),'\"UP:\"','')",
 						"type": "Expression"
 					}
 				}
