@@ -114,7 +114,13 @@
 				"outputs": [
 					{
 						"referenceName": "AzureDataExplorerTable2",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TblName": {
+								"value": "@activity('GetStageTableCmd').output.firstRow.stage_table",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
