@@ -1,6 +1,10 @@
 {
 	"name": "blackbird2",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blackbird2",
+			"type": "LinkedServiceReference"
+		},
 		"parameters": {
 			"TableName": {
 				"type": "string",
