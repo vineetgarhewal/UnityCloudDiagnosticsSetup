@@ -106,7 +106,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('SnowFlake_'pipeline().parameters.streamname,'_Audit | distinct UP')",
+							"value": "@concat('SnowFlake_',pipeline().parameters.streamname,'_Audit | distinct UP')",
 							"type": "Expression"
 						},
 						"queryTimeout": "00:10:00",
