@@ -1,0 +1,20 @@
+{
+	"name": "blackbird2",
+	"properties": {
+		"parameters": {
+			"TableName": {
+				"type": "string",
+				"defaultValue": "BLACKBIRD_HTTP_UP"
+			}
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	}
+}
