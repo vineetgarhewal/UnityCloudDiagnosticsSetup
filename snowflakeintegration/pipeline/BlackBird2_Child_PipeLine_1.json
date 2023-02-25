@@ -1,0 +1,111 @@
+{
+	"name": "BlackBird2_Child_PipeLine_1",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetQueries",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": {
+							"value": "@concat('querytranformer(\"',pipeline().parameters.startdate,'\",\"',pipeline().parameters.enddate,'\",\"',pipeline().parameters.streamname,'\",\"',pipeline().parameters.destinationTable,'\",\"',pipeline().parameters.up,'\",\"',pipeline().parameters.SnowFlakeQuery,'\")')",
+							"type": "Expression"
+						},
+						"queryTimeout": "00:10:00",
+						"noTruncation": false
+					},
+					"dataset": {
+						"referenceName": "AzureDataExplorerTable2",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Loop Through the results",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetQueries",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetQueries').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Call BlackBir2 Child Pipeline2",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitOnCompletion": true,
+								"parameters": {
+									"SnowFlakeQuery": {
+										"value": "@item().Cmd",
+										"type": "Expression"
+									},
+									"IterationId": {
+										"value": "@item().Id",
+										"type": "Expression"
+									},
+									"destinationTable": {
+										"value": "@item().dest_table",
+										"type": "Expression"
+									},
+									"up": {
+										"value": "@pipeline().parameters.up",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"startdate": {
+				"type": "string"
+			},
+			"enddate": {
+				"type": "string"
+			},
+			"streamname": {
+				"type": "string"
+			},
+			"destinationTable": {
+				"type": "string"
+			},
+			"up": {
+				"type": "string"
+			},
+			"SnowFlakeQuery": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"test": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
