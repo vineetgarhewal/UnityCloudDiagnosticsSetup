@@ -56,14 +56,7 @@
 						{
 							"name": "Call BlackBir2 Child Pipeline2",
 							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "Set variable1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
@@ -76,19 +69,6 @@
 									"IterationId": "@item().Id",
 									"destinationTable": "@item().dest_table",
 									"up": "@pipeline().parameters.up"
-								}
-							}
-						},
-						{
-							"name": "Set variable1",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "test",
-								"value": {
-									"value": "@item().Id",
-									"type": "Expression"
 								}
 							}
 						}
@@ -114,11 +94,6 @@
 			},
 			"SnowFlakeQuery": {
 				"type": "string"
-			}
-		},
-		"variables": {
-			"test": {
-				"type": "String"
 			}
 		},
 		"annotations": []
