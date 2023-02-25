@@ -65,10 +65,22 @@
 								},
 								"waitOnCompletion": true,
 								"parameters": {
-									"SnowFlakeQuery": "@item().Cmd",
-									"IterationId": "@item().Id",
-									"destinationTable": "@item().dest_table",
-									"up": "@pipeline().parameters.up"
+									"SnowFlakeQuery": {
+										"value": "@item().Cmd",
+										"type": "Expression"
+									},
+									"IterationId": {
+										"value": "@item().Id",
+										"type": "Expression"
+									},
+									"destinationTable": {
+										"value": "@item().dest_table",
+										"type": "Expression"
+									},
+									"up": {
+										"value": "@pipeline().parameters.up",
+										"type": "Expression"
+									}
 								}
 							}
 						}
