@@ -136,6 +136,9 @@
 			"destinationTable": {
 				"type": "string",
 				"defaultValue": "BLACKBIRD_FLOW_UP"
+			},
+			"SnowFlakeQuery": {
+				"type": "string"
 			}
 		},
 		"variables": {
