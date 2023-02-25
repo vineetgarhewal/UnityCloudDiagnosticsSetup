@@ -114,7 +114,10 @@
 					},
 					"dataset": {
 						"referenceName": "AzureDataExplorerTable2",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TblName": "BLSCKBIRD_FLOW_UP"
+						}
 					},
 					"firstRowOnly": false
 				}
