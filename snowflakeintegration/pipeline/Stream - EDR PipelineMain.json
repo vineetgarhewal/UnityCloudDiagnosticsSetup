@@ -33,7 +33,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "CaptureResulttoVariable",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -45,7 +45,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "Test33",
+					"variableName": "SnowflakeCountOutput",
 					"value": {
 						"value": "@replace(replace(replace(replace(join(activity('Get Count Of Records by Hour and Up from Snowflake').output.value,','),'}',''),'{\"START OF SLICE\":',''),'\"Number of records\":',''),'\"UP\":','')",
 						"type": "Expression"
@@ -57,7 +57,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "CaptureResulttoVariable",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -75,7 +75,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('let T = datatable(column2:string)[',variables('Test33'),']; T')",
+							"value": "@concat('let T = datatable(StartTime:datetime,UP:string,CountOfRecords:long)[',variables('SnowflakeCountOutput'),']; T')",
 							"type": "Expression"
 						},
 						"queryTimeout": "00:10:00",
@@ -107,7 +107,7 @@
 			}
 		},
 		"variables": {
-			"Test33": {
+			"SnowflakeCountOutput": {
 				"type": "String"
 			}
 		},
