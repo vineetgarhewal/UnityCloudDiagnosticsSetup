@@ -139,7 +139,7 @@
 					"batchCount": 10,
 					"activities": [
 						{
-							"name": "Lookup1",
+							"name": "GetTheQueries",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
@@ -149,7 +149,23 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureDataExplorerSource",
+									"query": {
+										"value": "@concat('querytranformer(\"',pipeline().parameters.startdate,'\",\"',pipeline().parameters.enddate,'\",\"',pipeline().parameters.streamname,'\",\"',pipeline().parameters.destinationTable,'\",\"',item().UP,'\",\"',pipeline().parameters.SnowFlakeQuery,'\")')",
+										"type": "Expression"
+									},
+									"queryTimeout": "00:10:00",
+									"noTruncation": false
+								},
+								"dataset": {
+									"referenceName": "AzureDataExplorerTable2",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
+							}
 						}
 					]
 				}
