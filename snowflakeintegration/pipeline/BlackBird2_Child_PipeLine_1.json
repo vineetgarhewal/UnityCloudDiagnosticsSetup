@@ -48,6 +48,7 @@
 						"value": "@activity('GetQueries').output.value",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "Call BlackBir2 Child Pipeline2",
@@ -59,7 +60,17 @@
 									"referenceName": "BlackBird2_Child_PipeLine_2",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"SnowFlakeQuery": {
+										"value": "@item().Cmd",
+										"type": "Expression"
+									},
+									"IterationId": {
+										"value": "@item().Id",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
