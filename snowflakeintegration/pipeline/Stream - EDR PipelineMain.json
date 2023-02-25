@@ -82,6 +82,42 @@
 					"referenceName": "Blackbird2",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "GetDistinctUpForStream",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "CaptureSnowflakeAuditInKusto",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": {
+							"value": "@concat('SnowFlake_'pipeline().parameters.streamname,'_Audit | distinct UP')",
+							"type": "Expression"
+						},
+						"queryTimeout": "00:10:00",
+						"noTruncation": false
+					},
+					"dataset": {
+						"referenceName": "AzureDataExplorerTable2",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
 			}
 		],
 		"parameters": {
