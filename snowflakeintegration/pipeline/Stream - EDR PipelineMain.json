@@ -94,13 +94,16 @@
 		],
 		"parameters": {
 			"streamname": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "FLOW_UP"
 			},
 			"startdate": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "2023-02-12 00:00:00.0000000"
 			},
 			"enddate": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "2023-02-13 00:00:00.0000000"
 			},
 			"Test33": {
 				"type": "string"
