@@ -136,6 +136,7 @@
 						"value": "@activity('GetDistinctUpForStream').output.value",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"batchCount": 10,
 					"activities": [
 						{
