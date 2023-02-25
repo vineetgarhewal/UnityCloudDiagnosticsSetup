@@ -26,7 +26,10 @@
 					},
 					"dataset": {
 						"referenceName": "AzureDataExplorerTable2",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TblName": "BLSCKBIRD_FLOW_UP"
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -53,7 +56,14 @@
 						{
 							"name": "Call BlackBir2 Child Pipeline2",
 							"type": "ExecutePipeline",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
@@ -61,6 +71,19 @@
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true
+							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "test",
+								"value": {
+									"value": "@item().Id",
+									"type": "Expression"
+								}
 							}
 						}
 					]
