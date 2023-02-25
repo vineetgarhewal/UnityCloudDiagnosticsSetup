@@ -136,7 +136,22 @@
 						"value": "@activity('GetDistinctUpForStream').output.pipelineReturnValue",
 						"type": "Expression"
 					},
-					"batchCount": 10
+					"batchCount": 10,
+					"activities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "test",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
+						}
+					]
 				}
 			}
 		],
@@ -164,6 +179,9 @@
 		},
 		"variables": {
 			"SnowflakeCountOutput": {
+				"type": "String"
+			},
+			"test": {
 				"type": "String"
 			}
 		},
