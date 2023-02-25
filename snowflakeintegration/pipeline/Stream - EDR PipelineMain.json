@@ -146,7 +146,7 @@
 							"typeProperties": {
 								"variableName": "test",
 								"value": {
-									"value": "@item()",
+									"value": "@item().UP",
 									"type": "Expression"
 								}
 							}
