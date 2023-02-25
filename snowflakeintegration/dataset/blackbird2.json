@@ -1,0 +1,24 @@
+{
+	"name": "blackbird2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blackbird2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TableName": {
+				"type": "string",
+				"defaultValue": "BLACKBIRD_HTTP_UP"
+			}
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	}
+}

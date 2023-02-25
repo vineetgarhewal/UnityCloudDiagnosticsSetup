@@ -1,0 +1,220 @@
+{
+	"name": "Stream - EDR PipelineMain",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Count Of Records by Hour and Up from Snowflake",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SnowflakeSource",
+						"query": {
+							"value": "@concat('Select\n       time_slice(to_timestamp(EVENTTIME), 1, ''HOUR'', ''START'') as \"START OF SLICE\",\n       UP,\n       count(*) as \"Number of records\"\nFrom \"BLACKBIRD_EDR\".\"EDR\".\"',pipeline().parameters.streamname,'\" \nWHERE  EVENTTIME >= ''',pipeline().parameters.startdate,''' AND EVENTTIME < ''',pipeline().parameters.enddate,'''\n  group by \"START OF SLICE\", UP\n  order by to_timestamp(\"START OF SLICE\") asc')",
+							"type": "Expression"
+						},
+						"exportSettings": {
+							"type": "SnowflakeExportCopyCommand"
+						}
+					},
+					"dataset": {
+						"referenceName": "FLOW_UP",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "CaptureResulttoVariable",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Count Of Records by Hour and Up from Snowflake",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "SnowflakeCountOutput",
+					"value": {
+						"value": "@replace(replace(replace(replace(join(activity('Get Count Of Records by Hour and Up from Snowflake').output.value,','),'}',''),'{\"START OF SLICE\":',''),'\"Number of records\":',''),'\"UP\":','')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "CaptureSnowflakeAuditInKusto",
+				"type": "AzureDataExplorerCommand",
+				"dependsOn": [
+					{
+						"activity": "CaptureResulttoVariable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"command": {
+						"value": "@concat('.set-or-replace SnowFlake_',pipeline().parameters.streamname,'_Audit with (folder =\"Audit\") <|\n    let T = datatable(StartTime:datetime,UP:string,CountOfRecords:long)[',variables('SnowflakeCountOutput'),']; \n    T')",
+						"type": "Expression"
+					},
+					"commandTimeout": "00:20:00"
+				},
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "GetDistinctUpForStream",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "CaptureSnowflakeAuditInKusto",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": {
+							"value": "@concat('SnowFlake_',pipeline().parameters.streamname,'_Audit | distinct UP')",
+							"type": "Expression"
+						},
+						"queryTimeout": "00:10:00",
+						"noTruncation": false
+					},
+					"dataset": {
+						"referenceName": "AzureDataExplorerTable2",
+						"type": "DatasetReference",
+						"parameters": {
+							"TblName": "BLSCKBIRD_FLOW_UP"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "LoopThroughResult",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetDistinctUpForStream",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetDistinctUpForStream').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"batchCount": 10,
+					"activities": [
+						{
+							"name": "Call BlackBird2 Child Pipeline1",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "BlackBird2_Child_PipeLine_1",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"startdate": {
+										"value": "@pipeline().parameters.startdate",
+										"type": "Expression"
+									},
+									"enddate": {
+										"value": "@pipeline().parameters.enddate",
+										"type": "Expression"
+									},
+									"streamname": {
+										"value": "@pipeline().parameters.streamname",
+										"type": "Expression"
+									},
+									"destinationTable": {
+										"value": "@pipeline().parameters.destinationTable",
+										"type": "Expression"
+									},
+									"up": {
+										"value": "@item().UP",
+										"type": "Expression"
+									},
+									"SnowFlakeQuery": {
+										"value": "@pipeline().parameters.SnowFlakeQuery",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"streamname": {
+				"type": "string",
+				"defaultValue": "FLOW_UP"
+			},
+			"startdate": {
+				"type": "string",
+				"defaultValue": "2023-02-12 00:00:00.0000000"
+			},
+			"enddate": {
+				"type": "string",
+				"defaultValue": "2023-02-12 01:00:00.0000000"
+			},
+			"destinationTable": {
+				"type": "string",
+				"defaultValue": "BLACKBIRD_FLOW_UP"
+			},
+			"SnowFlakeQuery": {
+				"type": "string",
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP = \\'@up\\'"
+			}
+		},
+		"variables": {
+			"SnowflakeCountOutput": {
+				"type": "String"
+			},
+			"test": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"name": "FLOW_UP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BLACKBIRD_EDR",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "EDR",
+			"table": "SESSION_UP"
+		}
+	}
+}
