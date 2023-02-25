@@ -77,6 +77,10 @@
 						"type": "Expression"
 					},
 					"commandTimeout": "00:20:00"
+				},
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
 				}
 			},
 			{
