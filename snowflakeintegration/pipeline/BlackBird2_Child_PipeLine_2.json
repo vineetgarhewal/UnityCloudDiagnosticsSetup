@@ -105,6 +105,12 @@
 						"path": "mobilecoresteam"
 					}
 				},
+				"inputs": [
+					{
+						"referenceName": "FLOW_UP",
+						"type": "DatasetReference"
+					}
+				],
 				"outputs": [
 					{
 						"referenceName": "AzureDataExplorerTable2",
