@@ -1,6 +1,10 @@
 {
 	"name": "AzureDataExplorerTable1",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blackbird2",
+			"type": "LinkedServiceReference"
+		},
 		"parameters": {
 			"TableName": {
 				"type": "string",
