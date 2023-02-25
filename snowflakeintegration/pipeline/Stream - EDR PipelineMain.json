@@ -139,17 +139,17 @@
 					"batchCount": 10,
 					"activities": [
 						{
-							"name": "Set variable1",
-							"type": "SetVariable",
+							"name": "Lookup1",
+							"type": "Lookup",
 							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "test",
-								"value": {
-									"value": "@item().UP",
-									"type": "Expression"
-								}
-							}
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
 						}
 					]
 				}
