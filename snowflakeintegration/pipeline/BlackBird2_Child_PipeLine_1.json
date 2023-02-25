@@ -56,25 +56,11 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"waitOnCompletion": true,
-								"parameters": {
-									"SnowFlakeQuery": {
-										"value": "@item().Cmd",
-										"type": "Expression"
-									},
-									"IterationId": {
-										"value": "@item().Id",
-										"type": "Expression"
-									},
-									"destinationTable": {
-										"value": "@item().dest_table",
-										"type": "Expression"
-									},
-									"up": {
-										"value": "@pipeline().parameters.up",
-										"type": "Expression"
-									}
-								}
+								"pipeline": {
+									"referenceName": "BlackBird2_Child_PipeLine_2",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
 							}
 						}
 					]
