@@ -118,6 +118,26 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "LoopThroughResult",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetDistinctUpForStream",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetDistinctUpForStream').output.pipelineReturnValue",
+						"type": "Expression"
+					},
+					"batchCount": 10
+				}
 			}
 		],
 		"parameters": {
