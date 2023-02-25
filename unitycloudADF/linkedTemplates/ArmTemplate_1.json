@@ -117,7 +117,9 @@
 							"dataset": {
 								"referenceName": "AzureDataExplorerTable2",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"TblName": "BLSCKBIRD_FLOW_UP"
+								}
 							},
 							"firstRowOnly": true
 						}
@@ -194,7 +196,8 @@
 									"type": "LinkedServiceReference"
 								},
 								"path": "mobilecoresteam"
-							}
+							},
+							"dataIntegrationUnits": 32
 						},
 						"inputs": [
 							{
@@ -233,6 +236,11 @@
 					},
 					"up": {
 						"type": "string"
+					}
+				},
+				"variables": {
+					"test": {
+						"type": "String"
 					}
 				},
 				"annotations": []
@@ -728,7 +736,9 @@
 							"dataset": {
 								"referenceName": "AzureDataExplorerTable2",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"TblName": "BLSCKBIRD_FLOW_UP"
+								}
 							},
 							"firstRowOnly": false
 						}
@@ -763,7 +773,24 @@
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
-										"parameters": {}
+										"parameters": {
+											"SnowFlakeQuery": {
+												"value": "@item().Cmd",
+												"type": "Expression"
+											},
+											"IterationId": {
+												"value": "@item().Id",
+												"type": "Expression"
+											},
+											"destinationTable": {
+												"value": "@item().dest_table",
+												"type": "Expression"
+											},
+											"up": {
+												"value": "@pipeline().parameters.up",
+												"type": "Expression"
+											}
+										}
 									}
 								}
 							]
@@ -792,11 +819,6 @@
 					},
 					"SnowFlakeQuery": {
 						"type": "string"
-					}
-				},
-				"variables": {
-					"test": {
-						"type": "String"
 					}
 				},
 				"annotations": []
