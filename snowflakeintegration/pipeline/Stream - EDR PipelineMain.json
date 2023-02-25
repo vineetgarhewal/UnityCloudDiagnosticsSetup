@@ -75,7 +75,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('.set-or-append SnowFlake_',pipeline().parameters.streamname,'_Audit with (folder =\"Audit\") <|\n    let T = datatable(StartTime:datetime,UP:string,CountOfRecords:long)[',variables('SnowflakeCountOutput'),']; \n    T')",
+							"value": "@concat('let T = datatable(StartTime:datetime,UP:string,CountOfRecords:long)[',variables('SnowflakeCountOutput'),']; \n    T')",
 							"type": "Expression"
 						},
 						"queryTimeout": "00:10:00",
