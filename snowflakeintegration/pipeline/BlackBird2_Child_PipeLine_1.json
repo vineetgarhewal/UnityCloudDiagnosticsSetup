@@ -28,11 +28,11 @@
 						"referenceName": "AzureDataExplorerTable2",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": true
+					"firstRowOnly": false
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "Loop Through the results",
 				"type": "ForEach",
 				"dependsOn": [
 					{
