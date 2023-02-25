@@ -1,0 +1,79 @@
+{
+	"name": "BlackBird2_Child_PipeLine",
+	"properties": {
+		"activities": [
+			{
+				"name": "BLACKBIRD_TO_BLACKBIRD2",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": "BLACKBIRD_FLOW_UP",
+						"queryTimeout": "00:10:00"
+					},
+					"sink": {
+						"type": "AzureDataExplorerSink",
+						"ingestionMappingName": ""
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "mobilecoresteam"
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureDataExplorerTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_FLOW_UP"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureDataExplorerTable2",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"SnowFlakeQuery": {
+				"type": "string"
+			},
+			"IterationId": {
+				"type": "int"
+			},
+			"destinationTable": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"test": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
