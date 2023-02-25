@@ -47,7 +47,7 @@
 				"typeProperties": {
 					"variableName": "Test33",
 					"value": {
-						"value": "@replace(replace(replace(replace(join(activity('Lookup1').output.value,','),'}',''),'{\"TIME_SLICE(TO_TIMESTAMP_NTZ(EVENTTIME),1,''HOUR'')\":',''),'\"COUNT(*)\":',''),'{\"UP:\"}','')",
+						"value": "@replace(replace(replace(replace(join(activity('Get Count Of Records by Hour and Up from Snowflake').output.value,','),'}',''),'{\"TIME_SLICE(TO_TIMESTAMP_NTZ(EVENTTIME),1,''HOUR'')\":',''),'\"COUNT(*)\":',''),'{\"UP:\"}','')",
 						"type": "Expression"
 					}
 				}
