@@ -53,8 +53,8 @@
 				}
 			},
 			{
-				"name": "Populate SnowFlake AuditTable",
-				"type": "Lookup",
+				"name": "CaptureSnowflakeAuditInKusto",
+				"type": "AzureDataExplorerCommand",
 				"dependsOn": [
 					{
 						"activity": "CaptureResulttoVariable",
@@ -72,36 +72,15 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "AzureDataExplorerSource",
-						"query": {
-							"value": "@concat('let T = datatable(StartTime:datetime,UP:string,CountOfRecords:long)[',variables('SnowflakeCountOutput'),']; \n    T')",
-							"type": "Expression"
-						},
-						"queryTimeout": "00:10:00",
-						"noTruncation": false
+					"command": {
+						"value": "@concat('.set-or-append SnowFlake_',pipeline().parameters.streamname,'_Audit with (folder =\"Audit\") <|\n    let T = datatable(StartTime:datetime,UP:string,CountOfRecords:long)[',variables('SnowflakeCountOutput'),']; \n    T')",
+						"type": "Expression"
 					},
-					"dataset": {
-						"referenceName": "AzureDataExplorerTable2",
-						"type": "DatasetReference"
-					},
-					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "CaptureSnowflakeAuditInKusto",
-				"type": "AzureDataExplorerCommand",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
 					"commandTimeout": "00:20:00"
+				},
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
