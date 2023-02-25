@@ -70,7 +70,13 @@
 									"referenceName": "BlackBird2_Child_PipeLine_2",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"SnowFlakeQuery": "@item().Cmd",
+									"IterationId": "@item().Id",
+									"destinationTable": "@item().dest_table",
+									"up": "@pipeline().parameters.up"
+								}
 							}
 						},
 						{
