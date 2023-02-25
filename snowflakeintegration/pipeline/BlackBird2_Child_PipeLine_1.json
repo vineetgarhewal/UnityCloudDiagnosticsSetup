@@ -26,7 +26,10 @@
 					},
 					"dataset": {
 						"referenceName": "AzureDataExplorerTable2",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TblName": "BLSCKBIRD_FLOW_UP"
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -60,7 +63,13 @@
 									"referenceName": "BlackBird2_Child_PipeLine_2",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"SnowFlakeQuery": "@item().Cmd",
+									"IterationId": "@item().Id",
+									"destinationTable": "@item().dest_table",
+									"up": "@pipeline().parameters.up"
+								}
 							}
 						}
 					]
@@ -85,11 +94,6 @@
 			},
 			"SnowFlakeQuery": {
 				"type": "string"
-			}
-		},
-		"variables": {
-			"test": {
-				"type": "String"
 			}
 		},
 		"annotations": []

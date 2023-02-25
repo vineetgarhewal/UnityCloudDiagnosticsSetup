@@ -26,7 +26,10 @@
 					},
 					"dataset": {
 						"referenceName": "AzureDataExplorerTable2",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TblName": "BLSCKBIRD_FLOW_UP"
+						}
 					},
 					"firstRowOnly": true
 				}
@@ -103,7 +106,8 @@
 							"type": "LinkedServiceReference"
 						},
 						"path": "mobilecoresteam"
-					}
+					},
+					"dataIntegrationUnits": 32
 				},
 				"inputs": [
 					{
@@ -137,6 +141,11 @@
 			},
 			"up": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"test": {
+				"type": "String"
 			}
 		},
 		"annotations": []
