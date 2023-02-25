@@ -1,0 +1,20 @@
+{
+	"name": "AzureDataExplorerTable2",
+	"properties": {
+		"parameters": {
+			"TblName": {
+				"type": "string",
+				"defaultValue": "BLSCKBIRD_FLOW_UP"
+			}
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().TblName",
+				"type": "Expression"
+			}
+		}
+	}
+}
