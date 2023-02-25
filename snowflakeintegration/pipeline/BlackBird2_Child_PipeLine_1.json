@@ -69,6 +69,10 @@
 									"IterationId": {
 										"value": "@item().Id",
 										"type": "Expression"
+									},
+									"destinationTable": {
+										"value": "@item().dest_table",
+										"type": "Expression"
 									}
 								}
 							}
