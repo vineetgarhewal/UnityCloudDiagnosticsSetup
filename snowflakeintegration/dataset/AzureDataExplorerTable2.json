@@ -15,7 +15,10 @@
 		"type": "AzureDataExplorerTable",
 		"schema": [],
 		"typeProperties": {
-			"table": "BLACKBIRD_FLOW_UP"
+			"table": {
+				"value": "@dataset().TblName",
+				"type": "Expression"
+			}
 		}
 	}
 }
