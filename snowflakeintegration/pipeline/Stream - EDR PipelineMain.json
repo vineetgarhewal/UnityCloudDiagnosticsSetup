@@ -139,32 +139,42 @@
 					"batchCount": 10,
 					"activities": [
 						{
-							"name": "GetTheQueries",
-							"type": "Lookup",
+							"name": "Call BlackBird2 Child Pipeline1",
+							"type": "ExecutePipeline",
 							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "AzureDataExplorerSource",
-									"query": {
-										"value": "@concat('querytranformer(\"',pipeline().parameters.startdate,'\",\"',pipeline().parameters.enddate,'\",\"',pipeline().parameters.streamname,'\",\"',pipeline().parameters.destinationTable,'\",\"',item().UP,'\",\"',pipeline().parameters.SnowFlakeQuery,'\")')",
+								"pipeline": {
+									"referenceName": "BlackBird2_Child_PipeLine_1",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"startdate": {
+										"value": "@pipeline().parameters.startdate",
 										"type": "Expression"
 									},
-									"queryTimeout": "00:10:00",
-									"noTruncation": false
-								},
-								"dataset": {
-									"referenceName": "AzureDataExplorerTable2",
-									"type": "DatasetReference"
-								},
-								"firstRowOnly": false
+									"enddate": {
+										"value": "@pipeline().parameters.enddate",
+										"type": "Expression"
+									},
+									"streamname": {
+										"value": "@pipeline().parameters.streamname",
+										"type": "Expression"
+									},
+									"destinationTable": {
+										"value": "@pipeline().parameters.destinationTable",
+										"type": "Expression"
+									},
+									"up": {
+										"value": "@item().UP",
+										"type": "Expression"
+									},
+									"SnowFlakeQuery": {
+										"value": "@pipeline().parameters.SnowFlakeQuery",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
