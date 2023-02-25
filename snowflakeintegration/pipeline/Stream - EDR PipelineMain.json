@@ -1,9 +1,9 @@
 {
-	"name": "Stream - EDR_ALL_UP_copy1",
+	"name": "Stream - EDR PipelineMain",
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Get Count Of Records by Hour and Up from Snowflake",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SnowflakeSource",
 						"query": {
-							"value": "@replace(replace(pipeline().parameters.query,'*','count(*)'),'!','\"')",
+							"value": "@concat('Select\n       time_slice(to_timestamp(EVENTTIME), 1, ''HOUR'', ''START'') as \"START OF SLICE\",\n       UP,\n       count(*) as \"Number of records\"\nFrom \"BLACKBIRD_EDR\".\"EDR\".\"',pipeline().parameters.streamname,'\" \nWHERE  EVENTTIME >= ''',pipeline().parameters.startdate,''' AND EVENTTIME < ''',pipeline().parameters.enddate,'''\n  group by \"START OF SLICE\", UP\n  order by to_timestamp(\"START OF SLICE\") asc')",
 							"type": "Expression"
 						},
 						"exportSettings": {
@@ -31,10 +31,78 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Count Of Records by Hour and Up from Snowflake",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Test33",
+					"value": {
+						"value": "@replace(replace(replace(replace(join(activity('Lookup1').output.value,','),'}',''),'{\"TIME_SLICE(TO_TIMESTAMP_NTZ(EVENTTIME),1,''HOUR'')\":',''),'\"COUNT(*)\":',''),'{\"UP:\"}','')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Lookup2",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureDataExplorerSource",
+						"query": {
+							"value": "@concat('let T = datatable(column2:string)[',variables('Test33'),']; T')",
+							"type": "Expression"
+						},
+						"queryTimeout": "00:10:00",
+						"noTruncation": false
+					},
+					"dataset": {
+						"referenceName": "AzureDataExplorerTable1",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BLACKBIRD_HTTP_UP"
+						}
+					},
+					"firstRowOnly": false
+				}
 			}
 		],
 		"parameters": {
-			"query": {
+			"streamname": {
+				"type": "string"
+			},
+			"startdate": {
+				"type": "string"
+			},
+			"enddate": {
+				"type": "string"
+			},
+			"Test33": {
 				"type": "string"
 			}
 		},
