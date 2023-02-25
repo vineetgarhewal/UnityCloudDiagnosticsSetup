@@ -53,7 +53,7 @@
 				}
 			},
 			{
-				"name": "Lookup2",
+				"name": "Populate SnowFlake AuditTable",
 				"type": "Lookup",
 				"dependsOn": [
 					{
