@@ -133,7 +133,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('GetDistinctUpForStream').output.pipelineReturnValue",
+						"value": "@activity('GetDistinctUpForStream').output",
 						"type": "Expression"
 					},
 					"batchCount": 10,
