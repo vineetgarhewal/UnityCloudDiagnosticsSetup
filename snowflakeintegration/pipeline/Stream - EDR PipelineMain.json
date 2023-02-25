@@ -25,6 +25,10 @@
 							"type": "SnowflakeExportCopyCommand"
 						}
 					},
+					"dataset": {
+						"referenceName": "FLOW_UP",
+						"type": "DatasetReference"
+					},
 					"firstRowOnly": false
 				}
 			},
