@@ -210,9 +210,6 @@
 		"variables": {
 			"SnowflakeCountOutput": {
 				"type": "String"
-			},
-			"test": {
-				"type": "String"
 			}
 		},
 		"annotations": []
