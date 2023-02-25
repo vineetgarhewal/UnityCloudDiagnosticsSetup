@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "unitycloudADF"
 		},
+		"BLACKBIRD_EDR_connectionString": {
+			"value": ""
+		},
 		"ao5gccustdataingest adls_accountKey": {
 			"value": ""
 		},
@@ -25,6 +28,12 @@
 		},
 		"AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl": {
 			"value": "https://unitycloudkeyvault.vault.azure.net/"
+		},
+		"Blackbird2_properties_typeProperties_endpoint": {
+			"value": "https://blackbird2.eastus.kusto.windows.net"
+		},
+		"Blackbird2_properties_typeProperties_database": {
+			"value": "blackbird2"
 		},
 		"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
 			"value": "SnowflakeMobilityCoreSysAdminConnectionString"

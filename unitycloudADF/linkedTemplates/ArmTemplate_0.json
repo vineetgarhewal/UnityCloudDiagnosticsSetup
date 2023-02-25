@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "unitycloudADF"
 		},
+		"BLACKBIRD_EDR_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'BLACKBIRD_EDR'"
+		},
 		"ao5gccustdataingest adls_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ao5gccustdataingest adls'"
@@ -31,6 +35,14 @@
 			"type": "string",
 			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
 		},
+		"Blackbird2_properties_typeProperties_endpoint": {
+			"type": "string",
+			"defaultValue": "https://blackbird2.eastus.kusto.windows.net"
+		},
+		"Blackbird2_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "blackbird2"
+		},
 		"ao5gccustdataingest adls_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://ao5gccustdataingest.dfs.core.windows.net/"
@@ -38,18 +50,6 @@
 		"AzureBlobStorage_stunitycloud_SAS_properties_typeProperties_sasUri_secretName": {
 			"type": "string",
 			"defaultValue": "BlobstunitycloudSas"
-		},
-		"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "SnowflakeMobilityCoreSysAdminConnectionString"
-		},
-		"Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "SnowflakeMobilityCoreLocalSysAdminConnectionString"
-		},
-		"linkedService1_properties_typeProperties_sasUri_secretName": {
-			"type": "string",
-			"defaultValue": "StagingBlobSas"
 		}
 	},
 	"variables": {
@@ -111,6 +111,34 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/BLACKBIRD_EDR')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Snowflake",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"connectionString": "[parameters('BLACKBIRD_EDR_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Blackbird2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDataExplorer",
+				"typeProperties": {
+					"endpoint": "[parameters('Blackbird2_properties_typeProperties_endpoint')]",
+					"database": "[parameters('Blackbird2_properties_typeProperties_database')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ao5gccustdataingest adls')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -126,6 +154,85 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataExplorerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TableName": {
+						"type": "string",
+						"defaultValue": "BLACKBIRD_HTTP_UP"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [],
+				"typeProperties": {
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blackbird2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataExplorerTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TblName": {
+						"type": "string",
+						"defaultValue": "BLSCKBIRD_FLOW_UP"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [],
+				"typeProperties": {
+					"table": {
+						"value": "@dataset().TblName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blackbird2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FLOW_UP')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BLACKBIRD_EDR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "EDR",
+					"table": "SESSION_UP"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BLACKBIRD_EDR')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SinkADXMobilityCore_SMF_FEDERATE_PROD')]",
@@ -429,6 +536,35 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/blackbird2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TableName": {
+						"type": "string",
+						"defaultValue": "BLACKBIRD_HTTP_UP"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [],
+				"typeProperties": {
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blackbird2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_stunitycloud_SAS')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -448,230 +584,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault_kv_unityclouddiag')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Snowflake_UnityCloudFFA_MobilityCore')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "Snowflake",
-				"typeProperties": {
-					"authenticationType": "Basic",
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault_kv_unityclouddiag",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault_kv_unityclouddiag')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Snowflake_UnityCloudFFA_MobilityCoreLocal')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "Snowflake",
-				"typeProperties": {
-					"authenticationType": "Basic",
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault1",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('Snowflake_UnityCloudFFA_MobilityCoreLocal_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/linkedService1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"sasUri": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "AzureKeyVault1",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('linkedService1_properties_typeProperties_sasUri_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMCC_EDR_FLOW')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "RECORD_CONTENT",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECORD_METADATA",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_MCC_EDR_FLOW_UP"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMCC_EDR_SESSION')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "RECORD_CONTENT",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECORD_METADATA",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_MCC_EDR_SESSION_UP"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcSnowflakeMobilityCoreSMF_PROD')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_UnityCloudFFA_MobilityCoreLocal",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SnowflakeTable",
-				"schema": [
-					{
-						"name": "SF_LOAD_TS_EST",
-						"precision": 29,
-						"scale": 9
-					},
-					{
-						"name": "RECORD_CONTENT",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "RECORD_METADATA",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ACTION",
-						"precision": 6,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ISUPDATE",
-						"precision": 1,
-						"scale": 0
-					},
-					{
-						"name": "METADATA$ROW_ID",
-						"precision": 40,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"schema": "MSLOGS",
-					"table": "STREAM_SMF_PROD"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_UnityCloudFFA_MobilityCoreLocal')]"
 			]
 		}
 	]

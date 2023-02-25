@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "unitycloudADF"
 		},
+		"BLACKBIRD_EDR_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'BLACKBIRD_EDR'"
+		},
 		"ao5gccustdataingest adls_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ao5gccustdataingest adls'"
@@ -35,6 +39,14 @@
 			"type": "string",
 			"defaultValue": "https://unitycloudkeyvault.vault.azure.net/"
 		},
+		"Blackbird2_properties_typeProperties_endpoint": {
+			"type": "string",
+			"defaultValue": "https://blackbird2.eastus.kusto.windows.net"
+		},
+		"Blackbird2_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "blackbird2"
+		},
 		"Snowflake_UnityCloudFFA_MobilityCore_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "SnowflakeMobilityCoreSysAdminConnectionString"
@@ -56,6 +68,506 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/BlackBird2_Child_PipeLine_1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetQueries",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureDataExplorerSource",
+								"query": {
+									"value": "@concat('querytranformer(\"',pipeline().parameters.startdate,'\",\"',pipeline().parameters.enddate,'\",\"',pipeline().parameters.streamname,'\",\"',pipeline().parameters.destinationTable,'\",\"',pipeline().parameters.up,'\",\"',pipeline().parameters.SnowFlakeQuery,'\")')",
+									"type": "Expression"
+								},
+								"queryTimeout": "00:10:00",
+								"noTruncation": false
+							},
+							"dataset": {
+								"referenceName": "AzureDataExplorerTable2",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Loop Through the results",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetQueries",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetQueries').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Call BlackBir2 Child Pipeline2",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "BlackBird2_Child_PipeLine_2",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"startdate": {
+						"type": "string"
+					},
+					"enddate": {
+						"type": "string"
+					},
+					"streamname": {
+						"type": "string"
+					},
+					"destinationTable": {
+						"type": "string"
+					},
+					"up": {
+						"type": "string"
+					},
+					"SnowFlakeQuery": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"test": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureDataExplorerTable2')]",
+				"[concat(variables('factoryId'), '/pipelines/BlackBird2_Child_PipeLine_2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BlackBird2_Child_PipeLine_2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetStageTableCmd",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureDataExplorerSource",
+								"query": {
+									"value": "@concat('stageTablecreatorquery(',string(pipeline().parameters.IterationId),',\"',pipeline().parameters.destinationTable,'\",\"',pipeline().parameters.up,'\")')",
+									"type": "Expression"
+								},
+								"queryTimeout": "00:10:00",
+								"noTruncation": false
+							},
+							"dataset": {
+								"referenceName": "AzureDataExplorerTable2",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": true
+						}
+					},
+					{
+						"name": "CreateStageTables",
+						"type": "AzureDataExplorerCommand",
+						"dependsOn": [
+							{
+								"activity": "GetStageTableCmd",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"command": {
+								"value": "@activity('GetStageTableCmd').output.firstRow.stgcmd",
+								"type": "Expression"
+							},
+							"commandTimeout": "00:20:00"
+						},
+						"linkedServiceName": {
+							"referenceName": "Blackbird2",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "BLACKBIRD_TO_BLACKBIRD2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "CreateStageTables",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": {
+									"value": "@pipeline().parameters.SnowFlakeQuery",
+									"type": "Expression"
+								},
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink",
+								"ingestionMappingName": ""
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "mobilecoresteam"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "FLOW_UP",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureDataExplorerTable2",
+								"type": "DatasetReference",
+								"parameters": {
+									"TblName": {
+										"value": "@activity('GetStageTableCmd').output.firstRow.stage_table",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"SnowFlakeQuery": {
+						"type": "string"
+					},
+					"IterationId": {
+						"type": "int"
+					},
+					"destinationTable": {
+						"type": "string"
+					},
+					"up": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureDataExplorerTable2')]",
+				"[concat(variables('factoryId'), '/linkedServices/Blackbird2')]",
+				"[concat(variables('factoryId'), '/datasets/FLOW_UP')]",
+				"[concat(variables('factoryId'), '/linkedServices/linkedService1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stream - EDR PipelineMain')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Count Of Records by Hour and Up from Snowflake",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SnowflakeSource",
+								"query": {
+									"value": "@concat('Select\n       time_slice(to_timestamp(EVENTTIME), 1, ''HOUR'', ''START'') as \"START OF SLICE\",\n       UP,\n       count(*) as \"Number of records\"\nFrom \"BLACKBIRD_EDR\".\"EDR\".\"',pipeline().parameters.streamname,'\" \nWHERE  EVENTTIME >= ''',pipeline().parameters.startdate,''' AND EVENTTIME < ''',pipeline().parameters.enddate,'''\n  group by \"START OF SLICE\", UP\n  order by to_timestamp(\"START OF SLICE\") asc')",
+									"type": "Expression"
+								},
+								"exportSettings": {
+									"type": "SnowflakeExportCopyCommand"
+								}
+							},
+							"dataset": {
+								"referenceName": "FLOW_UP",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "CaptureResulttoVariable",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Get Count Of Records by Hour and Up from Snowflake",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "SnowflakeCountOutput",
+							"value": {
+								"value": "@replace(replace(replace(replace(join(activity('Get Count Of Records by Hour and Up from Snowflake').output.value,','),'}',''),'{\"START OF SLICE\":',''),'\"Number of records\":',''),'\"UP\":','')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "CaptureSnowflakeAuditInKusto",
+						"type": "AzureDataExplorerCommand",
+						"dependsOn": [
+							{
+								"activity": "CaptureResulttoVariable",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"command": {
+								"value": "@concat('.set-or-replace SnowFlake_',pipeline().parameters.streamname,'_Audit with (folder =\"Audit\") <|\n    let T = datatable(StartTime:datetime,UP:string,CountOfRecords:long)[',variables('SnowflakeCountOutput'),']; \n    T')",
+								"type": "Expression"
+							},
+							"commandTimeout": "00:20:00"
+						},
+						"linkedServiceName": {
+							"referenceName": "Blackbird2",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "GetDistinctUpForStream",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "CaptureSnowflakeAuditInKusto",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureDataExplorerSource",
+								"query": {
+									"value": "@concat('SnowFlake_',pipeline().parameters.streamname,'_Audit | distinct UP')",
+									"type": "Expression"
+								},
+								"queryTimeout": "00:10:00",
+								"noTruncation": false
+							},
+							"dataset": {
+								"referenceName": "AzureDataExplorerTable2",
+								"type": "DatasetReference",
+								"parameters": {
+									"TblName": "BLSCKBIRD_FLOW_UP"
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "LoopThroughResult",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetDistinctUpForStream",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetDistinctUpForStream').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 10,
+							"activities": [
+								{
+									"name": "Call BlackBird2 Child Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "BlackBird2_Child_PipeLine_1",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"startdate": {
+												"value": "@pipeline().parameters.startdate",
+												"type": "Expression"
+											},
+											"enddate": {
+												"value": "@pipeline().parameters.enddate",
+												"type": "Expression"
+											},
+											"streamname": {
+												"value": "@pipeline().parameters.streamname",
+												"type": "Expression"
+											},
+											"destinationTable": {
+												"value": "@pipeline().parameters.destinationTable",
+												"type": "Expression"
+											},
+											"up": {
+												"value": "@item().UP",
+												"type": "Expression"
+											},
+											"SnowFlakeQuery": {
+												"value": "@pipeline().parameters.SnowFlakeQuery",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"streamname": {
+						"type": "string",
+						"defaultValue": "FLOW_UP"
+					},
+					"startdate": {
+						"type": "string",
+						"defaultValue": "2023-02-12 00:00:00.0000000"
+					},
+					"enddate": {
+						"type": "string",
+						"defaultValue": "2023-02-12 01:00:00.0000000"
+					},
+					"destinationTable": {
+						"type": "string",
+						"defaultValue": "BLACKBIRD_FLOW_UP"
+					},
+					"SnowFlakeQuery": {
+						"type": "string",
+						"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP = \\'@up\\'"
+					}
+				},
+				"variables": {
+					"SnowflakeCountOutput": {
+						"type": "String"
+					},
+					"test": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/FLOW_UP')]",
+				"[concat(variables('factoryId'), '/linkedServices/Blackbird2')]",
+				"[concat(variables('factoryId'), '/datasets/AzureDataExplorerTable2')]",
+				"[concat(variables('factoryId'), '/pipelines/BlackBird2_Child_PipeLine_1')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Stream - MobilityCore_SMF_FEDERATE_PROD')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -1081,6 +1593,85 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataExplorerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TableName": {
+						"type": "string",
+						"defaultValue": "BLACKBIRD_HTTP_UP"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [],
+				"typeProperties": {
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blackbird2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataExplorerTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TblName": {
+						"type": "string",
+						"defaultValue": "BLSCKBIRD_FLOW_UP"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [],
+				"typeProperties": {
+					"table": {
+						"value": "@dataset().TblName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blackbird2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FLOW_UP')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BLACKBIRD_EDR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "EDR",
+					"table": "SESSION_UP"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BLACKBIRD_EDR')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SinkADXMobilityCore_SMF_FEDERATE_PROD')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1838,6 +2429,35 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/blackbird2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blackbird2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TableName": {
+						"type": "string",
+						"defaultValue": "BLACKBIRD_HTTP_UP"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [],
+				"typeProperties": {
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blackbird2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_stunitycloud_Identity')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -1909,6 +2529,34 @@
 				"type": "AzureKeyVault",
 				"typeProperties": {
 					"baseUrl": "[parameters('AzureKeyVault_kv_unityclouddiag_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BLACKBIRD_EDR')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Snowflake",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"connectionString": "[parameters('BLACKBIRD_EDR_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Blackbird2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDataExplorer",
+				"typeProperties": {
+					"endpoint": "[parameters('Blackbird2_properties_typeProperties_endpoint')]",
+					"database": "[parameters('Blackbird2_properties_typeProperties_database')]"
 				}
 			},
 			"dependsOn": []
