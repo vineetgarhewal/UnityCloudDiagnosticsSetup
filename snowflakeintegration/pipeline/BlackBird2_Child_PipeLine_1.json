@@ -47,7 +47,22 @@
 					"items": {
 						"value": "@activity('GetQueries').output.value",
 						"type": "Expression"
-					}
+					},
+					"activities": [
+						{
+							"name": "Call BlackBir2 Child Pipeline2",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "BlackBird2_Child_PipeLine_2",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					]
 				}
 			}
 		],
