@@ -67,6 +67,9 @@
 			},
 			"destinationTable": {
 				"type": "string"
+			},
+			"up": {
+				"type": "string"
 			}
 		},
 		"variables": {
