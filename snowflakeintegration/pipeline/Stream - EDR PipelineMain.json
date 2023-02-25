@@ -166,22 +166,6 @@
 								},
 								"firstRowOnly": false
 							}
-						},
-						{
-							"name": "Execute Pipeline1",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "GetTheQueries",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"waitOnCompletion": true
-							}
 						}
 					]
 				}
