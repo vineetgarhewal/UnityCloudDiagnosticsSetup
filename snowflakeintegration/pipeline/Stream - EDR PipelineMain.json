@@ -140,7 +140,7 @@
 						"type": "Expression"
 					},
 					"isSequential": false,
-					"batchCount": 60,
+					"batchCount": 50,
 					"activities": [
 						{
 							"name": "Call BlackBird2 Child Pipeline1",
