@@ -761,6 +761,7 @@
 								"type": "Expression"
 							},
 							"isSequential": false,
+							"batchCount": 24,
 							"activities": [
 								{
 									"name": "Call BlackBir2 Child Pipeline2",
