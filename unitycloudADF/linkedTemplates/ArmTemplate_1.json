@@ -197,6 +197,7 @@
 								},
 								"path": "mobilecoresteam"
 							},
+							"parallelCopies": 32,
 							"dataIntegrationUnits": 32
 						},
 						"inputs": [

@@ -303,6 +303,7 @@
 								},
 								"path": "mobilecoresteam"
 							},
+							"parallelCopies": 32,
 							"dataIntegrationUnits": 32
 						},
 						"inputs": [
@@ -503,7 +504,7 @@
 								"type": "Expression"
 							},
 							"isSequential": false,
-							"batchCount": 50,
+							"batchCount": 25,
 							"activities": [
 								{
 									"name": "Call BlackBird2 Child Pipeline1",
