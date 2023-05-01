@@ -4,8 +4,8 @@
 		"annotations": [],
 		"type": "AzureDataExplorer",
 		"typeProperties": {
-			"endpoint": "https://blackbird2.eastus.kusto.windows.net",
-			"database": "blackbird2"
+			"endpoint": "https://blackbird.westus2.kusto.windows.net",
+			"database": "blackbird"
 		}
 	}
 }
