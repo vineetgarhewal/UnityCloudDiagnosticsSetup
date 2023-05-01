@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureDataExplorerSource",
 						"query": {
-							"value": "@concat('querytranformer(\"',pipeline().parameters.startdate,'\",\"',pipeline().parameters.enddate,'\",\"',pipeline().parameters.streamname,'\",\"',pipeline().parameters.destinationTable,'\",\"',pipeline().parameters.up,'\",\"',pipeline().parameters.SnowFlakeQuery,'\",\"','\")')",
+							"value": "@concat('querytranformer(\"',pipeline().parameters.startdate,'\",\"',pipeline().parameters.enddate,'\",\"',pipeline().parameters.streamname,'\",\"',pipeline().parameters.destinationTable,'\",\"',pipeline().parameters.up,'\",\"',pipeline().parameters.SnowFlakeQuery,'\",\"',pipeline().parameters.GWNODEID,'\")')",
 							"type": "Expression"
 						},
 						"queryTimeout": "00:10:00",
