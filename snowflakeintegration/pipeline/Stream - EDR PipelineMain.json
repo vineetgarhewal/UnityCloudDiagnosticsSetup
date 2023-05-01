@@ -177,6 +177,10 @@
 									"SnowFlakeQuery": {
 										"value": "@pipeline().parameters.SnowFlakeQuery",
 										"type": "Expression"
+									},
+									"GWNODEID": {
+										"value": "@pipeline().parameters.GWNODEID",
+										"type": "Expression"
 									}
 								}
 							}
