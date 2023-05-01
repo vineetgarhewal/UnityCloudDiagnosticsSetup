@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SnowflakeSource",
 						"query": {
-							"value": "@concat('Select\n       time_slice(to_timestamp(EVENTTIME), 1, ''HOUR'', ''START'') as \"START OF SLICE\",\n       UP,\n       count(*) as \"Number of records\"\nFrom \"BLACKBIRD_EDR\".\"EDR\".\"',pipeline().parameters.streamname,'\" \nWHERE  EVENTTIME >= ''',pipeline().parameters.startdate,''' AND EVENTTIME < ''',pipeline().parameters.enddate,'''\n  group by \"START OF SLICE\", UP\n  order by to_timestamp(\"START OF SLICE\") asc')",
+							"value": "@concat('Select\n       time_slice(to_timestamp(EVENTTIME), 1, ''HOUR'', ''START'') as \"START OF SLICE\",\n       UP,\n       count(*) as \"Number of records\"\nFrom \"BLACKBIRD_EDR\".\"EDR\".\"',pipeline().parameters.streamname,'\" \nWHERE GWNODEID = ''',pipeline().parameters.GWNODEID,''' AND EVENTTIME >= ''',pipeline().parameters.startdate,''' AND EVENTTIME < ''',pipeline().parameters.enddate,'''\n  group by \"START OF SLICE\", UP\n  order by to_timestamp(\"START OF SLICE\") asc')",
 							"type": "Expression"
 						},
 						"exportSettings": {
@@ -204,7 +204,11 @@
 			},
 			"SnowFlakeQuery": {
 				"type": "string",
-				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP = \\'@up\\'"
+				"defaultValue": "select * FROM \\\"BLACKBIRD_EDR\\\".\\\"EDR\\\".\\\"@src_table\\\" WHERE GWNODEID = \\'@gwnid\\' AND EVENTTIME >= \\'@sp\\' AND EVENTTIME < \\'@ep\\' AND UP = \\'@up\\'"
+			},
+			"GWNODEID": {
+				"type": "string",
+				"defaultValue": "CHR1B_WND4B_PGWC"
 			}
 		},
 		"variables": {
