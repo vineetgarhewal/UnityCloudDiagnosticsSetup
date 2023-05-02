@@ -196,7 +196,7 @@
 			},
 			"startdate": {
 				"type": "string",
-				"defaultValue": "2023-04-19 18:00:00.00000"
+				"defaultValue": "2023-04-19 00:00:00.00000"
 			},
 			"enddate": {
 				"type": "string",
@@ -212,7 +212,7 @@
 			},
 			"GWNODEID": {
 				"type": "string",
-				"defaultValue": "CHG3F_HST5A_PGWC"
+				"defaultValue": "ATL3D_WND4D_PGWC"
 			}
 		},
 		"variables": {
