@@ -212,7 +212,7 @@
 			},
 			"GWNODEID": {
 				"type": "string",
-				"defaultValue": "ATL3D_WND4D_PGWC"
+				"defaultValue": "ALL4F_HST5E_PGWC"
 			}
 		},
 		"variables": {
