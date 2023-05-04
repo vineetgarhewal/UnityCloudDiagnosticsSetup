@@ -196,11 +196,11 @@
 			},
 			"startdate": {
 				"type": "string",
-				"defaultValue": "2023-04-03 00:00:00.00000"
+				"defaultValue": "2023-04-04 00:00:00.00000"
 			},
 			"enddate": {
 				"type": "string",
-				"defaultValue": "2023-04-03 23:59:59.00000"
+				"defaultValue": "2023-04-04 23:59:59.00000"
 			},
 			"destinationTable": {
 				"type": "string",
