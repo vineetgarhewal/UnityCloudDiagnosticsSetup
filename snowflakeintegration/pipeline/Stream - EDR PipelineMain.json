@@ -192,7 +192,7 @@
 		"parameters": {
 			"streamname": {
 				"type": "string",
-				"defaultValue": "SESSION_UP"
+				"defaultValue": "HTTP_UP"
 			},
 			"startdate": {
 				"type": "string",
@@ -204,7 +204,7 @@
 			},
 			"destinationTable": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_SESSION_UP"
+				"defaultValue": "BLACKBIRD_HTTP_UP"
 			},
 			"SnowFlakeQuery": {
 				"type": "string",
