@@ -192,7 +192,7 @@
 		"parameters": {
 			"streamname": {
 				"type": "string",
-				"defaultValue": "HTTP_UP"
+				"defaultValue": "BEARER_UP"
 			},
 			"startdate": {
 				"type": "string",
@@ -204,7 +204,7 @@
 			},
 			"destinationTable": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_HTTP_UP"
+				"defaultValue": "BLACKBIRD_BEARER_UP"
 			},
 			"SnowFlakeQuery": {
 				"type": "string",
