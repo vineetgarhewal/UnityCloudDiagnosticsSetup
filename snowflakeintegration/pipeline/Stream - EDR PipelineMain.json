@@ -192,19 +192,19 @@
 		"parameters": {
 			"streamname": {
 				"type": "string",
-				"defaultValue": "BEARER_UP"
+				"defaultValue": "FLOW_UP"
 			},
 			"startdate": {
 				"type": "string",
-				"defaultValue": "2023-04-04 00:00:00.00000"
+				"defaultValue": "2023-04-01 00:00:00.00000"
 			},
 			"enddate": {
 				"type": "string",
-				"defaultValue": "2023-04-04 23:59:59.00000"
+				"defaultValue": "2023-04-01 23:59:59.00000"
 			},
 			"destinationTable": {
 				"type": "string",
-				"defaultValue": "BLACKBIRD_BEARER_UP"
+				"defaultValue": "BLACKBIRD_FLOW_UP"
 			},
 			"SnowFlakeQuery": {
 				"type": "string",
